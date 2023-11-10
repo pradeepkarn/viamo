@@ -1,0 +1,9 @@
+config.php
+*.zip
+/media
+/jsondata
+/task.txt
+/.htaccess
+*.csv
+csvdata
+/*.log
