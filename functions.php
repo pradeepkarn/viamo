@@ -1156,6 +1156,7 @@ function searchCountry($keyword = 'india')
 function getCurrency($keyword = 'CH')
 {
   $data = file_get_contents(RPATH . "/jsondata/country-currency.json");
+  $data = isset($data)?$data:'[]';
   $data = json_decode($data, true);
   foreach ($data as $item) {
     if ($keyword == $item['isoAlpha2']) {

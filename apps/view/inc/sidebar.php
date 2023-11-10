@@ -2,6 +2,10 @@
     <nav class="sb-sidenav accordion sb-sidenav-light" id="sidenavAccordion">
         <div class="sb-sidenav-menu">
             <div class="nav">
+                <div class="sb-sidenav-menu-heading">
+                    <img src="/<?php echo STATIC_URL ?>/assets/img/img7.jpg" class="img-fluid" alt="" srcset="">
+                </div>
+                <div class="lsf_side">
                 <div class="sb-sidenav-menu-heading">Core</div>
                 <a class="nav-link" href="/<?php echo home; ?>">
                     <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
@@ -251,6 +255,7 @@
                                     <a class="nav-link" href="/<?php echo home; ?>/checkout">Checkout</a>
                                 </nav>
                             </div> -->
+            </div>
             </div>
         </div>
         <div class="sb-sidenav-footer">

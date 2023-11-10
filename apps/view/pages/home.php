@@ -26,6 +26,49 @@ SCRPT;
         </ol>
 
         <section>
+          <div class="container px-4">
+            <div class="row justify-content-center">
+              <div class="col-4 mb-2">
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title text-center pb-3">Member 1</h5>
+                    <h6 class="card-subtitle mb-2 text-body-secondary">Card subtitle</h6>
+                    <p class="card-text">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Mollitia reiciendis animi quasi eos ex ratione deleniti doloremque labore vero. Harum labore velit cum fugiat incidunt temporibus ipsa sunt! Rem, est.</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-4 mb-2">
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title text-center pb-3">Member 2</h5>
+                    <h6 class="card-subtitle mb-2 text-body-secondary">Card subtitle</h6>
+                    <p class="card-text">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Mollitia reiciendis animi quasi eos ex ratione deleniti doloremque labore vero. Harum labore velit cum fugiat incidunt temporibus ipsa sunt! Rem, est.</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-4 mb-2">
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title text-center pb-3">Member 3</h5>
+                    <h6 class="card-subtitle mb-2 text-body-secondary">Card subtitle</h6>
+                    <p class="card-text">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Mollitia reiciendis animi quasi eos ex ratione deleniti doloremque labore vero. Harum labore velit cum fugiat incidunt temporibus ipsa sunt! Rem, est.</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-4 mb-2">
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title text-center pb-3">Total Members</h5>
+                    <h6 class="card-subtitle mb-2 text-body-secondary">Card subtitle</h6>
+                    <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus officia nulla ullam. Laboriosam, tempore. Cumque modi hic quae, veniam numquam, animi laboriosam vitae necessitatibus quas quod sint ad atque sit!</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section>
           <div class="container-fluid px-4">
             <div class="row">
               <div class="col-lg-12 col-md-12">
@@ -180,13 +223,13 @@ SCRPT;
                   $pv_sum = $pvctrl->my_lifetime_commission_sum($userid);
                   $rv_sum = $pvctrl->my_lifetime_rank_advance_sum($userid);
                   $rv_sum += my_rv_and_admin_rv($user_id = $userid, $dbobj = null);
-                  $rv_sum += old_data($key_name="rank_advance",$userid);
-                  $direct_bonus = old_data($key_name="direct_bonus",$userid);
+                  $rv_sum += old_data($key_name = "rank_advance", $userid);
+                  $direct_bonus = old_data($key_name = "direct_bonus", $userid);
                   $direct_bonus +=  $pvctrl->my_lifetime_direct_bonus_sum($userid);
                   // $db = new Dbobjects;
                   // $sql = "select SUM(key_value) as pv_sum from old_data where user_id = $user_id and key_name='commission'";
                   // $old_pv = $db->show($sql)[0]['pv_sum'];
-                  $pv_sum +=  old_data($key_name="commission",$userid);
+                  $pv_sum +=  old_data($key_name = "commission", $userid);
                 }
                 ?>
               </div>

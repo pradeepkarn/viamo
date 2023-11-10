@@ -1,6 +1,6 @@
 <nav class="sb-topnav navbar navbar-expand navbar-light bg-light">
     <!-- Navbar Brand-->
-    <a class="navbar-brand ps-3" href="/<?php echo home; ?>/">DOM SWISS</a>
+    <a class="navbar-brand ps-3" href="/<?php echo home; ?>/">Viamo</a>
     <!-- Sidebar Toggle-->
     <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
     <!-- Navbar Search-->
@@ -11,6 +11,11 @@
             <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>
         </div>
     </form> -->
+    <div class="lsqq">
+        <a href="">Dashboard <span>|</span></a>
+        <a href="">News <span>|</span></a>
+        <a href="">Profile </a>
+    </div>
     <div style="float: right !important;" class="cart_items ms-auto">
         <?php
         $currency_flag = null;

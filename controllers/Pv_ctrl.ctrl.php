@@ -19,7 +19,9 @@ class Pv_ctrl
         $db = new Dbobjects;
         $sql = "SELECT SUM(commission) as cmsn_sum FROM ring_commissions WHERE `partner_id`= $my_id;";
         try {
-            return round(($db->show($sql)[0]['cmsn_sum']), 2);
+            $amt = $db->show($sql)[0]['cmsn_sum'];
+            $amt = isset($amt)?$amt:0;
+            return round($amt, 2);
         } catch (PDOException $th) {
             return 0.00;
         }
@@ -29,7 +31,9 @@ class Pv_ctrl
         $db = new Dbobjects;
         $sql = "SELECT SUM(amount) as cmsn_sum FROM extra_credits WHERE `added_to`= $my_id;";
         try {
-            return round(($db->show($sql)[0]['cmsn_sum']), 2);
+            $amt = $db->show($sql)[0]['cmsn_sum'];
+            $amt = isset($amt)?$amt:0;
+            return round($amt, 2);
         } catch (PDOException $th) {
             return 0.00;
         }
@@ -39,7 +43,9 @@ class Pv_ctrl
         $db = new Dbobjects;
         $sql = "SELECT SUM(direct_bonus) as d_b FROM ring_commissions WHERE `partner_id`= $my_id;";
         try {
-            return round(($db->show($sql)[0]['d_b']), 2);
+            $amt = $db->show($sql)[0]['d_b'];
+            $amt = isset($amt)?$amt:0;
+            return round($amt, 2);
         } catch (PDOException $th) {
             return 0.00;
         }
@@ -49,7 +55,9 @@ class Pv_ctrl
         $db = new Dbobjects;
         $sql = "SELECT SUM(rank_advance) as rank_advance_sum FROM ring_commissions WHERE `partner_id`= $my_id;";
         try {
-            return round(($db->show($sql)[0]['rank_advance_sum']), 2);
+            $amt = $db->show($sql)[0]['rank_advance_sum'];
+            $amt = isset($amt)?$amt:0;
+            return round($amt, 2);
         } catch (PDOException $th) {
             return 0.00;
         }

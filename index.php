@@ -1613,6 +1613,10 @@ switch ($path) {
     if ($url[0] == "reset-account") {
       import("apps/view/pages/reset-account.php");
       return;
+    }
+    if ($url[0] == "news") {
+      import("apps/view/pages/news.php");
+      return;
     } else {
       import("apps/view/pages/404.php");
       return;

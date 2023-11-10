@@ -11849,3 +11849,28 @@ margin-bottom: 0px;
 .pk-pointer{
   cursor: pointer;
 }
+.lsf_side{
+  border: 1px solid black;
+  margin: 0 10px;
+}
+.lsqq{
+  border: 5px solid #4472c4;
+  padding: 10px;
+  display: flex;
+  margin-left: 18px;
+}
+.lsqq a{
+  padding: 0 20px;
+  text-decoration: none;
+  color: #000;
+}
+.lsqq span{
+  margin-left: 30px;
+}
+.bst_news{
+  background-color: #e9ecef;
+  color: black;
+  padding: 5px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
