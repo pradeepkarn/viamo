@@ -1,5 +1,5 @@
 <?php
-class Member_level_ctrl
+class Member_ctrl
 {
     public $db;
     public $firstDay;
@@ -12,18 +12,35 @@ class Member_level_ctrl
         $this->firstDay = date('Y-m-01 00:00:00');
         $this->lastDay = date('Y-m-t 23:59:59');
     }
-    function check_my_member_orders($myid)
+    // function check_my_member_orders($myid)
+    // {
+    //     $sql = "SELECT 
+    //         DISTINCT payment.user_id AS buyer_id
+    //         FROM payment 
+    //         WHERE payment.user_id IN (SELECT pk_user.id FROM pk_user WHERE pk_user.ref='$myid') 
+    //         AND payment.status = 'paid' 
+    //         AND (payment.invoice IS NOT NULL AND payment.invoice <> '') 
+    //         AND payment.updated_at >= '$this->firstDay' 
+    //         AND payment.updated_at <= '$this->lastDay'
+    //         ORDER BY buyer_id;";
+    //     return $this->db->show($sql);
+    // }
+    function save_trn_data(object $db, array $arrdata)
     {
-        $sql = "SELECT 
-            DISTINCT payment.user_id AS buyer_id
-            FROM payment 
-            WHERE payment.user_id IN (SELECT pk_user.id FROM pk_user WHERE pk_user.ref='$myid') 
-            AND payment.status = 'paid' 
-            AND (payment.invoice IS NOT NULL AND payment.invoice <> '') 
-            AND payment.updated_at >= '$this->firstDay' 
-            AND payment.updated_at <= '$this->lastDay'
-            ORDER BY buyer_id;";
-        return $this->db->show($sql);
+        $obj = obj($arrdata);
+        // $obj->transactedTo = 12345;
+        // $obj->transactedBy = 67890;
+        // $obj->amount = 100.50;
+        // $obj->trnNum = "ABC123";
+        // $obj->status = 1; // Active
+        // $obj->trnGroup = 1; // PV commission
+        // $obj->trnType = 1; // Credit
+        $sql = "INSERT INTO transactions (transacted_to, transacted_by, amount, trn_num, status, trn_group, trn_type)
+        VALUES ('$obj->transactedTo', '$obj->transactedBy', '$obj->amount', '$obj->trnNum', '$obj->status', '$obj->trnGroup', '$obj->trnType')";
+        if($this->db->execSql($sql)){
+            return true;
+        }
+        return false;
     }
     function update_my_level($myid)
     {
