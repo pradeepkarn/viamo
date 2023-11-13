@@ -12,9 +12,9 @@
         </div>
     </form> -->
     <div class="lsqq">
-        <a href="">Dashboard <span>|</span></a>
-        <a href="">News <span>|</span></a>
-        <a href="">Profile </a>
+        <a href="/<?php echo home; ?>">Dashboard <span>|</span></a>
+        <a href="/<?php echo home; ?>/news">News <span>|</span></a>
+        <a href="/<?php echo home; ?>/profile">Profile </a>
     </div>
     <div style="float: right !important;" class="cart_items ms-auto">
         <?php

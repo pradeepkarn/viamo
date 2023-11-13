@@ -47,6 +47,10 @@ class Package_ctrl
                 $_SESSION['msg'][] = "Direct bonus field is empty";
                 $ok = false;
             }
+            if (!isset($req->direct_bonus_percentage)) {
+                $_SESSION['msg'][] = "Direct bonus percentage field is empty";
+                $ok = false;
+            }
             if ($ok == true) {
                 if (
                     $req->name == '' ||
@@ -80,6 +84,9 @@ class Package_ctrl
                 $arr['details'] = $req->details;
                 if (isset($req->direct_bonus)) {
                     $arr['direct_bonus'] = $req->direct_bonus;
+                }
+                if (isset($req->direct_bonus_percentage)) {
+                    $arr['direct_bonus_percentage'] = $req->direct_bonus_percentage;
                 }
                 // $arr['parent_id'] = isset($req->parent_id)?intval($req->parent_id):0;
                 $arr['item_group'] = $item_group;
@@ -188,6 +195,10 @@ class Package_ctrl
                 $_SESSION['msg'][] = "Direct bonus field is empty";
                 $ok = false;
             }
+            if (!isset($req->direct_bonus_percentage)) {
+                $_SESSION['msg'][] = "Direct bonus percentage field is empty";
+                $ok = false;
+            }
             if ($ok == true) {
                 if (
                     !intval($req->product_id) ||
@@ -215,6 +226,9 @@ class Package_ctrl
                 $arr['details'] = $req->details;
                 if (isset($req->direct_bonus)) {
                     $arr['direct_bonus'] = $req->direct_bonus;
+                }
+                if (isset($req->direct_bonus_percentage)) {
+                    $arr['direct_bonus_percentage'] = $req->direct_bonus_percentage;
                 }
                 // $arr['parent_id'] = isset($req->parent_id)?intval($req->parent_id):0;
                 $allItems = [];

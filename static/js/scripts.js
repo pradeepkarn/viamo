@@ -75,26 +75,26 @@ window.addEventListener('DOMContentLoaded', event => {
 
 });
 
-function openCity(evt, cityName) {
-    var i, tabcontent, tablinks;
-    tabcontent = document.getElementsByClassName("tabcontent");
-    for (i = 0; i < tabcontent.length; i++) {
-      tabcontent[i].style.display = "none";
-    }
-    tablinks = document.getElementsByClassName("tablinks");
-    for (i = 0; i < tablinks.length; i++) {
-      tablinks[i].className = tablinks[i].className.replace(" active", "");
-    }
-    document.getElementById(cityName).style.display = "block";
-    evt.currentTarget.className += " active";
-  }
+// function openCity(evt, cityName) {
+//     var i, tabcontent, tablinks;
+//     tabcontent = document.getElementsByClassName("tabcontent");
+//     for (i = 0; i < tabcontent.length; i++) {
+//       tabcontent[i].style.display = "none";
+//     }
+//     tablinks = document.getElementsByClassName("tablinks");
+//     for (i = 0; i < tablinks.length; i++) {
+//       tablinks[i].className = tablinks[i].className.replace(" active", "");
+//     }
+//     document.getElementById(cityName).style.display = "block";
+//     evt.currentTarget.className += " active";
+//   }
   
-  // Get the element with id="defaultOpen" and click on it
-  document.getElementById("defaultOpen").click();
+//   // Get the element with id="defaultOpen" and click on it
+//   document.getElementById("defaultOpen").click();
 
 
 
-function openProfile(evt, cityName) {
+  function openProfile(evt, cityName) {
     var i, tabcontent, tablinks;
     tabcontent = document.getElementsByClassName("tabcontent1");
     for (i = 0; i < tabcontent.length; i++) {
@@ -102,14 +102,15 @@ function openProfile(evt, cityName) {
     }
     tablinks = document.getElementsByClassName("tablinks1");
     for (i = 0; i < tablinks.length; i++) {
-      tablinks[i].className = tablinks[i].className.replace(" active", "");
+      tablinks[i].classList.remove("active");
     }
     document.getElementById(cityName).style.display = "block";
-    evt.currentTarget.className += " active";
+    evt.currentTarget.classList.add("active");
   }
   
-  // Get the element with id="defaultOpen" and click on it
+  // Get the element with id="defaultOpen1" and click on it
   document.getElementById("defaultOpen1").click();
+  
   
   
   function arraySum(arr) {

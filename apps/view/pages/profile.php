@@ -17,50 +17,26 @@ if (!authenticate()) {
 
                 <div class="container">
                     <div class="row mb-4">
-                        <div class="col-lg-4">
-                            <div class="spl-box">
-                                <div class="new-box">
-                                    <?php
-                                    //  $dms = new Domswiss_tree_ctrl;
-                                    //  $date = last_active_date($user_id=$_SESSION['user_id']);
-                                    //  $mnger = $dms->handle_rv($user_id=USER['id'],$last_pmt=$date);
-                                    //   echo total_bonus(user_id:USER['id']);
-                                    ?>
-                                    <img src="/<?php echo home; ?>/media/img/user-blank.png" class="img-circle" width="150px" alt="" srcset="">
-                                    <!-- <h3 class="mt-2 mypl"><?php // echo $mnger; 
-                                                                ?></h4> -->
-                                    <h4 class="mt-2 mypl"><?php echo USER['username']; ?></h4>
-                                    <h6 class="mypl1 mb-3"><?php echo USER['first_name']; ?> <?php echo USER['last_name']; ?></h6>
-                                    <p class="mypl1">ID: <span><?php echo USER['id']; ?></span></p>
-                                    <hr class="mypr">
-                                </div>
-                                <div class="tab">
-                                    <button class="btn tablinks" onclick="openCity(event, 'profiles')" id="defaultOpen">Profiles</button>
-                                    <button class="btn tablinks" onclick="openCity(event, 'wallet')" id="defaultOpen">Wallet</button>
-                                    <!-- <button class="btn tablinks" onclick="openCity(event, 'settings')" id="defaultOpen">Personalized settings</button> -->
-                                    <button class="btn tablinks" onclick="openCity(event, 'documents')" id="defaultOpen">KYC Documents</button>
-                                    <button class="btn tablinks" onclick="openCity(event, 'referral')" id="defaultOpen">Referral List</button>
-                                </div>
-                            </div>
-                        </div>
+                        
                         <div class="col-lg-8">
                             <div class="spl-box">
-                                <div id="profiles" class="tabcontent">
                                     <div class="card">
                                         <div class="card-header">
                                             <p class="my-pr">Profiles</p>
                                         </div>
                                         <div class="card-body">
                                             <div class="nav_tabs">
-                                                <button class="btn tablinks1" onclick="openProfile(event, 'account')" id="defaultOpen1">@ account</button>
+                                                <button class="btn tablinks1" onclick="openProfile(event, 'account')" id="defaultOpen1">All Data</button>
 
-                                                <button class="btn tablinks1" onclick="openProfile(event, 'personaldata')" id="defaultOpen1"><i class="bi bi-person"></i> primary address</button>
+                                                <button class="btn tablinks1" onclick="openProfile(event, 'personaldata')" id="defaultOpen1"><i class="bi bi-person"></i> Delivery Address</button>
 
-                                                <button class="btn tablinks1" onclick="openProfile(event, 'deliveryaddress')" id="defaultOpen1"><i class="bi bi-person"></i> all addresses</button>
+                                                <!-- <button class="btn tablinks1" onclick="openProfile(event, 'deliveryaddress')" id="defaultOpen1"><i class="bi bi-person"></i> all addresses</button> -->
 
-                                                <button class="btn tablinks1" onclick="openProfile(event, 'bankaccounts')" id="defaultOpen1"><i class="bi bi-person"></i> bank accounts</button>
+                                                <button class="btn tablinks1" onclick="openProfile(event, 'documents')" id="defaultOpen1"><i class="bi bi-person"></i> KYC</button>
 
-                                                <button class="btn tablinks1" onclick="openProfile(event, 'security')" id="defaultOpen1"><i class="bi bi-person"></i> security</button>
+                                                <button class="btn tablinks1" onclick="openProfile(event, 'bankaccounts')" id="defaultOpen1"><i class="bi bi-person"></i> Bank-Account's</button>
+
+                                                <button class="btn tablinks1" onclick="openProfile(event, 'security')" id="defaultOpen1"><i class="bi bi-person"></i> Password</button>
                                             </div>
                                             <div class="row mt-3 mb-3">
                                                 <div id="account" class="tabcontent1">
@@ -391,7 +367,40 @@ if (!authenticate()) {
 
                                                     </div>
                                                 </div>
-
+<div class="col-lg-12">
+<div id="documents" class="tabcontent1">
+                                    <div class="card">
+                                        
+                                        <div class="card-body">
+                                            <div class="row mt-3 mb-3">
+                                                <div class="col-lg-12">
+                                                    <div class="card-header">
+                                                        <h5>identity document</h5>
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <p>In order for us to be able to process your payout we need to verify your identity. Please upload this document here. After successful verification of your payout should be available in a few days.</p>
+                                                        <p>Documents we accept for identity verification:<br>
+                                                            passport, identity card</p>
+                                                        <a class="upl_txt" href="">NOT UPLOADED</a>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-12 pt-3">
+                                                    <div class="card-header">
+                                                        <h5>Proof of address</h5>
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <p>In order for us to be able to process your Payout we need to verify your address. Please upload this document here. After successful verification of your payout should be available in a few days.</p>
+                                                        <p>Documents we accept for identity verification:<br>
+                                                            passport, identity cardUtility Bill (Electric, Mobile Phone, Internet, ...)</p>
+                                                        <a class="upl_txt" href="">NOT UPLOADED</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button class="btn btn-primary kyc_btn mt-3"><a href="/<?php echo home; ?>/kyc-upload">KYC upload</a></button>
+                                </div>
+</div>
                                                 <div class="col-lg-12">
                                                     <div id="bankaccounts" class="tabcontent1">
                                                         <h5>Bank account</h5>
@@ -505,216 +514,13 @@ if (!authenticate()) {
                                         </div>
 
                                     </div>
-                                </div>
                                 <?php
                                 $wallet = obj(liveWallet($userid = USER['id']));
                                 ?>
-                                <div id="wallet" class="tabcontent">
-                                    <div class="card">
-                                        <div class="card-header">
-                                            <p class="my-pr">Wallets</p>
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="row mt-3 mb-3">
-                                                <div class="col-lg-12">
-                                                    <h5>Wallet Info</h5>
-                                                    <div class="row">
-                                                        <div class="col-4">
-                                                            <div class="live_wallet">
-                                                                <h5>Lifetime Balance</h5>
-                                                                <span style="font-size: 36px;"><i class="bi bi-arrow-down" style="color: #00c292;"></i>
-                                                                    <?php echo $wallet->lifetime_amt; ?>
-                                                                </span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-4">
-                                                            <div class="live_wallet">
-                                                                <h5>Current Balance</h5>
-                                                                <span style="font-size: 36px;"><i class="bi bi-arrow-right" style="color: #00c292;"></i>
-                                                                    <?php echo $wallet->amt_left; ?>
-                                                                </span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-4">
-                                                            <div class="live_wallet">
-                                                                <h5>Cash Withdrawal</h5>
-                                                                <span style="font-size: 36px;"><i class="bi bi-arrow-up" style="color: #e46a76;"></i>
-                                                                    <?php echo $wallet->amt_paid; ?>
-                                                                </span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <hr>
-                                            <div class="row mb-4">
-                                                <div class="col-lg-12">
-                                                    <table id="datatablesSimple" class="table table-bordered">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>Trans. ID</th>
-                                                                <th>Date</th>
-                                                                <th>Request status</th>
-                                                                <th>Amount</th>
-                                                                <th>Info</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tfoot>
-                                                            <tr>
-                                                                <th>Trans. ID</th>
-                                                                <th>Date</th>
-                                                                <th>Request status</th>
-                                                                <th>Amount</th>
-                                                                <th>Info</th>
-                                                            </tr>
-                                                        </tfoot>
-                                                        <tbody>
-                                                            <?php
-                                                            $db = new Dbobjects;
-                                                            $sql = "select * from credits where user_id = {$userid} and status = 'paid'";
-                                                            $cmsn = $db->show($sql);
-                                                            ?>
-                                                            <?php foreach ($cmsn as $cms) {
-                                                                $cms = obj($cms);
-                                                            ?>
-                                                                <tr>
-                                                                    <td><?php echo $cms->id; ?></td>
-                                                                    <td><?php echo $cms->paid_on; ?></td>
-                                                                    <td><?php echo $cms->remark; ?></td>
-                                                                    <td><?php echo $cms->amt; ?></td>
-                                                                    <td><?php echo $cms->info; ?></td>
-                                                                </tr>
-                                                            <?php } ?>
-
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div id="settings" class="tabcontent">
-                                    <div class="card">
-                                        <div class="card-header">
-                                            <p class="my-pr">Personalized Settings</p>
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="row mt-3 mb-3">
-                                                <div class="col-lg-6">
-                                                    <h5>Default Binary position</h5>
-                                                    <label for="">default position</label>
-                                                    <select class="form-control mt-2" name="" id="">
-                                                        <option value="">Alternate Left/Right</option>
-                                                        <option value="">Default Left</option>
-                                                        <option value="">Default Right</option>
-                                                        <option value="">Weakest Leg</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div id="documents" class="tabcontent">
-                                    <div class="card">
-                                        <div class="card-header">
-                                            <p class="my-pr">KYC Documents</p>
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="row mt-3 mb-3">
-                                                <div class="col-lg-12">
-                                                    <div class="card-header">
-                                                        <h5>identity document</h5>
-                                                    </div>
-                                                    <div class="card-body">
-                                                        <p>In order for us to be able to process your payout we need to verify your identity. Please upload this document here. After successful verification of your payout should be available in a few days.</p>
-                                                        <p>Documents we accept for identity verification:<br>
-                                                            passport, identity card</p>
-                                                        <a class="upl_txt" href="">NOT UPLOADED</a>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-12 pt-3">
-                                                    <div class="card-header">
-                                                        <h5>Proof of address</h5>
-                                                    </div>
-                                                    <div class="card-body">
-                                                        <p>In order for us to be able to process your Payout we need to verify your address. Please upload this document here. After successful verification of your payout should be available in a few days.</p>
-                                                        <p>Documents we accept for identity verification:<br>
-                                                            passport, identity cardUtility Bill (Electric, Mobile Phone, Internet, ...)</p>
-                                                        <a class="upl_txt" href="">NOT UPLOADED</a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <button class="btn btn-primary kyc_btn mt-3"><a href="/<?php echo home; ?>/kyc-upload">KYC upload</a></button>
-                                </div>
-                                <div id="referral" class="tabcontent">
-                                    <div class="card">
-                                        <div class="card-header">
-                                            <p class="my-pr">Referral List</p>
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="row mt-3 mb-3">
-                                                <div class="col-lg-6">
-                                                    <h5>Referral List Info</h5>
-                                                </div>
-                                            </div>
-                                            <div class="row mb-4">
-                                                <div class="col-lg-12">
-                                                    <table id="datatablesSimple1">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>User ID</th>
-                                                                <th>username</th>
-                                                                <th>First name</th>
-                                                                <th>Last name</th>
-                                                                <th>referal date</th>
-                                                                <th>status</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tfoot>
-                                                            <tr>
-                                                                <th>User ID</th>
-                                                                <th>username</th>
-                                                                <th>First name</th>
-                                                                <th>Last name</th>
-                                                                <th>referal date</th>
-                                                                <th>status</th>
-                                                            </tr>
-                                                        </tfoot>
-                                                        <tbody>
-                                                            <?php
-                                                            if (authenticate() == true) {
-                                                                $userObj = new Model('pk_user');
-
-                                                                $arr = null;
-                                                                $arr['ref'] = $_SESSION['user_id'];
-                                                                $partner = $userObj->filter_index($assoc_arr = $arr, $ord = 'DESC', $limit = 9999999,                                         $change_order_by_col = "");
-                                                            }
-                                                            
-                                                                $pvctrl = new Pv_ctrl;
-                                                                $pvctrl->db = new Dbobjects;
-                                                            foreach ($partner as $value) {
-                                                                $is_active = $pvctrl->check_active($value['id']);
-                                                            ?>
-                                                                <tr>
-                                                                    <th><?php echo $value['id']; ?></th>
-                                                                    <th><?php echo $value['username']; ?></th>
-                                                                    <th><?php echo $value['first_name']; ?></th>
-                                                                    <th><?php echo $value['last_name']; ?></th>
-                                                                    <th><?php echo $value['created_at']; ?></th>
-                                                                    <th><?php echo $is_active ? 'Active' : 'In active'; ?></th>
-                                                                </tr>
-                                                            <?php
-                                                            }
-                                                            ?>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                
+                                
+                                
+                                
                             </div>
 
                         </div>

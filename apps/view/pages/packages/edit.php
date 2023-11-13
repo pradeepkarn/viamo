@@ -214,6 +214,10 @@ import("apps/view/inc/navbar.php");
                                             <label for="">Direct Bonus</label>
                                             <input class="form-control my-2 valid" type="number" value="<?php echo $pv->direct_bonus; ?>" scope="any" min="0" name="direct_bonus">
                                         </div>
+                                        <div class="col-md-3">
+                                            <label for="">Direct Bonus Percentage</label>
+                                            <input class="form-control my-2 valid" type="number" value="<?php echo $pv->direct_bonus_percentage; ?>" scope="any" min="0" name="direct_bonus_percentage">
+                                        </div>
                                     </div>
                                     <div class="form-group row mb-4">
                                         <div class="col-lg-6" style="align-items: center; display:flex; justify-content:space-between">
