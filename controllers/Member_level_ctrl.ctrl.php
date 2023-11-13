@@ -31,7 +31,7 @@ class Member_level_ctrl
         switch (strval($current_level)) {
             case '0':
                 // Upgrade to vip
-                // check perosons below me at least three people purchases (member_level=0) if yes then update level to 1
+                // check perosons below me at least three people purchases if yes then update level to 1
                 $sql = "SELECT 
                 payment.user_id AS buyer_id, pk_user.member_level
                 FROM payment 
