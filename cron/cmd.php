@@ -9,7 +9,7 @@ require_once 'vendor/autoload.php';
 import('functions.php');
 
 $level = new Member_ctrl;
-$db =  new Dbobjects;
+$db = $level->db;
 $pdo = $db->conn;
 $arr = null;
 $pdo->beginTransaction();
@@ -24,12 +24,10 @@ try {
     $level->save_trn_data($db, $arr);
     $pdo->commit();
 } catch (PDOException $th) {
-    echo $th;
     $pdo->rollBack();
+    // echo $th;
 }
 $arr = null;
-
-
 
 exit;
 $level = new Member_ctrl;

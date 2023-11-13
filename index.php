@@ -5,10 +5,7 @@ import('/vendor/autoload.php');
 $url = explode("/", $_SERVER["QUERY_STRING"]);
 $path = $_SERVER["QUERY_STRING"];
 define("direct_access", 1);
-// $GLOBALS['row_id'] = end($url);
-// $GLOBALS['tableName'] = prev($url);
-// $GLOBALS['url_last_param'] = end($url);
-// $GLOBALS['url_2nd_last_param'] = prev($url);
+
 function get_my_primary_address($userid)
 {
   if (!isset($_SESSION['user_id'])) {

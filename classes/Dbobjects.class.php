@@ -15,7 +15,7 @@ class Dbobjects extends Dbh
     public $conn;
     public function __construct()
     {
-        $this->conn = $this->conn();
+        $this->conn = $GLOBALS['PDO'];
     }
 
     public function setColNames($tableName)

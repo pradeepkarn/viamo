@@ -25,22 +25,19 @@ class Member_ctrl
     //         ORDER BY buyer_id;";
     //     return $this->db->show($sql);
     // }
-    function save_trn_data(object $db, array $arrdata)
+    function save_trn_data($db, array $arrdata)
     {
         $obj = obj($arrdata);
-        // $obj->transactedTo = 12345;
-        // $obj->transactedBy = 67890;
-        // $obj->amount = 100.50;
-        // $obj->trnNum = "ABC123";
-        // $obj->status = 1; // Active
-        // $obj->trnGroup = 1; // PV commission
-        // $obj->trnType = 1; // Credit
-        $sql = "INSERT INTO transactions (transacted_to, transacted_by, amount, trn_num, status, trn_group, trn_type)
-        VALUES ('$obj->transactedTo', '$obj->transactedBy', '$obj->amount', '$obj->trnNum', '$obj->status', '$obj->trnGroup', '$obj->trnType')";
-        if($this->db->execSql($sql)){
-            return true;
+        if (
+            isset($obj->transactedTo, $obj->transactedBy, $obj->amount, $obj->trnNum, $obj->status, $obj->trnGroup, $obj->trnType)
+        ) {
+            $sql = "INSERT INTO transactions (transacted_to, transacted_by, amount, trn_num, status, trn_group, trn_type)
+                VALUES ('$obj->transactedTo', '$obj->transactedBy', '$obj->amount', '$obj->trnNum', '$obj->status', '$obj->trnGroup', '$obj->trnType')";
+            $db->execSql($sql);
+        } else {
+            // Handle the case where not all required properties are set
+            throw new Exception("Not all required properties are set.");
         }
-        return false;
     }
     function update_my_level($myid)
     {

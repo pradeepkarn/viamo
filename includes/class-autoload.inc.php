@@ -25,4 +25,5 @@ function controllersLoader($className){
     }
 }
 
+$GLOBALS['PDO'] = (new Dbh)->conn();
 ?>
