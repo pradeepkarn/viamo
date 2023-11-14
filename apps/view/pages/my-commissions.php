@@ -4,12 +4,18 @@ use League\Csv\Writer;
 
 import("apps/view/inc/header.php");
 import("apps/view/inc/navbar.php");
+$level = new Member_ctrl;
+$db = new Dbobjects;
+// $bonus_list = $level->list_direct_bonus($db,$myid=USER['id']);
+$allcmsn = $level->get_all_direct_bonus_sum($db,$myid=USER['id']);
+$totalWithDrawal = $level->get_all_withdrawal_amt_sum($db,$myid=USER['id']);
+$free_to_paid = $allcmsn-$totalWithDrawal;
 // myprint($context);
 // $db = new Model('pk_user');
 // $total_user = $db->index(ord: "DESC", limit: 10000);
 // $tp = count($total_user);
 $cp = isset($context['data']->current_page) ? $context['data']->current_page : 0;
-$tp = isset($context['data']->total_cmsn) ? $context['data']->total_cmsn : 5;
+$tp = isset($context['data']->total_cmsn) ? $context['data']->total_cmsn : 1;
 // myprint($context);
 ?>
 <div id="layoutSidenav">
@@ -25,19 +31,19 @@ $tp = isset($context['data']->total_cmsn) ? $context['data']->total_cmsn : 5;
                     <div class="col-2">
                         <div class="fnbox text-center">
                             <h3>Bonus Income</h3>
-                            <h4>140,23</h4>
+                            <h4><?php echo $allcmsn; ?></h4>
                         </div>
                     </div>
                     <div class="col-2">
                         <div class="fnbox text-center">
                             <h3>Bonus Payed</h3>
-                            <h4>67,23</h4>
+                            <h4><?php echo $totalWithDrawal; ?></h4>
                         </div>
                     </div>
                     <div class="col-2">
                         <div class="fnbox text-center">
                             <h3>Free to Request</h3>
-                            <h4>73,00</h4>
+                            <h4><?php echo $free_to_paid; ?></h4>
                         </div>
                     </div>
                 </div>
@@ -96,21 +102,20 @@ $tp = isset($context['data']->total_cmsn) ? $context['data']->total_cmsn : 5;
                         <div class="col-lg-12">
                             <table id="datatablesSimple">
                                 <thead>
-                                    <tr>
+                                <tr>
                                         <th>ID</th>
 
                                         <th>Order By</th>
-                                        <th>PV in order</th>
+                                        <!-- <th>PV in order</th> -->
                                         <!-- <th>RV in order</th> -->
                                         <th>Paid to</th>
-                                        <th>Ring</th>
+                                        <!-- <th>Ring</th> -->
 
                                         <th>Commission Paid</th>
 
-                                        <th>Direct Bonus Paid</th>
+                                        <!-- <th>Direct Bonus Paid</th> -->
                                         <!-- <th>RV Paid</th> -->
                                         <th>Order date</th>
-
                                     </tr>
                                 </thead>
                                 <tfoot>
@@ -118,14 +123,14 @@ $tp = isset($context['data']->total_cmsn) ? $context['data']->total_cmsn : 5;
                                         <th>ID</th>
 
                                         <th>Order By</th>
-                                        <th>PV in order</th>
+                                        <!-- <th>PV in order</th> -->
                                         <!-- <th>RV in order</th> -->
                                         <th>Paid to</th>
-                                        <th>Ring</th>
+                                        <!-- <th>Ring</th> -->
 
                                         <th>Commission Paid</th>
 
-                                        <th>Direct Bonus Paid</th>
+                                        <!-- <th>Direct Bonus Paid</th> -->
                                         <!-- <th>RV Paid</th> -->
                                         <th>Order date</th>
                                     </tr>
@@ -136,22 +141,21 @@ $tp = isset($context['data']->total_cmsn) ? $context['data']->total_cmsn : 5;
                               
                                     $csv_main_data = [];
                                     if (authenticate() == true) {
-                                        $userObj = new Model('ring_commissions');
-                                        $arr = null;
-                                        $arr['partner_id'] = $_SESSION['user_id'];
-                                        $cmsns = $userObj->filter_index($assoc_arr = $arr, $ord = 'DESC', $limit = 999,$change_order_by_col = "");
+                                        $level = new Member_ctrl;
+                                        $db = new Dbobjects;
+                                        $cmsns = $level->list_all_direct_bonus($db,$myid=USER['id']);
                                     }
                                     $cmsns = isset($context['data']->commissions) ? $context['data']->commissions : $cmsns;
                                     foreach ($cmsns as $value) {
-                                        $sponser = sponser_username($value['partner_id']);
-                                        $orderbyusername = sponser_username($value['order_by']);
+                                        $sponser = sponser_username($value['transacted_to']);
+                                        $orderbyusername = sponser_username($value['transacted_by']);
 
                                         $csvdata['order by'] =  $orderbyusername;
-                                        $csvdata['pv in order'] =  $value['pv'];
+                                        // $csvdata['pv in order'] =  $value['pv'];
                                         // $csvdata['rv in order'] =  $value['rv'];
                                         $csvdata['paid to'] =  $sponser;
-                                        $csvdata['ring'] =  $value['ring'];
-                                        $csvdata['commission paid'] =  $value['commission'];
+                                        // $csvdata['ring'] =  $value['ring'];
+                                        $csvdata['commission paid'] =  $value['amount'];
                                         // $csvdata['direct bonus paid'] =  $value['direct_bonus'];
                                         // $csvdata['rv paid'] =  $value['rank_advance'];
                                         $csvdata['date'] =  $value['created_at'];
@@ -161,14 +165,11 @@ $tp = isset($context['data']->total_cmsn) ? $context['data']->total_cmsn : 5;
 
                                             <th><?php echo $orderbyusername; ?></th>
 
-                                            <th><?php echo $value['pv']; ?></th>
-                                            <!-- <th><?php // echo $value['rv']; ?></th> -->
                                             <th><?php echo $sponser; ?></th>
-                                            <th><?php echo $value['ring']; ?></th>
+                                         
 
-                                            <th><?php echo $value['commission']; ?></th>
-                                            <th><?php echo $value['direct_bonus']; ?></th>
-                                            <!-- <th><?php // echo $value['rank_advance']; ?></th> -->
+                                            <th><?php echo $value['amount']; ?></th>
+                                           
 
                                             <th><?php echo $value['created_at']; ?></th>
                                             
@@ -179,7 +180,7 @@ $tp = isset($context['data']->total_cmsn) ? $context['data']->total_cmsn : 5;
                                     ?>
                                 </tbody>
                             </table>
-                            <a href="/<?php echo home; ?>/csvdata/commissions/commission-paid.csv" download>Download CSV</a>
+                            <!-- <a href="/<?php echo home; ?>/csvdata/commissions/commission-paid.csv" download>Download CSV</a> -->
                             <?php
                            
                             

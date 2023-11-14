@@ -298,7 +298,10 @@ switch ($path) {
         // $req = new stdClass;
         $req = obj($_GET);
         $req->my_id = USER['id'];
-        $context['data'] = getMyCommissions($req, $data_limit = 5);
+        $level = new Member_ctrl;
+        $db = new Dbobjects;
+        $context['data'] = $level->list_direct_bonus($db,$myid=$req->my_id, $req, $data_limit = 5);
+        // $context['data'] = getMyCommissions($req, $data_limit = 5);
       }
       import("apps/view/pages/my-commissions.php", $context);
       return;

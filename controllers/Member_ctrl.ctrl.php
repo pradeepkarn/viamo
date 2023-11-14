@@ -11,19 +11,6 @@ class Member_ctrl
         $this->firstDay = date('Y-m-01 00:00:00');
         $this->lastDay = date('Y-m-t 23:59:59');
     }
-    // function check_my_member_orders($myid)
-    // {
-    //     $sql = "SELECT 
-    //         DISTINCT payment.user_id AS buyer_id
-    //         FROM payment 
-    //         WHERE payment.user_id IN (SELECT pk_user.id FROM pk_user WHERE pk_user.ref='$myid') 
-    //         AND payment.status = 'paid' 
-    //         AND (payment.invoice IS NOT NULL AND payment.invoice <> '') 
-    //         AND payment.updated_at >= '$this->firstDay' 
-    //         AND payment.updated_at <= '$this->lastDay'
-    //         ORDER BY buyer_id;";
-    //     return $db->show($sql);
-    // }
     function count_direct_partners($db, $myid)
     {
         $sql = "select COUNT(id) as partner_count from pk_user where ref = '$myid' and is_active=1";
@@ -360,5 +347,101 @@ class Member_ctrl
         }
 
         return $totalPV;
+    }
+
+    function get_all_direct_bonus_sum($db, $myid)
+    {
+        $trn_group = '2';
+        $trn_type = '1'; //credit amt
+        $status = '1';
+        $sql = "
+        select SUM(amount) as total_db from transactions 
+        where transacted_to='$myid' 
+        AND trn_group='$trn_group'
+        AND trn_type='$trn_type'
+        AND status='$status'
+        ";
+        $cmsn = $db->showOne($sql)['total_db'];
+        return $cmsn ? round($cmsn, 2) : 0;
+    }
+    function list_direct_bonus($db, $myid, $req, $data_limit = 5)
+    {
+        $trn_group = '2';
+        $trn_type = '1'; //credit amt
+        $status = '1';
+        $sql = "
+        select * from transactions 
+        where transacted_to='$myid' 
+        AND trn_group='$trn_group'
+        AND trn_type='$trn_type'
+        AND status='$status'
+        ";
+        // return $db->show($sql);
+
+        $current_page = 0;
+        $data_limit = $data_limit;
+        $page_limit = "0,$data_limit";
+        $cp = 0;
+        if (isset($req->page) && intval($req->page)) {
+            $cp = $req->page;
+            $current_page = (abs($req->page) - 1) * $data_limit;
+            $page_limit = "$current_page,$data_limit";
+        }
+        $tp = count($db->show($sql));
+        if ($tp %  $data_limit == 0) {
+            $tp = $tp / $data_limit;
+        } else {
+            $tp = floor($tp / $data_limit) + 1;
+        }
+        $q = null;
+        if (isset($req->q)) {
+            $q = $req->q;
+        }
+        $trn_group = '2';
+        $trn_type = '1'; //credit amt
+        $status = '1';
+        $sql = "
+        select * from transactions 
+        where transacted_to='$myid' 
+        AND trn_group='$trn_group'
+        AND trn_type='$trn_type'
+        AND status='$status' ORDER BY id LIMIT $page_limit
+        ";
+        echo $sql;
+        $commissions = $db->show($sql);
+        return (object) array(
+            'req' => obj($req),
+            'total_cmsn' => $tp,
+            'current_page' => $cp,
+            'commissions' => $commissions
+        );
+    }
+    function list_all_direct_bonus($db, $myid)
+    {
+        $trn_group = '2';
+        $trn_type = '1'; //credit amt
+        $status = '1';
+        $sql = "
+        select * from transactions 
+        where transacted_to='$myid' 
+        AND trn_group='$trn_group'
+        AND trn_type='$trn_type'
+        AND status='$status'
+        ";
+        return $db->show($sql);
+    }
+    function get_all_withdrawal_amt_sum($db, $myid)
+    {
+        // $trn_group = '2';
+        $trn_type = '2'; //Debit amt
+        $status = '1';
+        $sql = "
+        select SUM(amount) as total_db from transactions 
+        where transacted_to='$myid' 
+        AND trn_type='$trn_type'
+        AND status='$status'
+        ";
+        $cmsn = $db->showOne($sql)['total_db'];
+        return $cmsn ? round($cmsn, 2) : 0;
     }
 }
