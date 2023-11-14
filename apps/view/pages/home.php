@@ -25,6 +25,14 @@ SCRPT;
           <li class="breadcrumb-item active">Dashboard</li>
         </ol>
 
+        <div class="container px-4 ms-2">
+          <div class="row">
+            <div class="col bst_news">
+              <marquee class="marque_news mt-2" behavior="scroll" scrollamount="8" direction="right">Lorem ipsum dolor sit amet consectetur adipisicing elit. Vel maiores eos alias eius rerum qui expedita, architecto, quasi quae consequatur tenetur delectus perferendis numquam. Dolor ad laboriosam exercitationem expedita. Excepturi.</marquee>
+            </div>
+          </div>
+        </div>
+
         <section>
           <div class="container px-4">
             <div class="row justify-content-center">
