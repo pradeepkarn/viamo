@@ -1,14 +1,14 @@
 <?php
 class Member_ctrl
 {
-    public $db;
+    // public $db;
     public $firstDay;
     public $lastDay;
     public $currentDate;
     function __construct()
     {
         $this->currentDate = new DateTime();
-        $this->db = new Dbobjects;
+        // $db = new Dbobjects;
         $this->firstDay = date('Y-m-01 00:00:00');
         $this->lastDay = date('Y-m-t 23:59:59');
     }
@@ -23,25 +23,29 @@ class Member_ctrl
     //         AND payment.updated_at >= '$this->firstDay' 
     //         AND payment.updated_at <= '$this->lastDay'
     //         ORDER BY buyer_id;";
-    //     return $this->db->show($sql);
+    //     return $db->show($sql);
     // }
+    function count_direct_partners($db,$myid) {
+        $sql = "select COUNT(id) as partner_count from pk_user where ref = '$myid' and is_active=1";
+        return $db->showOne($sql)['partner_count'];
+    }
     function save_trn_data($db, array $arrdata)
     {
         $obj = obj($arrdata);
         if (
             isset($obj->transactedTo, $obj->transactedBy, $obj->amount, $obj->trnNum, $obj->status, $obj->trnGroup, $obj->trnType)
         ) {
-            $sql = "INSERT INTO transactions (transacted_to, transacted_by, amount, trn_num, status, trn_group, trn_type)
-                VALUES ('$obj->transactedTo', '$obj->transactedBy', '$obj->amount', '$obj->trnNum', '$obj->status', '$obj->trnGroup', '$obj->trnType')";
+            $sql = "INSERT INTO transactions (transacted_to, transacted_by, purchase_amt,amount, trn_num, status, trn_group, trn_type)
+                VALUES ('$obj->transactedTo', '$obj->transactedBy', '$obj->purchase_amt', '$obj->amount', '$obj->trnNum', '$obj->status', '$obj->trnGroup', '$obj->trnType')";
             $db->execSql($sql);
         } else {
             // Handle the case where not all required properties are set
             throw new Exception("Not all required properties are set.");
         }
     }
-    function update_my_level($myid)
+    function update_my_level($db,$myid)
     {
-        $current_level = $this->db->showOne("select member_level as current_level from pk_user where pk_user.id=$myid")['current_level'];
+        $current_level = $db->showOne("select member_level as current_level from pk_user where pk_user.id=$myid")['current_level'];
         switch (strval($current_level)) {
             case '0':
                 // Upgrade to vip
@@ -53,11 +57,11 @@ class Member_ctrl
                 WHERE payment.user_id IN (SELECT pk_user.id FROM pk_user WHERE pk_user.ref='$myid') 
                 AND payment.status = 'paid' 
                 AND (payment.invoice IS NOT NULL AND payment.invoice <> '');";
-                $purchases = $this->db->show($sql);
+                $purchases = $db->show($sql);
                 $count = count($purchases);
                 if ($count >= 3) {
                     // print_r($purchases);
-                    if ($this->db->execSql("update pk_user set member_level = '1' where id = '{$myid}'")) {
+                    if ($db->execSql("update pk_user set member_level = '1' where id = '{$myid}'")) {
                         $_SESSION['upgrade_msg'][] = "$myid Upgraded to vip";
                         return true;
                     }
@@ -69,9 +73,9 @@ class Member_ctrl
                 // upgrade to Super VIP
                 // check 3 vip members level=1 below level to 2
                 $sql = "SELECT count(id) as vip_count FROM pk_user WHERE pk_user.ref='$myid' and member_level = '{$current_level}';";
-                $vip_count = $this->db->showOne($sql)['vip_count'];
+                $vip_count = $db->showOne($sql)['vip_count'];
                 if ($vip_count >= 3) {
-                    if ($this->db->execSql("update pk user set member_level = '2' where id = '{$myid}'")) {
+                    if ($db->execSql("update pk user set member_level = '2' where id = '{$myid}'")) {
                         $_SESSION['upgrade_msg'][] = "$myid Upgraded to super vip";
                         return true;
                     }
@@ -84,9 +88,9 @@ class Member_ctrl
                 // upgrade to Royal VIP
                 // check 3 Royal VIP members level=2 below level to 3
                 $sql = "SELECT count(id) as super_vip_count FROM pk_user WHERE pk_user.ref='$myid' and member_level = '{$current_level}';";
-                $super_vip_count = $this->db->showOne($sql)['super_vip_count'];
+                $super_vip_count = $db->showOne($sql)['super_vip_count'];
                 if ($super_vip_count >= 3) {
-                    if ($this->db->execSql("update pk user set member_level = '3' where id = '{$myid}'")) {
+                    if ($db->execSql("update pk user set member_level = '3' where id = '{$myid}'")) {
                         $_SESSION['upgrade_msg'][] = "$myid Upgraded to royal vip";
                         return true;
                     }
@@ -99,9 +103,9 @@ class Member_ctrl
                 // upgrade to diamond VIP
                 // check 3 vip members level=3 below level to 4
                 $sql = "SELECT count(id) as royal_vip_count FROM pk_user WHERE pk_user.ref='$myid' and member_level = '{$current_level}';";
-                $royal_count = $this->db->showOne($sql)['royal_vip_count'];
+                $royal_count = $db->showOne($sql)['royal_vip_count'];
                 if ($royal_count >= 3) {
-                    if ($this->db->execSql("update pk user set member_level = '4' where id = '{$myid}'")) {
+                    if ($db->execSql("update pk user set member_level = '4' where id = '{$myid}'")) {
                         $_SESSION['upgrade_msg'][] = "$myid Upgraded to diamond vip";
                         return true;
                     }
@@ -117,12 +121,12 @@ class Member_ctrl
     }
 
 
-    function order_details($user_id = null, $db = new Dbobjects)
+    function order_details($db,$user_id)
     {
         $sql_sum = "SELECT SUM(amount) AS purchase, SUM(pv) AS total_pv, SUM(rv) AS total_rv FROM payment WHERE user_id = $user_id AND status = 'paid' AND (invoice IS NOT NULL AND invoice <> '') AND updated_at >= '$this->firstDay' AND updated_at <= '$this->lastDay';";
         return $db->show($sql_sum)[0];
     }
-    function check_active($user_id)
+    function check_active($db,$user_id)
     {
         $today = date('Y-m-d H:i:s');
         $sql = "SELECT pv, (33-DATEDIFF('$today', created_at)) as days_left 
@@ -134,14 +138,14 @@ class Member_ctrl
         AND (invoice IS NOT NULL AND invoice <> '')
         ORDER BY created_at DESC
         LIMIT 1;";
-        $data = $this->db->show($sql);
+        $data = $db->show($sql);
         if (count($data)) {
             return true;
         } else {
             return false;
         }
     }
-    function check_ever_active($user_id)
+    function check_ever_active($db,$user_id)
     {
         $today = date('Y-m-d H:i:s');
         $sql = "SELECT pv, (DATEDIFF('$today', created_at)) as days_left 
@@ -152,31 +156,31 @@ class Member_ctrl
         AND (invoice IS NOT NULL AND invoice <> '')
         ORDER BY created_at DESC
         LIMIT 1;";
-        $data = $this->db->show($sql);
+        $data = $db->show($sql);
         if (count($data)) {
             return true;
         } else {
             return false;
         }
     }
-    function my_tree($ref, $depth = 1)
+    function my_tree($db,$ref, $depth = 1)
     {
         if ($depth > 10) {
             return []; // Return an empty array if the maximum depth is reached
         }
 
         $prtdata = array();
-        // $this->db = new Dbobjects;
+        // $db = new Dbobjects;
         $sql = "select pk_user.id, pk_user.username, pk_user.image, pk_user.ref from pk_user where pk_user.ref = $ref and pk_user.ref != 0 order by pk_user.id desc";
-        $data = $this->db->show($sql);
+        $data = $db->show($sql);
 
         foreach ($data as $p) {
-            $od = $this->order_details($user_id = $p['id'], $this->db);
+            $od = $this->order_details($db,$user_id = $p['id']);
             $prtdata[] = array(
                 'id' => $p['id'],
                 'ring' => $depth,
                 'username' => $p['username'],
-                'is_active' => $this->check_active($user_id = $p['id']),
+                'is_active' => $this->check_active($db,$user_id = $p['id']),
                 'pv' => $od['total_pv'] ? round($od['total_pv'], 2) : 0,
                 'rv' => $od['total_rv'] ? round($od['total_rv'], 2) : 0,
                 'tree' => $this->my_tree($p['id'], $depth + 1)

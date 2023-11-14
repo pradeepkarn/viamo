@@ -6,16 +6,18 @@
 /**
  * 
  */
-class Dbobjects extends Dbh
+class Dbobjects
 {
     public $tableName; // set tablename
     public $sql; //get your sql query
     public $qry; //get current qury
     public $insertData; //set data to update, delete
     public $conn;
+    public $pdo;
     public function __construct()
     {
         $this->conn = $GLOBALS['PDO'];
+        $this->pdo = $this->conn;
     }
 
     public function setColNames($tableName)
@@ -42,7 +44,7 @@ class Dbobjects extends Dbh
     }
     public function dbpdo()
     {
-        return $this->connect();
+        return $this->conn;
     }
 
     public function tables() // returns indexed array
@@ -300,7 +302,7 @@ class Dbobjects extends Dbh
         $values = [];
         foreach ($cols as $key => $value) {
             if (isset($value['column_name'])) {
-                echo "ok";
+                // echo "ok";
                 if (isset($this->insertData[$value['column_name']])) {
                     $keys[] = "`{$value['column_name']}`";
                     $values[] = '"' . addslashes($this->insertData[$value['column_name']]) . '"';

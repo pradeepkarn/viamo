@@ -35,24 +35,24 @@ class Order_ctrl
             $total_gm = 0;
             $cart_list = (object) ($dbobj)->show("select * from customer_order where status = 'cart' and user_id = '{$_SESSION['user_id']}'");
             foreach ($cart_list as $cv) :
-              $cv = (object) $cv;
-              $item = (object) ($dbobj)->showOne("select id,jsn from item where id = '$cv->item_id'");
-              $phpobj = json_decode($item->jsn);
-              $gm = 0;
-              foreach ($phpobj->items as $pkey => $prd) {
-                $prod = (object) ($dbobj)->showOne("select id,qty,unit from item where id = '$prd->item'");
-                $gm += calculate_gram($prod, $cv->qty);
-                $total_gm += $gm;
-              }
+                $cv = (object) $cv;
+                $item = (object) ($dbobj)->showOne("select id,jsn from item where id = '$cv->item_id'");
+                $phpobj = json_decode($item->jsn);
+                $gm = 0;
+                foreach ($phpobj->items as $pkey => $prd) {
+                    $prod = (object) ($dbobj)->showOne("select id,qty,unit from item where id = '$prd->item'");
+                    $gm += calculate_gram($prod, $cv->qty);
+                    $total_gm += $gm;
+                }
             endforeach;
-            $shipping_cost = calculate_shipping_cost(db:$dbobj, gram:$total_gm, ccode:USER['country_code']);
+            $shipping_cost = calculate_shipping_cost(db: $dbobj, gram: $total_gm, ccode: USER['country_code']);
             if (!isset($req->total_gm) || !isset($req->shipping_cost)) {
-                $_SESSION['msg'][] = 'Shiiping not defined';
+                $_SESSION['msg'][] = 'Shiping not defined';
                 $con->rollback();
                 return false;
             }
-            if (!($total_gm==$req->total_gm && $shipping_cost==$req->shipping_cost)) {
-                $_SESSION['msg'][] = 'Shiiping cost mismatched, try again';
+            if (!($total_gm == $req->total_gm && $shipping_cost == $req->shipping_cost)) {
+                $_SESSION['msg'][] = 'Shiping cost mismatched, try again';
                 $con->rollback();
                 return false;
             }
@@ -61,7 +61,7 @@ class Order_ctrl
                 $total_pv = $dbobj->show($sql)[0]['total_pv'];
                 $total_rv = $dbobj->show($sql)[0]['total_rv'];
                 $total_db = $dbobj->show($sql)[0]['total_db'];
-                
+
                 $arr['amount'] = $total_amt;
                 $arr['shipping_cost'] = $shipping_cost;
                 $arr['total_gm'] = $total_gm;
@@ -116,6 +116,27 @@ class Order_ctrl
                     $pvctrl->db = $dbobj;
                     $pvctrl->save_commissions($purchaser_id = $_SESSION['user_id'], $order_id = $pay, $pv = $total_pv, $rv = $total_rv, $total_db);
                 }
+                 ################# Direct bonus #####################
+                 $level = new Member_ctrl;
+                 $db = $dbobj;
+                 $trnArr = null;
+                 $trnArr['transactedTo'] = USER['ref']!=0?USER['ref']:1;
+                 $trnArr['transactedBy'] = USER['id'];
+                 $trnArr['purchase_amt'] = round($total_amt,2);
+                 $refuser = (object)$db->showOne("select id,member_level from pk_user where id = {$trnArr['transactedTo']}");
+                 $cmsn = 0;
+                 $membercnt = $level->count_direct_partners($db,$myid=1);
+                 if ($refuser->member_level==1 || $membercnt>=20) {
+                    $cmsn = round($total_db,2);
+                 }
+                 $trnArr['amount'] =  $cmsn;
+                 $trnArr['trnNum'] = strtoupper(uniqid('trn'));
+                 $trnArr['status'] = 1; // 1: Active, 2: cancelled  
+                 $trnArr['trnGroup'] = 2; // 1:pv commissions, 2: direct bonus
+                 $trnArr['trnType'] = 1; // 1: Credit, 2: debit
+                 $level->save_trn_data($db, $trnArr);
+                 $arr = null;
+                 #################### Direct Bonus end #######################
                 $con->commit();
             } catch (PDOException $th) {
                 $_SESSION['msg'][] = $th;
@@ -149,6 +170,7 @@ class Order_ctrl
                     'order_amt' => $total_amt,
                     'bank_account' => $bank
                 ]));
+               
                 return true;
             } else {
                 $_SESSION['msg'][] = 'Order not placed';
@@ -187,22 +209,20 @@ class Order_ctrl
                 // delete payment after deleting cart
                 $sql_pmt_dlt = "delete from payment where payment.id = $id";
                 $stmt_pmt_dlt = $conn->prepare($sql_pmt_dlt);
-                if($stmt_pmt_dlt->execute()){
+                if ($stmt_pmt_dlt->execute()) {
                     $_SESSION['msg'][] = 'Order deleted';
                 }
                 $conn->commit();
                 return true;
-            }else{
+            } else {
                 $_SESSION['msg'][] = 'No Order found';
                 $conn->rollBack();
                 return false;
             }
-            
         } catch (PDOException $e) {
             $_SESSION['msg'][] = 'Order not deleted, db error';
             $conn->rollBack();
             return false;
         }
-       
     }
 }

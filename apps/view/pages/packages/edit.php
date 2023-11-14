@@ -210,12 +210,12 @@ import("apps/view/inc/navbar.php");
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-3">
+                                        <!-- <div class="col-md-3">
                                             <label for="">Direct Bonus</label>
-                                            <input class="form-control my-2 valid" type="number" value="<?php echo $pv->direct_bonus; ?>" scope="any" min="0" name="direct_bonus">
-                                        </div>
+                                            <input class="form-control my-2 valid" type="number" value="<?php //echo $pv->direct_bonus; ?>" scope="any" min="0" name="direct_bonus">
+                                        </div> -->
                                         <div class="col-md-3">
-                                            <label for="">Direct Bonus Percentage</label>
+                                            <label for="">D.B. Percentage</label>
                                             <input class="form-control my-2 valid" type="number" value="<?php echo $pv->direct_bonus_percentage; ?>" scope="any" min="0" name="direct_bonus_percentage">
                                         </div>
                                     </div>

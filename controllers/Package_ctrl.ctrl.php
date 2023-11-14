@@ -43,10 +43,10 @@ class Package_ctrl
                 $_SESSION['msg'][] = "Package detail is required";
                 $ok = false;
             }
-            if (!isset($req->direct_bonus)) {
-                $_SESSION['msg'][] = "Direct bonus field is empty";
-                $ok = false;
-            }
+            // if (!isset($req->direct_bonus)) {
+            //     $_SESSION['msg'][] = "Direct bonus field is empty";
+            //     $ok = false;
+            // }
             if (!isset($req->direct_bonus_percentage)) {
                 $_SESSION['msg'][] = "Direct bonus percentage field is empty";
                 $ok = false;
@@ -82,9 +82,7 @@ class Package_ctrl
                 $arr['price'] = $req->cust_price;
                 // $arr['tax'] = $req->tax;
                 $arr['details'] = $req->details;
-                if (isset($req->direct_bonus)) {
-                    $arr['direct_bonus'] = $req->direct_bonus;
-                }
+                $arr['direct_bonus'] = round((($arr['net_price']*$req->direct_bonus_percentage)/100),2);
                 if (isset($req->direct_bonus_percentage)) {
                     $arr['direct_bonus_percentage'] = $req->direct_bonus_percentage;
                 }
@@ -191,10 +189,10 @@ class Package_ctrl
                 $_SESSION['msg'][] = "Package details is required";
                 $ok = false;
             }
-            if (!isset($req->direct_bonus)) {
-                $_SESSION['msg'][] = "Direct bonus field is empty";
-                $ok = false;
-            }
+            // if (!isset($req->direct_bonus)) {
+            //     $_SESSION['msg'][] = "Direct bonus field is empty";
+            //     $ok = false;
+            // }
             if (!isset($req->direct_bonus_percentage)) {
                 $_SESSION['msg'][] = "Direct bonus percentage field is empty";
                 $ok = false;
@@ -224,9 +222,7 @@ class Package_ctrl
                 }
                 $arr['price'] = $req->cust_price;
                 $arr['details'] = $req->details;
-                if (isset($req->direct_bonus)) {
-                    $arr['direct_bonus'] = $req->direct_bonus;
-                }
+                $arr['direct_bonus'] = round((($arr['net_price']*$req->direct_bonus_percentage)/100),2);
                 if (isset($req->direct_bonus_percentage)) {
                     $arr['direct_bonus_percentage'] = $req->direct_bonus_percentage;
                 }

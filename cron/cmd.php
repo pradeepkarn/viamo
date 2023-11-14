@@ -10,23 +10,7 @@ import('functions.php');
 
 $level = new Member_ctrl;
 $db = $level->db;
-$pdo = $db->conn;
-$arr = null;
-$pdo->beginTransaction();
-$arr['transactedTo'] = 12345;
-$arr['transactedBy'] = 67890;
-$arr['amount'] = 100.50;
-$arr['trnNum'] = "ABC123";
-$arr['status'] = 1; // Active
-$arr['trnGroup'] = 1; // PV commission
-$arr['trnType'] = 1; // Credit
-try {
-    $level->save_trn_data($db, $arr);
-    $pdo->commit();
-} catch (PDOException $th) {
-    $pdo->rollBack();
-    // echo $th;
-}
+// echo $level->count_direct_partners($db,$myid=1);
 $arr = null;
 
 exit;
