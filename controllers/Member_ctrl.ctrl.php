@@ -8,7 +8,6 @@ class Member_ctrl
     function __construct()
     {
         $this->currentDate = new DateTime();
-        // $db = new Dbobjects;
         $this->firstDay = date('Y-m-01 00:00:00');
         $this->lastDay = date('Y-m-t 23:59:59');
     }
@@ -25,7 +24,8 @@ class Member_ctrl
     //         ORDER BY buyer_id;";
     //     return $db->show($sql);
     // }
-    function count_direct_partners($db,$myid) {
+    function count_direct_partners($db, $myid)
+    {
         $sql = "select COUNT(id) as partner_count from pk_user where ref = '$myid' and is_active=1";
         return $db->showOne($sql)['partner_count'];
     }
@@ -43,9 +43,10 @@ class Member_ctrl
             throw new Exception("Not all required properties are set.");
         }
     }
-    function update_level_by_direct_partners_count($db,$myid) {
+    function update_level_by_direct_partners_count($db, $myid)
+    {
         $current_level = $db->showOne("select member_level as current_level from pk_user where pk_user.id=$myid")['current_level'];
-        $count = $this->count_direct_partners($db,$myid);
+        $count = $this->count_direct_partners($db, $myid);
         switch (strval($current_level)) {
             case '1':
                 if ($count >= 20) {
@@ -82,7 +83,7 @@ class Member_ctrl
                 break;
         }
     }
-    function update_level_by_purchase($db,$myid)
+    function update_level_by_purchase($db, $myid)
     {
         $current_level = $db->showOne("select member_level as current_level from pk_user where pk_user.id=$myid")['current_level'];
         switch (strval($current_level)) {
@@ -146,7 +147,7 @@ class Member_ctrl
                 // upgrade to Royal VIP
                 // check 3 Royal VIP members level=2 below level to 3
                 // $sql = "SELECT count(id) as super_vip_count FROM pk_user WHERE pk_user.ref='$myid' and member_level = '{$current_level}';";
-                
+
 
                 $sql = "SELECT 
                 payment.user_id AS buyer_id, pk_user.member_level
@@ -175,7 +176,7 @@ class Member_ctrl
                 // upgrade to diamond VIP
                 // check 3 vip members level=3 below level to 4
                 // $sql = "SELECT count(id) as royal_vip_count FROM pk_user WHERE pk_user.ref='$myid' and member_level = '{$current_level}';";
-                
+
                 $sql = "SELECT 
                 payment.user_id AS buyer_id, pk_user.member_level
                 FROM payment 
@@ -207,12 +208,12 @@ class Member_ctrl
     }
 
 
-    function order_details($db,$user_id)
+    function order_details($db, $user_id)
     {
-        $sql_sum = "SELECT SUM(amount) AS purchase, SUM(pv) AS total_pv, SUM(rv) AS total_rv FROM payment WHERE user_id = $user_id AND status = 'paid' AND (invoice IS NOT NULL AND invoice <> '') AND updated_at >= '$this->firstDay' AND updated_at <= '$this->lastDay';";
+        $sql_sum = "SELECT SUM(amount) AS purchase, SUM(pv) AS total_pv FROM payment WHERE user_id = '$user_id' AND status = 'paid' AND (invoice IS NOT NULL AND invoice <> '') AND updated_at >= '$this->firstDay' AND updated_at <= '$this->lastDay';";
         return $db->show($sql_sum)[0];
     }
-    function check_active($db,$user_id)
+    function check_active($db, $user_id)
     {
         $today = date('Y-m-d H:i:s');
         $sql = "SELECT pv, (33-DATEDIFF('$today', created_at)) as days_left 
@@ -231,7 +232,7 @@ class Member_ctrl
             return false;
         }
     }
-    function check_ever_active($db,$user_id)
+    function check_ever_active($db, $user_id)
     {
         $today = date('Y-m-d H:i:s');
         $sql = "SELECT pv, (DATEDIFF('$today', created_at)) as days_left 
@@ -249,27 +250,77 @@ class Member_ctrl
             return false;
         }
     }
-    function my_tree($db,$ref, $depth = 1)
+    function save_pv_commissions($db)
     {
-        if ($depth > 10) {
-            return []; // Return an empty array if the maximum depth is reached
-        }
+        $db->conn->beginTransaction();
+        $sql = "select id,member_level from pk_user where is_active=1;";
+        $users = $db->show($sql);
+        try {
+            foreach ($users as $u) {
+                $u = obj($u);
+                $commission = 0;
+                $pv_percentage = 0;
+                if ($this->check_active($db, $u->id)) {
+                    $trees = $this->my_tree($db, $ref = $u->id, $depth = 1);
+                    $totalpv = $this->calculateTotalPV($trees);
+                    switch (strval($u->member_level)) {
+                        case '2':
+                            $pv_percentage = 5;
+                            $commission = round($totalpv * 0.05, 2);
+                            break;
+                        case '3':
+                            $pv_percentage = 7.5;
+                            $commission = round($totalpv * 0.075, 2);
+                            break;
+                        case '4':
+                            $pv_percentage = 10;
+                            $commission = round($totalpv * 0.10, 2);
+                            break;
+                        default:
+                            $pv_percentage = 0;
+                            $commission = 0;
+                            break;
+                    }
+                    $db->tableName = "team_commissions";
+                    $arr = null;
+                    $arr['user_id'] = $u->id;
+                    $arr['from_date'] = $this->firstDay;
+                    $arr['to_date'] = $this->lastDay;
 
+                    $already = $db->get($arr);
+                    if (!$already) {
+                        $arr['commission'] = $commission;
+                        $arr['pv_sum'] = $totalpv;
+                        $arr['commission'] = $commission;
+                        $arr['pv_percentage'] = $pv_percentage;
+                        $arr['member_level'] = $u->member_level;
+                        $db->insertData = $arr;
+                        $arr = null;
+                        $db->create();
+                    }
+                }
+            }
+            $db->conn->commit();
+        } catch (PDOException $th) {
+            $db->conn->rollback();
+        }
+    }
+    function my_tree($db, $ref, $depth = 1)
+    {
         $prtdata = array();
         // $db = new Dbobjects;
-        $sql = "select pk_user.id, pk_user.username, pk_user.image, pk_user.ref from pk_user where pk_user.ref = $ref and pk_user.ref != 0 order by pk_user.id desc";
+        $sql = "select pk_user.id, pk_user.username, pk_user.image, pk_user.ref from pk_user where pk_user.ref = '$ref' and pk_user.ref != 0 order by pk_user.id desc";
         $data = $db->show($sql);
 
         foreach ($data as $p) {
-            $od = $this->order_details($db,$user_id = $p['id']);
+            $od = $this->order_details($db, $user_id = $p['id']);
             $prtdata[] = array(
                 'id' => $p['id'],
                 'ring' => $depth,
                 'username' => $p['username'],
-                'is_active' => $this->check_active($db,$user_id = $p['id']),
+                'is_active' => $this->check_active($db, $user_id = $p['id']),
                 'pv' => $od['total_pv'] ? round($od['total_pv'], 2) : 0,
-                'rv' => $od['total_rv'] ? round($od['total_rv'], 2) : 0,
-                'tree' => $this->my_tree($p['id'], $depth + 1)
+                'tree' => $this->my_tree($db, $p['id'], $depth + 1)
             );
         }
 
@@ -296,5 +347,20 @@ class Member_ctrl
             $output .= '</li>';
         }
         return $output;
+    }
+    function calculateTotalPV($data)
+    {
+        $totalPV = 0;
+
+        foreach ($data as $item) {
+            $totalPV += $item['pv'];
+
+            if (isset($item['tree']) && !empty($item['tree'])) {
+                // If the user has a tree, recursively calculate the total PV for the tree
+                $totalPV += $this->calculateTotalPV($item['tree']);
+            }
+        }
+
+        return $totalPV;
     }
 }

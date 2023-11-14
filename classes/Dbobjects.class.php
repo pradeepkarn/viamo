@@ -207,7 +207,7 @@ class Dbobjects
             $arr[] = "`{$col}` = '" . addslashes($val) . "'";
         endforeach;
         $this->sql = "SELECT * FROM `$this->tableName` WHERE " . implode(" and ", $arr) . " ORDER BY `$id` $ord LIMIT 1;";
-        $this->qry = "`{$id}` = {$this->showOne($this->sql)[$id]}";
+        $this->qry = implode(" and ", $arr);
         $assoc_arr = null;
         return $this->showOne($this->sql);
     }

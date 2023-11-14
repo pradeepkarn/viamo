@@ -1,17 +1,4 @@
-<?php
-// exit;
-if (!defined("direct_access")) {
-    define("direct_access", 1);
-}
-require_once(__DIR__ . "/../config.php");
-require_once(__DIR__ . "/../includes/class-autoload.inc.php");
-require_once 'vendor/autoload.php';
-import('functions.php');
-
-$level = new Member_ctrl;
-// $tree = $level->my_tree((new Dbobjects),150);
-
-$data = '[
+[
     {
         "id": 372,
         "ring": 1,
@@ -94,13 +81,4 @@ $data = '[
         "pv": 100,
         "tree": []
     }
-]';
-
-// $totalpv = $level->calculateTotalPV(json_decode($data,true));
-
-// echo $totalpv;
-$level->save_pv_commissions((new Dbobjects));
-// $tree =  json_encode($tree,JSON_PRETTY_PRINT);
-// file_put_contents('tree.json',$tree);
-exit;
-
+]
