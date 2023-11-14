@@ -206,8 +206,6 @@ class Member_ctrl
                 break;
         }
     }
-
-
     function order_details($db, $user_id)
     {
         $sql_sum = "SELECT SUM(amount) AS purchase, SUM(pv) AS total_pv FROM payment WHERE user_id = '$user_id' AND status = 'paid' AND (invoice IS NOT NULL AND invoice <> '') AND updated_at >= '$this->firstDay' AND updated_at <= '$this->lastDay';";
