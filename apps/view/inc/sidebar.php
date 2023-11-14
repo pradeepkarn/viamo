@@ -12,27 +12,11 @@
                     Dashboard
                 </a>
                 <?php
-                if (authenticate()) {
-                ?>
-                    <a class="nav-link" href="/<?php echo home; ?>/commissions">
-                        <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                        Commissions
-                    </a>
-                    <a class="nav-link" href="/<?php echo home; ?>/my-commissions/?page=1">
-                        <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                        My Ring Commissions
-                    </a>
-                <?php
-                }
                 if (is_superuser()) {
                 ?>
                     <a class="nav-link" href="/<?php echo home; ?>/all-users/?page=1">
                         <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                         All Users
-                    </a>
-                    <a class="nav-link" href="/<?php echo home; ?>/all-commissions/?page=1">
-                        <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                        All Ring Commissions
                     </a>
                     <a class="nav-link" href="/<?php echo home; ?>/all-orders/">
                         <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
@@ -187,18 +171,6 @@
                 }
                 ?>
 
-
-                <?php
-                if (authenticate()) {
-                ?>
-                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages1" aria-expanded="false" aria-controls="collapsePages1">
-                        <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
-                        Finance
-                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                    </a>
-                <?php
-                }
-                ?>
                 <div class="collapse" id="collapsePages1" aria-labelledby="headingThree" data-bs-parent="#sidenavAccordion">
                     <nav class="sb-sidenav-menu-nested nav">
                         <?php
@@ -229,11 +201,6 @@
                 }
                 ?>
 
-                <div class="collapse" id="collapsePages2" aria-labelledby="headingFour" data-bs-parent="#sidenavAccordion">
-                    <nav class="sb-sidenav-menu-nested nav">
-                        <a class="nav-link" href="/<?php echo home; ?>/profile">My Profile</a>
-                    </nav>
-                </div>
                 <!-- <div class="collapse" id="collapsePages2" aria-labelledby="headingFour" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
                                     <a class="nav-link" href="/<?php echo home; ?>/shopping-link">Shopping Link</a>
