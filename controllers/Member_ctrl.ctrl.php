@@ -43,7 +43,46 @@ class Member_ctrl
             throw new Exception("Not all required properties are set.");
         }
     }
-    function update_my_level($db,$myid)
+    function update_level_by_direct_partners_count($db,$myid) {
+        $current_level = $db->showOne("select member_level as current_level from pk_user where pk_user.id=$myid")['current_level'];
+        $count = $this->count_direct_partners($db,$myid);
+        switch (strval($current_level)) {
+            case '1':
+                if ($count >= 20) {
+                    if ($db->execSql("update pk user set member_level = '2' where id = '{$myid}'")) {
+                        $_SESSION['upgrade_msg'][] = "$myid Upgraded to super vip";
+                        return true;
+                    }
+                } else {
+                    return false;
+                }
+                break;
+            case '2':
+                if ($count >= 60) {
+                    if ($db->execSql("update pk user set member_level = '3' where id = '{$myid}'")) {
+                        $_SESSION['upgrade_msg'][] = "$myid Upgraded to royal vip";
+                        return true;
+                    }
+                } else {
+                    return false;
+                }
+                break;
+            case '3':
+                if ($count >= 180) {
+                    if ($db->execSql("update pk user set member_level = '4' where id = '{$myid}'")) {
+                        $_SESSION['upgrade_msg'][] = "$myid Upgraded to diamond vip";
+                        return true;
+                    }
+                } else {
+                    return false;
+                }
+                break;
+            default:
+                return false;
+                break;
+        }
+    }
+    function update_level_by_purchase($db,$myid)
     {
         $current_level = $db->showOne("select member_level as current_level from pk_user where pk_user.id=$myid")['current_level'];
         switch (strval($current_level)) {
@@ -56,6 +95,9 @@ class Member_ctrl
                 JOIN pk_user ON pk_user.id = payment.user_id
                 WHERE payment.user_id IN (SELECT pk_user.id FROM pk_user WHERE pk_user.ref='$myid') 
                 AND payment.status = 'paid' 
+                AND (payment.invoice IS NOT NULL AND payment.invoice <> '') 
+                AND payment.updated_at >= '$this->firstDay' 
+                AND payment.updated_at <= '$this->lastDay'
                 AND (payment.invoice IS NOT NULL AND payment.invoice <> '');";
                 $purchases = $db->show($sql);
                 $count = count($purchases);
@@ -72,8 +114,24 @@ class Member_ctrl
             case '1':
                 // upgrade to Super VIP
                 // check 3 vip members level=1 below level to 2
-                $sql = "SELECT count(id) as vip_count FROM pk_user WHERE pk_user.ref='$myid' and member_level = '{$current_level}';";
-                $vip_count = $db->showOne($sql)['vip_count'];
+                // $sql = "SELECT count(id) as vip_count FROM pk_user WHERE pk_user.ref='$myid' and member_level = '{$current_level}';";
+
+
+
+                $sql = "SELECT 
+                payment.user_id AS buyer_id, pk_user.member_level
+                FROM payment 
+                JOIN pk_user ON pk_user.id = payment.user_id
+                WHERE payment.user_id IN (SELECT pk_user.id FROM pk_user WHERE pk_user.ref='$myid' AND pk_user.member_level='1') 
+                AND payment.status = 'paid' 
+                AND (payment.invoice IS NOT NULL AND payment.invoice <> '') 
+                AND payment.updated_at >= '$this->firstDay' 
+                AND payment.updated_at <= '$this->lastDay'
+                AND (payment.invoice IS NOT NULL AND payment.invoice <> '');";
+                $purchases = $db->show($sql);
+                $vip_count = count($purchases);
+
+                // $vip_count = $db->showOne($sql)['vip_count'];
                 if ($vip_count >= 3) {
                     if ($db->execSql("update pk user set member_level = '2' where id = '{$myid}'")) {
                         $_SESSION['upgrade_msg'][] = "$myid Upgraded to super vip";
@@ -87,8 +145,22 @@ class Member_ctrl
             case '2':
                 // upgrade to Royal VIP
                 // check 3 Royal VIP members level=2 below level to 3
-                $sql = "SELECT count(id) as super_vip_count FROM pk_user WHERE pk_user.ref='$myid' and member_level = '{$current_level}';";
-                $super_vip_count = $db->showOne($sql)['super_vip_count'];
+                // $sql = "SELECT count(id) as super_vip_count FROM pk_user WHERE pk_user.ref='$myid' and member_level = '{$current_level}';";
+                
+
+                $sql = "SELECT 
+                payment.user_id AS buyer_id, pk_user.member_level
+                FROM payment 
+                JOIN pk_user ON pk_user.id = payment.user_id
+                WHERE payment.user_id IN (SELECT pk_user.id FROM pk_user WHERE pk_user.ref='$myid' AND pk_user.member_level='2') 
+                AND payment.status = 'paid' 
+                AND (payment.invoice IS NOT NULL AND payment.invoice <> '') 
+                AND payment.updated_at >= '$this->firstDay' 
+                AND payment.updated_at <= '$this->lastDay'
+                AND (payment.invoice IS NOT NULL AND payment.invoice <> '');";
+                $purchases = $db->show($sql);
+                $super_vip_count = count($purchases);
+                // $super_vip_count = $db->showOne($sql)['super_vip_count'];
                 if ($super_vip_count >= 3) {
                     if ($db->execSql("update pk user set member_level = '3' where id = '{$myid}'")) {
                         $_SESSION['upgrade_msg'][] = "$myid Upgraded to royal vip";
@@ -102,8 +174,22 @@ class Member_ctrl
             case '3':
                 // upgrade to diamond VIP
                 // check 3 vip members level=3 below level to 4
-                $sql = "SELECT count(id) as royal_vip_count FROM pk_user WHERE pk_user.ref='$myid' and member_level = '{$current_level}';";
-                $royal_count = $db->showOne($sql)['royal_vip_count'];
+                // $sql = "SELECT count(id) as royal_vip_count FROM pk_user WHERE pk_user.ref='$myid' and member_level = '{$current_level}';";
+                
+                $sql = "SELECT 
+                payment.user_id AS buyer_id, pk_user.member_level
+                FROM payment 
+                JOIN pk_user ON pk_user.id = payment.user_id
+                WHERE payment.user_id IN (SELECT pk_user.id FROM pk_user WHERE pk_user.ref='$myid' AND pk_user.member_level='3') 
+                AND payment.status = 'paid' 
+                AND (payment.invoice IS NOT NULL AND payment.invoice <> '') 
+                AND payment.updated_at >= '$this->firstDay' 
+                AND payment.updated_at <= '$this->lastDay'
+                AND (payment.invoice IS NOT NULL AND payment.invoice <> '');";
+                $purchases = $db->show($sql);
+                $royal_count = count($purchases);
+                // $royal_count = $db->showOne($sql)['royal_vip_count'];
+
                 if ($royal_count >= 3) {
                     if ($db->execSql("update pk user set member_level = '4' where id = '{$myid}'")) {
                         $_SESSION['upgrade_msg'][] = "$myid Upgraded to diamond vip";
@@ -132,7 +218,7 @@ class Member_ctrl
         $sql = "SELECT pv, (33-DATEDIFF('$today', created_at)) as days_left 
         FROM payment 
         WHERE user_id = $user_id 
-        AND pv >= 15 
+        AND pv >= 15
         AND DATEDIFF('$today', created_at) <= 33 
         AND status = 'paid' 
         AND (invoice IS NOT NULL AND invoice <> '')
