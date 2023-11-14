@@ -170,7 +170,6 @@
                 <?php
                 }
                 ?>
-
                 <div class="collapse" id="collapsePages1" aria-labelledby="headingThree" data-bs-parent="#sidenavAccordion">
                     <nav class="sb-sidenav-menu-nested nav">
                         <?php
@@ -188,6 +187,10 @@
                 <?php
                 if (authenticate()) {
                 ?>
+                    <a class="nav-link" href="/<?php echo home; ?>/my-commissions">
+                        <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                        Finance
+                    </a>
                     <a class="nav-link" href="/<?php echo home; ?>/tickets">
                         <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                         Support Tickets

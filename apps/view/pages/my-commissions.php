@@ -21,6 +21,26 @@ $tp = isset($context['data']->total_cmsn) ? $context['data']->total_cmsn : 5;
                 <ol class="breadcrumb mt-3 mb-4">
                     <li class="breadcrumb-item active">My Commissions</li>
                 </ol>
+                <div class="row justify-content-center mb-5">
+                    <div class="col-2">
+                        <div class="fnbox text-center">
+                            <h3>Bonus Income</h3>
+                            <h4>140,23</h4>
+                        </div>
+                    </div>
+                    <div class="col-2">
+                        <div class="fnbox text-center">
+                            <h3>Bonus Payed</h3>
+                            <h4>67,23</h4>
+                        </div>
+                    </div>
+                    <div class="col-2">
+                        <div class="fnbox text-center">
+                            <h3>Free to Request</h3>
+                            <h4>73,00</h4>
+                        </div>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col-md-4">
                         <form method="get" action="/<?php echo home; ?>/my-commissions/">
