@@ -31,19 +31,20 @@ $tp = isset($context['data']->total_cmsn) ? $context['data']->total_cmsn : 1;
                     <li class="breadcrumb-item active">My Commissions</li>
                 </ol>
                 <div class="row justify-content-center mb-5">
-                    <div class="col-2">
+                    <div class="col-3">
                         <div class="fnbox text-center">
                             <h3>Bonus Income</h3>
                             <h4><?php echo $all_cmsn; ?></h4>
                         </div>
                     </div>
-                    <div class="col-2">
+                    <div class="col-3">
                         <div class="fnbox text-center">
                             <h3>Bonus Payed</h3>
                             <h4><?php echo $debited_amt; ?></h4>
+                            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal">Withdraw</button>
                         </div>
                     </div>
-                    <div class="col-2">
+                    <div class="col-3">
                         <div class="fnbox text-center">
                             <h3>Free to Request</h3>
                             <h4><?php echo $net_cmsn; ?></h4>
@@ -211,6 +212,24 @@ $tp = isset($context['data']->total_cmsn) ? $context['data']->total_cmsn : 1;
                 });
             </script>
         </main>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Withdrawl Amount</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <input type="number" class="form-control" placeholder="10">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary">Confirm</button>
+      </div>
+    </div>
+  </div>
+</div>
         <?php import("apps/view/inc/footer-credit.php"); ?>
     </div>
 </div>

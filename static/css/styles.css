@@ -11877,4 +11877,5 @@ margin-bottom: 0px;
 .fnbox{
   padding: 30px 20px;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  min-height: 176px;
 }
