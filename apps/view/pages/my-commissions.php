@@ -39,15 +39,15 @@ $tp = isset($context['data']->total_cmsn) ? $context['data']->total_cmsn : 1;
                     </div>
                     <div class="col-3">
                         <div class="fnbox text-center">
-                            <h3>Bonus Payed</h3>
-                            <h4><?php echo $debited_amt; ?></h4>
+                            <h3>Free to Request</h3>
+                            <h4><?php echo $net_cmsn; ?></h4>
                             <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal">Withdraw</button>
                         </div>
                     </div>
                     <div class="col-3">
                         <div class="fnbox text-center">
-                            <h3>Free to Request</h3>
-                            <h4><?php echo $net_cmsn; ?></h4>
+                            <h3>Bonus Payed</h3>
+                            <h4><?php echo $debited_amt; ?></h4>
                         </div>
                     </div>
                 </div>
@@ -221,12 +221,24 @@ $tp = isset($context['data']->total_cmsn) ? $context['data']->total_cmsn : 1;
                         <h1 class="modal-title fs-5" id="exampleModalLabel">Withdrawl Amount</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
+                    <?php
+                        $my_username = null;
+
+                        if (isset($_SESSION['user_id'])) {
+                          $userid = $_SESSION['user_id'];
+                          $invite = getData("pk_user", $userid);
+                          $my_username = $invite != false ? $invite['username'] : null;
+                        }
+                        ?>
                     <div class="modal-body">
-                        <input type="number" class="form-control" placeholder="10">
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary">Confirm</button>
-                    </div>
+                                    <!-- <div id="res"></div> -->
+                                    <form id="withdraw-amt" action="/<?php echo home; ?>/withdraw">
+                                        <input type="number" name="money_out" value="10" min="0" scope="any" class="form-control">
+                                        <input type="hidden" name="user" value="<?php echo $myid; ?>" min="0" scope="any" class="form-control">
+                                        <button id="submit-withdraw" type="button" class="btn btn-primary my-3">Confirm</button>
+                                    </form>
+                                    <?php pkAjax_form("#submit-withdraw", "#withdraw-amt", "#res"); ?>
+                                </div>
                 </div>
             </div>
         </div>

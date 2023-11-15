@@ -748,6 +748,9 @@ switch ($path) {
       import("apps/view/pages/label-print.php", $orddata);
       return;
     }
+    // if ($url[0] == "withdraw") {
+    //   $withdraw = new Withdrawal_ctrl;
+    // }
     if ($url[0] == "money-withdraw") {
       if (authenticate() == false) {
         $_SESSION['msg'][] = "You are not logged in";
