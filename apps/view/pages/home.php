@@ -6,10 +6,19 @@ $pvctrl->db = new Dbobjects;
 
 
 ################## new ##########
+// $db = new Dbobjects;
+// $level = new Member_ctrl;
+// $level->update_level_by_direct_partners_count($db, $myid=USER['id']);
+// $level->update_level_by_purchase($db, $myid=USER['id']);
+
+
 $db = new Dbobjects;
+$users = $db->show("select * from pk_user where is_active = 1");
 $level = new Member_ctrl;
-$level->update_level_by_direct_partners_count($db, $myid=USER['id']);
-$level->update_level_by_purchase($db, $myid=USER['id']);
+foreach ($users as $key => $u) {
+    $level->update_level_by_direct_partners_count($db, $myid=$u['id']);
+    $level->update_level_by_purchase($db, $myid=$u['id']);
+}
 ################# new #################
 
 
