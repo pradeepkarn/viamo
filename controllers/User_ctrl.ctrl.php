@@ -30,6 +30,65 @@ class User_ctrl
         // }
         // echo $count . "rows updated";
     }
+    function upload_kyc()
+    {
+        $req = obj($_POST);
+        $request = obj($_FILES);
+        $old = USER?obj(USER):null;
+        if (isset($request->nid_doc) && $request->nid_doc['name'] != "" && $request->nid_doc['error'] == 0) {
+            $ext = pathinfo($request->nid_doc['name'], PATHINFO_EXTENSION);
+            $docname = str_replace(" ", "_", $this->getUrlSafeString("nid_".$old->username)) . uniqid("_") . "." . $ext;
+            $dir = MEDIA_ROOT . "docs/profiles/" . $docname;
+            $upload = move_uploaded_file($request->nid_doc['tmp_name'], $dir);
+            if ($upload) {
+                $arr['nid_doc'] = $docname;
+                // $old = obj($user);
+                if ($old) {
+                    if ($old->nid_doc != "") {
+                        $olddir = MEDIA_ROOT . "docs/profiles/" . $old->nid_doc;
+                        if (file_exists($olddir)) {
+                            unlink($olddir);
+                        }
+                    }
+                }
+                $nid_doc = $docname;
+                (new Dbobjects)->execSql("update pk_user set nid_doc='$nid_doc' where pk_user.id = '$old->id'");
+            }
+        }
+        if (isset($request->address_doc) && $request->address_doc['name'] != "" && $request->address_doc['error'] == 0) {
+            $ext = pathinfo($request->address_doc['name'], PATHINFO_EXTENSION);
+            $docname = str_replace(" ", "_", $this->getUrlSafeString("adrs_".$old->username)) . uniqid("_") . "." . $ext;
+            $dir = MEDIA_ROOT . "docs/profiles/" . $docname;
+            $upload = move_uploaded_file($request->address_doc['tmp_name'], $dir);
+            if ($upload) {
+                $arr['nid_doc'] = $docname;
+                // $old = obj($user);
+                if ($old) {
+                    if ($old->address_doc != "") {
+                        $olddir = MEDIA_ROOT . "docs/profiles/" . $old->address_doc;
+                        if (file_exists($olddir)) {
+                            unlink($olddir);
+                        }
+                    }
+                }
+                $nid_doc = $docname;
+                (new Dbobjects)->execSql("update pk_user set address_doc='$nid_doc' where pk_user.id = '$old->id'");
+            }
+        }
+    }
+    function getUrlSafeString($inputString)
+    {
+        // Replace spaces with hyphens and remove other special characters
+        $urlSafeString = preg_replace('/[^a-zA-Z0-9\-]/', '-', $inputString);
+
+        // Remove consecutive hyphens and trim leading/trailing hyphens
+        $urlSafeString = preg_replace('/-+/', '-', trim($urlSafeString, '-'));
+
+        // Convert to lowercase
+        $urlSafeString = strtolower($urlSafeString);
+
+        return $urlSafeString;
+    }
     function am_i_active($user_id)
     {
         $today = date('Y-m-d H:i:s');
@@ -79,11 +138,11 @@ class User_ctrl
         $lifetime_m = round(($lifetime_pv_new_old + $direct_m + $share), 2);
 
         return [
-            'position'=>$position,
-            'cmsn_gt'=>$lifetime_m,
-            'rv_gt'=>$rv_sum,
-            'total_paid'=>$tm_paid,
-            'total_unpaid'=>round(($lifetime_m-$tm_paid),2),
+            'position' => $position,
+            'cmsn_gt' => $lifetime_m,
+            'rv_gt' => $rv_sum,
+            'total_paid' => $tm_paid,
+            'total_unpaid' => round(($lifetime_m - $tm_paid), 2),
         ];
     }
 }

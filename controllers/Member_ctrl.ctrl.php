@@ -22,9 +22,14 @@ class Member_ctrl
         if (
             isset($obj->transactedTo, $obj->transactedBy, $obj->amount, $obj->trnNum, $obj->status, $obj->trnGroup, $obj->trnType)
         ) {
+            $ref_active = $this->check_active($db,$obj->transactedTo);
+            $sqlExists = "select id from transactions where trn_num='$obj->trnNum' and trn_group='$obj->trnGroup';";
+            $if_exists = $db->showOne($sqlExists);
             $sql = "INSERT INTO transactions (transacted_to, transacted_by, purchase_amt,amount, trn_num, status, trn_group, trn_type)
                 VALUES ('$obj->transactedTo', '$obj->transactedBy', '$obj->purchase_amt', '$obj->amount', '$obj->trnNum', '$obj->status', '$obj->trnGroup', '$obj->trnType')";
-            $db->execSql($sql);
+            if (!$if_exists && $ref_active) {
+                $db->execSql($sql);
+            }
         } else {
             // Handle the case where not all required properties are set
             throw new Exception("Not all required properties are set.");
@@ -37,7 +42,7 @@ class Member_ctrl
         switch (strval($current_level)) {
             case '1':
                 if ($count >= 20) {
-                    if ($db->execSql("update pk user set member_level = '2' where id = '{$myid}'")) {
+                    if ($db->execSql("update pk_user set member_level = '2' where id = '{$myid}'")) {
                         $_SESSION['upgrade_msg'][] = "$myid Upgraded to super vip";
                         return true;
                     }
@@ -47,7 +52,7 @@ class Member_ctrl
                 break;
             case '2':
                 if ($count >= 60) {
-                    if ($db->execSql("update pk user set member_level = '3' where id = '{$myid}'")) {
+                    if ($db->execSql("update pk_user set member_level = '3' where id = '{$myid}'")) {
                         $_SESSION['upgrade_msg'][] = "$myid Upgraded to royal vip";
                         return true;
                     }
@@ -57,7 +62,7 @@ class Member_ctrl
                 break;
             case '3':
                 if ($count >= 180) {
-                    if ($db->execSql("update pk user set member_level = '4' where id = '{$myid}'")) {
+                    if ($db->execSql("update pk_user set member_level = '4' where id = '{$myid}'")) {
                         $_SESSION['upgrade_msg'][] = "$myid Upgraded to diamond vip";
                         return true;
                     }
@@ -416,7 +421,7 @@ class Member_ctrl
     {
         $trn_group = '3'; //with drwala request
         $trn_type = '2'; //debited
-        $status = '1';//approved
+        $status = '1'; //approved
         $sql = "
         select * from transactions 
         where transacted_to='$myid' 
@@ -468,7 +473,7 @@ class Member_ctrl
     {
         $trn_group = '3'; //with drwala request
         $trn_type = '2'; //debited
-        $status = '1';//approved
+        $status = '1'; //approved
         $sql = "
         select * from transactions 
         where transacted_to='$myid' 

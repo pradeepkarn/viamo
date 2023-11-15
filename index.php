@@ -942,6 +942,11 @@ switch ($path) {
       }
       exit;
     }
+    if ($url[0]=="upload-kyc-ajax") {
+      $uctrl = new User_ctrl;
+      $uctrl->upload_kyc();
+      return;
+    }
     if ($url[0] == "change-password-ajax") {
       if (!authenticate()) {
         $_SESSION['msg'][] = "You are not logged in";

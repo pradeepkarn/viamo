@@ -3,6 +3,16 @@ import("apps/view/inc/header.php");
 import("apps/view/inc/navbar.php");
 $pvctrl = new Pv_ctrl;
 $pvctrl->db = new Dbobjects;
+
+
+################## new ##########
+$db = new Dbobjects;
+$level = new Member_ctrl;
+$level->update_level_by_direct_partners_count($db, $myid=USER['id']);
+$level->update_level_by_purchase($db, $myid=USER['id']);
+################# new #################
+
+
 $act_data = $pvctrl->am_i_active($_SESSION['user_id']);
 $tree = $pvctrl->my_tree($_SESSION['user_id'], 1);
 // print_r($act_data);
