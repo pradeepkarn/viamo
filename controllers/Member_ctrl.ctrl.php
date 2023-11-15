@@ -22,12 +22,12 @@ class Member_ctrl
         if (
             isset($obj->transactedTo, $obj->transactedBy, $obj->amount, $obj->trnNum, $obj->status, $obj->trnGroup, $obj->trnType)
         ) {
-            $ref_active = $this->check_active($db,$obj->transactedTo);
+            // $ref_active = $this->check_active($db,$obj->transactedTo);
             $sqlExists = "select id from transactions where trn_num='$obj->trnNum' and trn_group='$obj->trnGroup';";
             $if_exists = $db->showOne($sqlExists);
             $sql = "INSERT INTO transactions (transacted_to, transacted_by, purchase_amt,amount, trn_num, status, trn_group, trn_type)
                 VALUES ('$obj->transactedTo', '$obj->transactedBy', '$obj->purchase_amt', '$obj->amount', '$obj->trnNum', '$obj->status', '$obj->trnGroup', '$obj->trnType')";
-            if (!$if_exists && $ref_active) {
+            if (!$if_exists) {
                 $db->execSql($sql);
             }
         } else {
@@ -205,12 +205,13 @@ class Member_ctrl
     }
     function check_active($db, $user_id)
     {
+        $days = 31;
         $today = date('Y-m-d H:i:s');
-        $sql = "SELECT pv, (33-DATEDIFF('$today', created_at)) as days_left 
+        $sql = "SELECT pv, ($days-DATEDIFF('$today', created_at)) as days_left 
         FROM payment 
         WHERE user_id = $user_id 
         AND pv >= 15
-        AND DATEDIFF('$today', created_at) <= 33 
+        AND DATEDIFF('$today', created_at) <= $days 
         AND status = 'paid' 
         AND (invoice IS NOT NULL AND invoice <> '')
         ORDER BY created_at DESC
