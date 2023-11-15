@@ -130,7 +130,7 @@ class Order_ctrl
                         $refuser = $refuser ? obj($refuser) : null;
                         // $membercnt = $level->count_direct_partners($db, $myid = 1);
                         if ($refuser) {
-                            if ($refuser->member_level >= 1) {
+                            // if ($refuser->member_level >= 1) {
                                 $cmsn = round($total_db, 2);
                                 $trnArr['amount'] =  $cmsn;
                                 $trnArr['trnNum'] = $ordernum;
@@ -138,7 +138,7 @@ class Order_ctrl
                                 $trnArr['trnGroup'] = 2; // 1:pv commissions, 2: direct bonus
                                 $trnArr['trnType'] = 1; // 1: Credit, 2: debit
                                 $level->save_trn_data($db, $trnArr);
-                            }
+                            // }
                         }
                         $arr = null;
                         $level->update_level_by_direct_partners_count($db, $myid=USER['ref']);
@@ -212,7 +212,7 @@ class Order_ctrl
             $cmsn = 0;
             // $membercnt = $level->count_direct_partners($db, $myid = 1);
             if ($refuser) {
-                if ($refuser->member_level >= 1) {
+                // if ($refuser->member_level >= 1) {
                     $cmsn = round($total_db, 2);
                     $trnArr['amount'] =  $cmsn;
                     $trnArr['trnNum'] = $ordernum;
@@ -220,7 +220,7 @@ class Order_ctrl
                     $trnArr['trnGroup'] = 2; // 1:pv commissions, 2: direct bonus
                     $trnArr['trnType'] = 1; // 1: Credit, 2: debit
                     $level->save_trn_data($db, $trnArr);
-                }
+                // }
             }
             $level->update_level_by_direct_partners_count($db, $myid=$ref['ref']);
             $level->update_level_by_purchase($db, $myid=$ref['ref']);
