@@ -7,9 +7,9 @@ import("apps/view/inc/navbar.php");
 $level = new Member_ctrl;
 $db = new Dbobjects;
 // $bonus_list = $level->list_direct_bonus($db,$myid=USER['id']);
-$all_cmsn = $level->lifetime_commission($db,$myid=USER['id']);
-$debited_amt = $level->debited_amount($db,$myid=USER['id']);
-$net_cmsn = $level->net_commission($db,$myid=USER['id']);
+$all_cmsn = $level->lifetime_commission($db, $myid = USER['id']);
+$debited_amt = $level->debited_amount($db, $myid = USER['id']);
+$net_cmsn = $level->net_commission($db, $myid = USER['id']);
 
 // $totalWithDrawal = $level->get_all_withdrawal_amt_sum($db,$myid=USER['id']);
 // $free_to_paid = $allcmsn-$totalWithDrawal;
@@ -106,7 +106,7 @@ $tp = isset($context['data']->total_cmsn) ? $context['data']->total_cmsn : 1;
                         <div class="col-lg-12">
                             <table id="datatablesSimple">
                                 <thead>
-                                <tr>
+                                    <tr>
                                         <th>ID</th>
 
                                         <th>Order By</th>
@@ -141,13 +141,13 @@ $tp = isset($context['data']->total_cmsn) ? $context['data']->total_cmsn : 1;
                                 </tfoot>
                                 <tbody>
                                     <?php
-                                  
-                              
+
+
                                     $csv_main_data = [];
                                     if (authenticate() == true) {
                                         $level = new Member_ctrl;
                                         $db = new Dbobjects;
-                                        $cmsns = $level->withdrawal_request_list($db,$myid=USER['id']);
+                                        $cmsns = $level->withdrawal_request_list($db, $myid = USER['id']);
                                     }
                                     $cmsns = isset($context['data']->commissions) ? $context['data']->commissions : $cmsns;
                                     foreach ($cmsns as $value) {
@@ -170,35 +170,35 @@ $tp = isset($context['data']->total_cmsn) ? $context['data']->total_cmsn : 1;
                                             <th><?php echo $orderbyusername; ?></th>
 
                                             <th><?php echo $sponser; ?></th>
-                                         
+
 
                                             <th><?php echo $value['amount']; ?></th>
-                                           
+
 
                                             <th><?php echo $value['created_at']; ?></th>
-                                            
+
                                         </tr>
                                     <?php
-                                    $csv_main_data[] = $csvdata;
+                                        $csv_main_data[] = $csvdata;
                                     }
                                     ?>
                                 </tbody>
                             </table>
                             <!-- <a href="/<?php echo home; ?>/csvdata/commissions/commission-paid.csv" download>Download CSV</a> -->
                             <?php
-                           
-                            
-                        if (count($csv_main_data) > 0) {
-                            $filePath = 'csvdata/commissions/commission-paid.csv';
-                            // Create a new CSV writer instance
-                            $csv = Writer::createFromPath($filePath, 'w');
-                            $headers = array_keys($csv_main_data[0]);
-                            // Insert headers as the first row in the CSV file
-                            $csv->insertOne($headers);
-                            // Insert the data along with headers into the CSV file
-                            $csv->insertAll($csv_main_data);
-                        }
-                        ?>
+
+
+                            if (count($csv_main_data) > 0) {
+                                $filePath = 'csvdata/commissions/commission-paid.csv';
+                                // Create a new CSV writer instance
+                                $csv = Writer::createFromPath($filePath, 'w');
+                                $headers = array_keys($csv_main_data[0]);
+                                // Insert headers as the first row in the CSV file
+                                $csv->insertOne($headers);
+                                // Insert the data along with headers into the CSV file
+                                $csv->insertAll($csv_main_data);
+                            }
+                            ?>
                         </div>
                     </div>
                 </div>
@@ -213,23 +213,23 @@ $tp = isset($context['data']->total_cmsn) ? $context['data']->total_cmsn : 1;
             </script>
         </main>
 
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Withdrawl Amount</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <input type="number" class="form-control" placeholder="10">
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary">Confirm</button>
-      </div>
-    </div>
-  </div>
-</div>
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Withdrawl Amount</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="number" class="form-control" placeholder="10">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary">Confirm</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <?php import("apps/view/inc/footer-credit.php"); ?>
     </div>
 </div>
