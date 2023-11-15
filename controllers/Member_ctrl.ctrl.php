@@ -205,12 +205,13 @@ class Member_ctrl
     }
     function check_active($db, $user_id)
     {
+        $days = 31;
         $today = date('Y-m-d H:i:s');
-        $sql = "SELECT pv, (33-DATEDIFF('$today', created_at)) as days_left 
+        $sql = "SELECT pv, ($days-DATEDIFF('$today', created_at)) as days_left 
         FROM payment 
         WHERE user_id = $user_id 
         AND pv >= 15
-        AND DATEDIFF('$today', created_at) <= 33 
+        AND DATEDIFF('$today', created_at) <= $days 
         AND status = 'paid' 
         AND (invoice IS NOT NULL AND invoice <> '')
         ORDER BY created_at DESC
