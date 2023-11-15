@@ -713,7 +713,7 @@ function msg_ssn($var = 'msg', $return = false)
     if ($return == true) {
       $returnmsg = null;
       foreach ($_SESSION[$var] as $msg) {
-        $returnmsg .= "{$msg}\n";
+        $returnmsg .= "{$msg}\\n";
       }
       unset($_SESSION[$var]);
       return $returnmsg;
