@@ -10,7 +10,7 @@ import("apps/view/inc/navbar.php");
                         <!-- <h1 class="mt-4">Dashboard</h1> -->
                         <ol class="breadcrumb mt-3 mb-4">
                             <li class="breadcrumb-item active mycl">Credit Overview</li>
-                            <li class="breadcrumb-item active"><button class="btn btn-danger">Create new tickets</button></li>
+                            <li class="breadcrumb-item active"><a href="/<?php echo home; ?>/create-ticket" class="btn btn-danger">Create new tickets</a></li>
                         </ol>
 
                         <div class="container">
