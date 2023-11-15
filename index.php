@@ -658,6 +658,10 @@ switch ($path) {
       import("apps/view/pages/tickets.php");
       return;
     }
+    if ($url[0] == "create-ticket") {
+      import("apps/view/pages/create-ticket.php");
+      return;
+    }
     if ($url[0] == "profile") {
       import("apps/view/pages/profile.php");
       return;
