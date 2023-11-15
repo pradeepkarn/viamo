@@ -7,9 +7,12 @@ import("apps/view/inc/navbar.php");
 $level = new Member_ctrl;
 $db = new Dbobjects;
 // $bonus_list = $level->list_direct_bonus($db,$myid=USER['id']);
-$allcmsn = $level->get_all_direct_bonus_sum($db,$myid=USER['id']);
-$totalWithDrawal = $level->get_all_withdrawal_amt_sum($db,$myid=USER['id']);
-$free_to_paid = $allcmsn-$totalWithDrawal;
+$all_cmsn = $level->lifetime_commission($db,$myid=USER['id']);
+$debited_amt = $level->debited_amount($db,$myid=USER['id']);
+$net_cmsn = $level->net_commission($db,$myid=USER['id']);
+
+// $totalWithDrawal = $level->get_all_withdrawal_amt_sum($db,$myid=USER['id']);
+// $free_to_paid = $allcmsn-$totalWithDrawal;
 // myprint($context);
 // $db = new Model('pk_user');
 // $total_user = $db->index(ord: "DESC", limit: 10000);
@@ -31,19 +34,19 @@ $tp = isset($context['data']->total_cmsn) ? $context['data']->total_cmsn : 1;
                     <div class="col-2">
                         <div class="fnbox text-center">
                             <h3>Bonus Income</h3>
-                            <h4><?php echo $allcmsn; ?></h4>
+                            <h4><?php echo $all_cmsn; ?></h4>
                         </div>
                     </div>
                     <div class="col-2">
                         <div class="fnbox text-center">
                             <h3>Bonus Payed</h3>
-                            <h4><?php echo $totalWithDrawal; ?></h4>
+                            <h4><?php echo $debited_amt; ?></h4>
                         </div>
                     </div>
                     <div class="col-2">
                         <div class="fnbox text-center">
                             <h3>Free to Request</h3>
-                            <h4><?php echo $free_to_paid; ?></h4>
+                            <h4><?php echo $net_cmsn; ?></h4>
                         </div>
                     </div>
                 </div>
@@ -111,7 +114,7 @@ $tp = isset($context['data']->total_cmsn) ? $context['data']->total_cmsn : 1;
                                         <th>Paid to</th>
                                         <!-- <th>Ring</th> -->
 
-                                        <th>Commission Paid</th>
+                                        <th>Commission</th>
 
                                         <!-- <th>Direct Bonus Paid</th> -->
                                         <!-- <th>RV Paid</th> -->
@@ -143,7 +146,7 @@ $tp = isset($context['data']->total_cmsn) ? $context['data']->total_cmsn : 1;
                                     if (authenticate() == true) {
                                         $level = new Member_ctrl;
                                         $db = new Dbobjects;
-                                        $cmsns = $level->list_all_direct_bonus($db,$myid=USER['id']);
+                                        $cmsns = $level->withdrawal_request_list($db,$myid=USER['id']);
                                     }
                                     $cmsns = isset($context['data']->commissions) ? $context['data']->commissions : $cmsns;
                                     foreach ($cmsns as $value) {

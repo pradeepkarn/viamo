@@ -266,18 +266,23 @@ class Member_ctrl
                             $commission = 0;
                             break;
                     }
-                    $db->tableName = "team_commissions";
+                    $db->tableName = "transactions";
                     $arr = null;
-                    $arr['user_id'] = $u->id;
+                    $arr['transacted_to'] = $u->id;
+                    $arr['transacted_by'] = $u->id;
+                    $arr['trn_num'] = uniqid('team');
+                    $arr['purchase_amt'] = 0;
                     $arr['from_date'] = $this->firstDay;
                     $arr['to_date'] = $this->lastDay;
+                    $arr['trn_group'] = 4; //team commission
+                    $arr['trn_type'] = 1; //1: credit, 2: debit
+                    $arr['status'] = 1; //1: Active
 
                     $already = $db->get($arr);
-                    if (!$already) {
-                        $arr['commission'] = $commission;
-                        $arr['pv_sum'] = $totalpv;
-                        $arr['commission'] = $commission;
-                        $arr['pv_percentage'] = $pv_percentage;
+                    if (!$already && $totalpv > 0) {
+                        $arr['amount'] = $commission;
+                        $arr['team_pv_sum'] = $totalpv;
+                        $arr['team_pv_percentage'] = $pv_percentage;
                         $arr['member_level'] = $u->member_level;
                         $db->insertData = $arr;
                         $arr = null;
@@ -287,6 +292,7 @@ class Member_ctrl
             }
             $db->conn->commit();
         } catch (PDOException $th) {
+            echo $th;
             $db->conn->rollback();
         }
     }
@@ -348,12 +354,11 @@ class Member_ctrl
 
         return $totalPV;
     }
-
-    function get_all_direct_bonus_sum($db, $myid)
+    function bonus_sum_cr($db, $myid)
     {
-        $trn_group = '2';
+        $trn_group = '2'; //direct bonus
         $trn_type = '1'; //credit amt
-        $status = '1';
+        $status = '1'; //active
         $sql = "
         select SUM(amount) as total_db from transactions 
         where transacted_to='$myid' 
@@ -364,11 +369,54 @@ class Member_ctrl
         $cmsn = $db->showOne($sql)['total_db'];
         return $cmsn ? round($cmsn, 2) : 0;
     }
-    function list_direct_bonus($db, $myid, $req, $data_limit = 5)
+
+    function team_pv_sum_cr($db, $myid)
     {
-        $trn_group = '2';
+        $trn_group = '4'; //direct bonus
         $trn_type = '1'; //credit amt
-        $status = '1';
+        $status = '1'; //active
+        $sql = "
+        select SUM(amount) as total_db from transactions 
+        where transacted_to='$myid' 
+        AND trn_group='$trn_group'
+        AND trn_type='$trn_type'
+        AND status='$status'
+        ";
+        $cmsn = $db->showOne($sql)['total_db'];
+        return $cmsn ? round($cmsn, 2) : 0;
+    }
+    // amount debited
+    function debited_amount($db, $myid)
+    {
+        $trn_group = '3'; //withdrawal request
+        $trn_type = '2'; //debit
+        $status = '1'; //active/apporved
+        $sql = "
+        select SUM(amount) as total_db from transactions 
+        where transacted_to='$myid' 
+        AND trn_group='$trn_group'
+        AND trn_type='$trn_type'
+        AND status='$status'
+        ";
+        $cmsn = $db->showOne($sql)['total_db'];
+        return $cmsn ? round($cmsn, 2) : 0;
+    }
+    // Lifetime earning / gross amount
+    function lifetime_commission($db, $myid)
+    {
+        // life time = bonus sum + team pv sum
+        return round(($this->bonus_sum_cr($db, $myid) + $this->team_pv_sum_cr($db, $myid)), 2);
+    }
+    function net_commission($db, $myid)
+    {
+        // net income = bonus sum + team pv sum - debited amount
+        return round(($this->bonus_sum_cr($db, $myid) + $this->team_pv_sum_cr($db, $myid) - $this->debited_amount($db, $myid)), 2);
+    }
+    function withdrawal_request_list_extended($db, $myid, $req, $data_limit = 5)
+    {
+        $trn_group = '3'; //with drwala request
+        $trn_type = '2'; //debited
+        $status = '1';//approved
         $sql = "
         select * from transactions 
         where transacted_to='$myid' 
@@ -416,11 +464,11 @@ class Member_ctrl
             'commissions' => $commissions
         );
     }
-    function list_all_direct_bonus($db, $myid)
+    function withdrawal_request_list($db, $myid)
     {
-        $trn_group = '2';
-        $trn_type = '1'; //credit amt
-        $status = '1';
+        $trn_group = '3'; //with drwala request
+        $trn_type = '2'; //debited
+        $status = '1';//approved
         $sql = "
         select * from transactions 
         where transacted_to='$myid' 
@@ -430,18 +478,18 @@ class Member_ctrl
         ";
         return $db->show($sql);
     }
-    function get_all_withdrawal_amt_sum($db, $myid)
-    {
-        // $trn_group = '2';
-        $trn_type = '2'; //Debit amt
-        $status = '1';
-        $sql = "
-        select SUM(amount) as total_db from transactions 
-        where transacted_to='$myid' 
-        AND trn_type='$trn_type'
-        AND status='$status'
-        ";
-        $cmsn = $db->showOne($sql)['total_db'];
-        return $cmsn ? round($cmsn, 2) : 0;
-    }
+    // function get_all_withdrawal_amt_sum($db, $myid)
+    // {
+    //     // $trn_group = '2';
+    //     $trn_type = '2'; //Debit amt
+    //     $status = '1';
+    //     $sql = "
+    //     select SUM(amount) as total_db from transactions 
+    //     where transacted_to='$myid' 
+    //     AND trn_type='$trn_type'
+    //     AND status='$status'
+    //     ";
+    //     $cmsn = $db->showOne($sql)['total_db'];
+    //     return $cmsn ? round($cmsn, 2) : 0;
+    // }
 }

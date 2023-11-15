@@ -300,7 +300,7 @@ switch ($path) {
         $req->my_id = USER['id'];
         $level = new Member_ctrl;
         $db = new Dbobjects;
-        $context['data'] = $level->list_direct_bonus($db,$myid=$req->my_id, $req, $data_limit = 5);
+        $context['data'] = $level->withdrawal_request_list_extended($db,$myid=$req->my_id, $req, $data_limit = 5);
         // $context['data'] = getMyCommissions($req, $data_limit = 5);
       }
       import("apps/view/pages/my-commissions.php", $context);

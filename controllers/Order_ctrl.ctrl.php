@@ -107,6 +107,7 @@ class Order_ctrl
                 $dbobj->insertData = $arr;
                 // myprint($dbobj->insertData);
                 // echo $dbobj->create_sql();
+                $ordernum = $arr['unique_id'];
                 $pay = $dbobj->create();
                 // return;
                 if (intval($pay) && $arr['status'] == 'paid') {
@@ -130,7 +131,7 @@ class Order_ctrl
                     $cmsn = round($total_db,2);
                  }
                  $trnArr['amount'] =  $cmsn;
-                 $trnArr['trnNum'] = strtoupper(uniqid('trn'));
+                 $trnArr['trnNum'] = $ordernum;
                  $trnArr['status'] = 1; // 1: Active, 2: cancelled  
                  $trnArr['trnGroup'] = 2; // 1:pv commissions, 2: direct bonus
                  $trnArr['trnType'] = 1; // 1: Credit, 2: debit
