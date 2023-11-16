@@ -43,7 +43,7 @@ if (isset($_GET['sponserid']) && strval($_GET['sponserid'])) {
 <div class="container mt-5" style="max-width: 800px;">
     <div class="row text-center">
         <div class="col-12">
-            <img src="/<?php echo home; ?>/media/img/logo-dom-swiss.svg" width="260px" alt="" srcset="">
+        <img style="max-height: 200px; width:100%; object-fit:contain;" src="/<?php echo home; ?>/static/assets/img/img7.jpg" width="400px" alt="" srcset="">
         </div>
         <div class="card justify-content-between mt-5">
             <div class="card-header"></div>
