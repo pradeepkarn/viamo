@@ -97,7 +97,7 @@ import("apps/view/inc/navbar.php");
                                                             <div class="modal" id="orderstatusmodal<?php echo $value['id']; ?>">
                                                                 <div class="modal-dialog">
                                                                     <div class="modal-content">
-
+                                                                        <div id="paid-status-res"></div>
                                                                         <!-- Modal header -->
                                                                         <div class="modal-header">
                                                                             <h5 class="modal-title">Mark This order as paid</h5>
@@ -110,7 +110,7 @@ import("apps/view/inc/navbar.php");
                                                                             <input type="hidden" class="pmt<?php echo $value['id']; ?>" name="pmt_id" value="<?php echo $value['id']; ?>">
                                                                             <button id="mark-this-paid<?php echo $value['id']; ?>" class="btn btn-success">Mark as paid</button>
                                                                             <?php
-                                                                            pkAjax("#mark-this-paid{$value['id']}", "/mark-this-order-status-ajax", ".pmt{$value['id']}", "#res");
+                                                                            pkAjax("#mark-this-paid{$value['id']}", "/mark-this-order-status-ajax", ".pmt{$value['id']}", "#paid-status-res");
                                                                             ?>
                                                                         </div>
 
