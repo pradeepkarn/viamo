@@ -22,15 +22,15 @@
                         <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                         All Orders
                     </a>
-                    <a class="nav-link" href="/<?php echo home; ?>/withdrawal-requests/?remark=requested">
+                    <a class="nav-link" href="/<?php echo home; ?>/withdrawal-requests">
                         <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                         Withdrawal Requests
                     </a>
-                    <a class="nav-link" href="/<?php echo home; ?>/withdrawal-requests/?remark=confirmed">
+                    <a class="nav-link" href="/<?php echo home; ?>/withdrawal-confirm-list">
                         <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                         Confirmed Withdrawal
                     </a>
-                    <a class="nav-link" href="/<?php echo home; ?>/withdrawal-requests/?remark=cancelled">
+                    <a class="nav-link" href="/<?php echo home; ?>/withdrawal-cancel-list">
                         <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                         Cancelled Withdrawal
                     </a>

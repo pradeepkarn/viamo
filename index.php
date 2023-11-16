@@ -2,6 +2,7 @@
 require_once(__DIR__ . "/config.php");
 import("/includes/class-autoload.inc.php");
 import('/vendor/autoload.php');
+import('/settings.php');
 $url = explode("/", $_SERVER["QUERY_STRING"]);
 $path = $_SERVER["QUERY_STRING"];
 define("direct_access", 1);
@@ -323,7 +324,31 @@ switch ($path) {
         import("apps/view/pages/wallet-transaction-detail.php");
         return;
       }
-      import("apps/view/pages/wallet-transactions.php");
+      import("apps/view/pages/redeem-request-list.php");
+      return;
+    }
+    if ($url[0] == "withdrawal-confirm-list") {
+      if (authenticate() == false) {
+        header("location:/$home/login");
+        return;
+      }
+      if (isset($_GET['tid'])) {
+        import("apps/view/pages/wallet-transaction-detail.php");
+        return;
+      }
+      import("apps/view/pages/redeem-confirm-list.php");
+      return;
+    }
+    if ($url[0] == "withdrawal-cancel-list") {
+      if (authenticate() == false) {
+        header("location:/$home/login");
+        return;
+      }
+      if (isset($_GET['tid'])) {
+        import("apps/view/pages/wallet-transaction-detail.php");
+        return;
+      }
+      import("apps/view/pages/redeem-cancel-list.php");
       return;
     }
     if ($url[0] == "structure-tree") {
@@ -751,6 +776,12 @@ switch ($path) {
     // if ($url[0] == "withdraw") {
     //   $withdraw = new Withdrawal_ctrl;
     // }
+    if ($url[0] == "req-redeem") {
+      $wthdrwctrl = new Withdrawal_ctrl;
+      $wthdrwctrl->redeem_request();
+      echo js_alert(msg_ssn(return:true));
+      return;
+    }
     if ($url[0] == "money-withdraw") {
       if (authenticate() == false) {
         $_SESSION['msg'][] = "You are not logged in";
@@ -1178,39 +1209,53 @@ switch ($path) {
     if ($url[0] == 'mark-this-request-as-confirmed-ajax') {
       if (!is_superuser()) {
         echo js_alert('Sorry, You are not an admin');
-        exit;
+        return;
       }
-      // myprint($_POST);
-      $ord = new Credit_ctrl;
-      $dataObj = new stdClass;
-      $dataObj->info = $_POST['info'];
-      $rpl = $ord->confirm_request($id = $_POST['credit_id'], $dataObj);
-      if ($rpl) {
+      $wthdrl = new Withdrawal_ctrl;
+      $repl = $wthdrl->admin_confirm_request();
+      echo js_alert(msg_ssn(return:true));
+      if ($repl) {
         echo RELOAD;
-        exit;
-      } else {
-        echo js_alert('Order status not changed');
-        exit;
       }
+      return;
+      // myprint($_POST);
+      // $ord = new Credit_ctrl;
+      // $dataObj = new stdClass;
+      // $dataObj->info = $_POST['info'];
+      // $rpl = $ord->confirm_request($id = $_POST['credit_id'], $dataObj);
+      // if ($rpl) {
+      //   echo RELOAD;
+      //   exit;
+      // } else {
+      //   echo js_alert('Order status not changed');
+      //   exit;
+      // }
     }
     if ($url[0] == 'mark-this-request-as-cancelled-ajax') {
       if (!is_superuser()) {
         echo js_alert('Sorry, You are not an admin');
-        exit;
+        return;
       }
-      // myprint($_POST);
-      $ord = new Credit_ctrl;
-      $dataObj = new stdClass;
-      $dataObj->info = $_POST['info'];
-      $rpl = $ord->cancel_request($id = $_POST['credit_id'], $dataObj);
-      if ($rpl) {
-        echo js_alert('Request was cancelled');
+      $wthdrl = new Withdrawal_ctrl;
+      $repl = $wthdrl->admin_cancel_request();
+      echo js_alert(msg_ssn(return:true));
+      if ($repl) {
         echo RELOAD;
-        exit;
-      } else {
-        echo js_alert('Status not changed');
-        exit;
       }
+      return;
+
+      // $ord = new Credit_ctrl;
+      // $dataObj = new stdClass;
+      // $dataObj->info = $_POST['info'];
+      // $rpl = $ord->cancel_request($id = $_POST['credit_id'], $dataObj);
+      // if ($rpl) {
+      //   echo js_alert('Request was cancelled');
+      //   echo RELOAD;
+      //   exit;
+      // } else {
+      //   echo js_alert('Status not changed');
+      //   exit;
+      // }
     }
     if ($url[0] == "purchase-increase-qty-ajax") {
       if (authenticate() == false) {

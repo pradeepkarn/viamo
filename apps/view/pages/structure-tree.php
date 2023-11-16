@@ -25,65 +25,74 @@ import("apps/view/inc/navbar.php");
                                             <?php
                                             if (authenticate() == true) {
 
-                                                $pvctrl = new Pv_ctrl;
-                                                $pvctrl->db = new Dbobjects;
-                                                $partner = $pvctrl->my_tree($_SESSION['user_id']);
-                                            $tree = structure_tree($partner);
+                                                // $pvctrl = new Pv_ctrl;
+                                                $db = new Dbobjects;
+                                                $mmber = new Member_ctrl;
+                                                $partner = $mmber->my_tree($db, $ref = $_SESSION['user_id'], $depth = 1);
+                                                // myprint($partner);
+                                                // $partner = $pvctrl->my_tree($_SESSION['user_id']);
+                                                $tree = structure_tree($partner);
                                             ?>
-                                            <style>
-                                                ul,
-                                                #myUL {
-                                                    list-style-type: none;
-                                                }
+                                                <style>
+                                                    ul,
+                                                    #myUL {
+                                                        list-style-type: none;
+                                                    }
 
-                                                #myUL {
-                                                    margin: 0;
-                                                    padding: 0;
-                                                }
-                                                #myUL li{
-                                                    margin-bottom: 10px;
-                                                }
+                                                    #myUL {
+                                                        margin: 0;
+                                                        padding: 0;
+                                                    }
 
-                                                .caret {
-                                                    cursor: pointer;
-                                                    -webkit-user-select: none;
-                                                    /* Safari 3.1+ */
-                                                    -moz-user-select: none;
-                                                    /* Firefox 2+ */
-                                                    -ms-user-select: none;
-                                                    /* IE 10+ */
-                                                    user-select: none;
-                                                }
+                                                    #myUL li {
+                                                        margin-bottom: 10px;
+                                                    }
 
-                                                .caret::before {
-                                                    content: "\25B6";
-                                                    color: black;
-                                                    display: inline-block;
-                                                    margin-right: 6px;
-                                                }
+                                                    .caret {
+                                                        cursor: pointer;
+                                                        -webkit-user-select: none;
+                                                        /* Safari 3.1+ */
+                                                        -moz-user-select: none;
+                                                        /* Firefox 2+ */
+                                                        -ms-user-select: none;
+                                                        /* IE 10+ */
+                                                        user-select: none;
+                                                    }
 
-                                                .caret-down::before {
-                                                    -ms-transform: rotate(90deg);
-                                                    /* IE 9 */
-                                                    -webkit-transform: rotate(90deg);
-                                                    /* Safari */
-                                                    transform: rotate(90deg);
-                                                }
+                                                    .caret::before {
+                                                        content: "\25B6";
+                                                        color: black;
+                                                        display: inline-block;
+                                                        margin-right: 6px;
+                                                    }
 
-                                                .nested {
-                                                    display: none;
-                                                }
+                                                    .caret-down::before {
+                                                        -ms-transform: rotate(90deg);
+                                                        /* IE 9 */
+                                                        -webkit-transform: rotate(90deg);
+                                                        /* Safari */
+                                                        transform: rotate(90deg);
+                                                    }
 
-                                                .active {
-                                                    display: block;
-                                                }
-                                                .has-members{
-                                                    font-size: 18px;
-                                                }
-                                            </style>
-                                            <ul id="myUL">
-                                                <?php echo $tree; ?>
-                                            </ul>
+                                                    .nested {
+                                                        display: none;
+                                                    }
+
+                                                    .active {
+                                                        display: block;
+                                                    }
+
+                                                    .has-members {
+                                                        font-size: 18px;
+                                                    }
+
+                                                    .member-inactive {
+                                                        color: tomato !important;
+                                                    }
+                                                </style>
+                                                <ul id="myUL">
+                                                    <?php echo $tree; ?>
+                                                </ul>
                                             <?php } ?>
                                             <script>
                                                 var toggler = document.getElementsByClassName("caret");

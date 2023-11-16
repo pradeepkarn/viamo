@@ -197,7 +197,7 @@ function generate_dummy_email($prefix = null)
 {
   return rand(1000, 9999) . "_" . uniqid($prefix) . "@example.com";
 }
-function bsmodal($id = "", $title = "", $body = "", $btn_id='', $btn_text = "Action", $btn_class = "btn btn-primary", $size = "modal-sm", $modalclasses = "")
+function bsmodal($id = "", $title = "", $body = "", $btn_id = '', $btn_text = "Action", $btn_class = "btn btn-primary", $size = "modal-sm", $modalclasses = "")
 {
   $str = "
 <div class='modal fade' id='$id' tabindex='-1' aria-hidden='true'>
@@ -219,7 +219,7 @@ $body
 </div>";
   return $str;
 }
-function popmodal($id = "", $title = "", $body = "", $btn_id='', $btn_text = "Action", $btn_class = "btn btn-primary", $size = "modal-sm", $close_btn_class = "")
+function popmodal($id = "", $title = "", $body = "", $btn_id = '', $btn_text = "Action", $btn_class = "btn btn-primary", $size = "modal-sm", $close_btn_class = "")
 {
   $str = "
 <div class='modal fade' id='$id' tabindex='-1' aria-hidden='true'>
@@ -707,6 +707,10 @@ function num_to_words($number)
   //  echo $result . "Rupees  " . $points . " Paise";
   return $result;
 }
+function msg_set($msg, $var = 'msg')
+{
+  $_SESSION[$var][] = $msg;
+}
 function msg_ssn($var = 'msg', $return = false)
 {
   if (isset($_SESSION[$var])) {
@@ -1156,7 +1160,7 @@ function searchCountry($keyword = 'india')
 function getCurrency($keyword = 'CH')
 {
   $data = file_get_contents(RPATH . "/jsondata/country-currency.json");
-  $data = isset($data)?$data:'[]';
+  $data = isset($data) ? $data : '[]';
   $data = json_decode($data, true);
   foreach ($data as $item) {
     if ($keyword == $item['isoAlpha2']) {
@@ -1182,7 +1186,7 @@ function searchPhone($keyword = '+91')
 }
 
 
-function my_tree($ref=0, $depth = 1, $last_pmt='')
+function my_tree($ref = 0, $depth = 1, $last_pmt = '')
 {
   if ($depth > 10) {
     return []; // Return an empty array if the maximum depth is reached
@@ -1985,14 +1989,14 @@ function my_all_share($userid)
 {
   $shrobj = new Dbobjects;
   $amt = (object) $shrobj->showOne("select SUM(amt) as amt from credits where status='share' and user_id = '$userid'");
-  $allshr = $amt->amt!=null?$amt->amt:0.0;
+  $allshr = $amt->amt != null ? $amt->amt : 0.0;
   return $allshr;
 }
 function my_all_share_count($userid)
 {
   $shrobj = new Dbobjects;
   $endOfLastMonth = date('Y-m-t', strtotime('last month'));
-  
+
   $sql = "SELECT * FROM shares WHERE user_id = '$userid' and is_active=1 and date_to <= '$endOfLastMonth';";
   // echo $sql;
   $shre = $shrobj->show($sql);
@@ -2169,25 +2173,32 @@ function old_data($key_name = "direct_bonus", $userid = 0, $db = null)
 
 function structure_tree($data)
 {
-  $output = null;
+    $output = null;
 
-  foreach ($data as $item) {
-    $mmbrcnt = count($item['tree']);
-    $text_muted = $mmbrcnt == 0 ? 'text-muted' : 'text-bold has-members';
-    $partners = $mmbrcnt > 1 ? 'partners' : 'partner';
-    $output .= '<li>';
-    $output .= "<span class='caret $text_muted'>" . $item['username'] . " - (" . count($item['tree']) . " $partners)</span>";
+    foreach ($data as $item) {
+        $mmbrcnt = count($item['tree']);
+        $text_muted = $mmbrcnt == 0 ? 'text-muted' : 'text-bold has-members';
+        $partners = $mmbrcnt > 1 ? 'partners' : 'partner';
 
-    if (!empty($item['tree'])) {
-      $output .= '<ul class="nested">';
-      $output .= structure_tree($item['tree']);
-      $output .= '</ul>';
+        // Check if is_active is equal to 1
+        $isActiveClass = $item['is_active'] == 1 ? 'text-dark' : 'text-danger';
+        $caret = $item['is_active'] == 1 ? 'text-danger' : '';
+
+        $output .= '<li>';
+        $output .= "<span class='caret $text_muted $isActiveClass'>" . $item['username'] . " - (" . count($item['tree']) . " $partners)</span>";
+
+        if (!empty($item['tree'])) {
+            $output .= '<ul class="nested">';
+            $output .= structure_tree($item['tree']);
+            $output .= '</ul>';
+        }
+
+        $output .= '</li>';
     }
 
-    $output .= '</li>';
-  }
-  return $output;
+    return $output;
 }
+
 // use in package to sum grams of total product in a package
 function calculate_gram(Object $item, float $qty)
 {
@@ -2211,12 +2222,12 @@ function calculate_gram(Object $item, float $qty)
   return $total_gm;
 }
 // calculate shipping charges if gram and country code is available
-function calculate_shipping_cost($db = new Dbobjects, $gram=0, $ccode='')
+function calculate_shipping_cost($db = new Dbobjects, $gram = 0, $ccode = '')
 {
   $cost = 0;
   $shp = (object)$db->showOne("select shipping from countries where code = '$ccode';");
   if ($shp != '') {
-    $shpng = json_decode($shp->shipping??'[]');
+    $shpng = json_decode($shp->shipping ?? '[]');
     if (isset($shpng->shipping_cost)) {
       $shpcost = $shpng->shipping_cost;
       if ($gram >= 0 &&  $gram < 1001) {
@@ -2231,4 +2242,12 @@ function calculate_shipping_cost($db = new Dbobjects, $gram=0, $ccode='')
     }
   }
   return $cost;
+}
+function getTextFromCode($code,$arr)
+{
+  if (array_key_exists($code, $arr)) {
+    return $arr[$code];
+  } else {
+    return "NA";
+  }
 }

@@ -16,10 +16,12 @@ $db = new Dbobjects;
 $users = $db->show("select * from pk_user where is_active = 1");
 $level = new Member_ctrl;
 foreach ($users as $key => $u) {
-    $level->update_level_by_direct_partners_count($db, $myid=$u['id']);
-    $level->update_level_by_purchase($db, $myid=$u['id']);
+  $level->update_level_by_direct_partners_count($db, $myid = $u['id']);
+  $level->update_level_by_purchase($db, $myid = $u['id']);
 }
 ################# new #################
+$mmbr = new Member_ctrl;
+$mypartners = $mmbr->top_members($db, $myid = USER['id']);
 
 
 $act_data = $pvctrl->am_i_active($_SESSION['user_id']);
@@ -55,42 +57,18 @@ SCRPT;
         <section>
           <div class="container px-4">
             <div class="row justify-content-center">
-              <div class="col-4 mb-2">
-                <div class="card">
-                  <div class="card-body">
-                    <h5 class="card-title text-center pb-3">Member 1</h5>
-                    <h6 class="card-subtitle mb-2 text-body-secondary">Card subtitle</h6>
-                    <p class="card-text">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Mollitia reiciendis animi quasi eos ex ratione deleniti doloremque labore vero. Harum labore velit cum fugiat incidunt temporibus ipsa sunt! Rem, est.</p>
+              <?php foreach ($mypartners as $key => $mbr) { 
+                $mbr = obj($mbr);
+                ?>
+                <div class="col-4 mb-2">
+                  <div class="card text-center">
+                    <div class="card-body">
+                      <h5 class="card-title text-center pb-3"><?php echo $mbr->email; ?></h5>
+                      <h6 class="card-subtitle mb-2 text-body-secondary">Sale: <?php echo $mbr->amount; ?></h6>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div class="col-4 mb-2">
-                <div class="card">
-                  <div class="card-body">
-                    <h5 class="card-title text-center pb-3">Member 2</h5>
-                    <h6 class="card-subtitle mb-2 text-body-secondary">Card subtitle</h6>
-                    <p class="card-text">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Mollitia reiciendis animi quasi eos ex ratione deleniti doloremque labore vero. Harum labore velit cum fugiat incidunt temporibus ipsa sunt! Rem, est.</p>
-                  </div>
-                </div>
-              </div>
-              <div class="col-4 mb-2">
-                <div class="card">
-                  <div class="card-body">
-                    <h5 class="card-title text-center pb-3">Member 3</h5>
-                    <h6 class="card-subtitle mb-2 text-body-secondary">Card subtitle</h6>
-                    <p class="card-text">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Mollitia reiciendis animi quasi eos ex ratione deleniti doloremque labore vero. Harum labore velit cum fugiat incidunt temporibus ipsa sunt! Rem, est.</p>
-                  </div>
-                </div>
-              </div>
-              <div class="col-4 mb-2">
-                <div class="card">
-                  <div class="card-body">
-                    <h5 class="card-title text-center pb-3">Total Members</h5>
-                    <h6 class="card-subtitle mb-2 text-body-secondary">Card subtitle</h6>
-                    <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus officia nulla ullam. Laboriosam, tempore. Cumque modi hic quae, veniam numquam, animi laboriosam vitae necessitatibus quas quod sint ad atque sit!</p>
-                  </div>
-                </div>
-              </div>
+              <?php } ?>
             </div>
           </div>
         </section>

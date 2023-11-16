@@ -8,8 +8,8 @@ $level = new Member_ctrl;
 $db = new Dbobjects;
 // $bonus_list = $level->list_direct_bonus($db,$myid=USER['id']);
 $all_cmsn = $level->lifetime_commission($db, $myid = USER['id']);
-$debited_amt = $level->debited_amount($db, $myid = USER['id']);
-$net_cmsn = $level->net_commission($db, $myid = USER['id']);
+$bonus_paid = $level->debited_amount($db, $myid = USER['id']);
+$net_cmsn = $level->net_balance_minus_requested_balance($db, $myid = USER['id']);
 
 // $totalWithDrawal = $level->get_all_withdrawal_amt_sum($db,$myid=USER['id']);
 // $free_to_paid = $allcmsn-$totalWithDrawal;
@@ -33,7 +33,7 @@ $tp = isset($context['data']->total_cmsn) ? $context['data']->total_cmsn : 1;
                 <div class="row justify-content-center mb-5">
                     <div class="col-3">
                         <div class="fnbox text-center">
-                            <h3>Bonus Income</h3>
+                            <h3>Lifetime Points</h3>
                             <h4><?php echo $all_cmsn; ?></h4>
                         </div>
                     </div>
@@ -46,8 +46,8 @@ $tp = isset($context['data']->total_cmsn) ? $context['data']->total_cmsn : 1;
                     </div>
                     <div class="col-3">
                         <div class="fnbox text-center">
-                            <h3>Bonus Payed</h3>
-                            <h4><?php echo $debited_amt; ?></h4>
+                            <h3>Point redeemed</h3>
+                            <h4><?php echo $bonus_paid; ?></h4>
                         </div>
                     </div>
                 </div>
@@ -109,36 +109,20 @@ $tp = isset($context['data']->total_cmsn) ? $context['data']->total_cmsn : 1;
                                     <tr>
                                         <th>ID</th>
 
-                                        <th>Order By</th>
+                                        <!-- <th>Order By</th> -->
                                         <!-- <th>PV in order</th> -->
                                         <!-- <th>RV in order</th> -->
-                                        <th>Paid to</th>
+                                        <th>Requested by</th>
                                         <!-- <th>Ring</th> -->
 
-                                        <th>Commission</th>
+                                        <th>Point</th>
 
                                         <!-- <th>Direct Bonus Paid</th> -->
-                                        <!-- <th>RV Paid</th> -->
-                                        <th>Order date</th>
+                                        <th>Status</th>
+                                        <th>Date</th>
                                     </tr>
                                 </thead>
-                                <tfoot>
-                                    <tr>
-                                        <th>ID</th>
 
-                                        <th>Order By</th>
-                                        <!-- <th>PV in order</th> -->
-                                        <!-- <th>RV in order</th> -->
-                                        <th>Paid to</th>
-                                        <!-- <th>Ring</th> -->
-
-                                        <th>Commission Paid</th>
-
-                                        <!-- <th>Direct Bonus Paid</th> -->
-                                        <!-- <th>RV Paid</th> -->
-                                        <th>Order date</th>
-                                    </tr>
-                                </tfoot>
                                 <tbody>
                                     <?php
 
@@ -146,11 +130,11 @@ $tp = isset($context['data']->total_cmsn) ? $context['data']->total_cmsn : 1;
                                     $csv_main_data = [];
                                     if (authenticate() == true) {
                                         $level = new Member_ctrl;
-                                        $db = new Dbobjects;
                                         $cmsns = $level->withdrawal_request_list($db, $myid = USER['id']);
                                     }
                                     $cmsns = isset($context['data']->commissions) ? $context['data']->commissions : $cmsns;
                                     foreach ($cmsns as $value) {
+                                        $satus_text = getTextFromCode($code = $value['status'], $arr = TRN_STATUS);
                                         $sponser = sponser_username($value['transacted_to']);
                                         $orderbyusername = sponser_username($value['transacted_by']);
 
@@ -163,16 +147,37 @@ $tp = isset($context['data']->total_cmsn) ? $context['data']->total_cmsn : 1;
                                         // $csvdata['direct bonus paid'] =  $value['direct_bonus'];
                                         // $csvdata['rv paid'] =  $value['rank_advance'];
                                         $csvdata['date'] =  $value['created_at'];
+                                        switch (strval($value['status'])) {
+                                            case '0':
+                                                $statusclass = "bg-warning text-dark";
+                                                break;
+
+                                            case '1':
+                                                $statusclass = "bg-success text-white";
+                                                break;
+
+                                            case '2':
+                                                $statusclass = "bg-danger text-white";
+                                                break;
+
+                                            default:
+                                                $statusclass = "bg-white text-dark";
+                                                break;
+                                        }
                                     ?>
                                         <tr>
                                             <th><?php echo $value['id']; ?></th>
 
-                                            <th><?php echo $orderbyusername; ?></th>
+                                            <!-- <th><?php //echo $orderbyusername; 
+                                                        ?></th> -->
 
                                             <th><?php echo $sponser; ?></th>
 
 
                                             <th><?php echo $value['amount']; ?></th>
+                                            <th>
+                                                <div class="text-center p-1 <?php echo $statusclass; ?>"><?php echo $satus_text; ?></div>
+                                            </th>
 
 
                                             <th><?php echo $value['created_at']; ?></th>
@@ -222,23 +227,45 @@ $tp = isset($context['data']->total_cmsn) ? $context['data']->total_cmsn : 1;
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <?php
-                        $my_username = null;
+                    $my_username = null;
 
-                        if (isset($_SESSION['user_id'])) {
-                          $userid = $_SESSION['user_id'];
-                          $invite = getData("pk_user", $userid);
-                          $my_username = $invite != false ? $invite['username'] : null;
-                        }
-                        ?>
+                    if (isset($_SESSION['user_id'])) {
+                        $userid = $_SESSION['user_id'];
+                        $invite = getData("pk_user", $userid);
+                        $my_username = $invite != false ? $invite['username'] : null;
+                    }
+                    ?>
                     <div class="modal-body">
-                                    <!-- <div id="res"></div> -->
-                                    <form id="withdraw-amt" action="/<?php echo home; ?>/withdraw">
-                                        <input type="number" name="money_out" value="10" min="0" scope="any" class="form-control">
-                                        <input type="hidden" name="user" value="<?php echo $myid; ?>" min="0" scope="any" class="form-control">
-                                        <button id="submit-withdraw" type="button" class="btn btn-primary my-3">Confirm</button>
-                                    </form>
-                                    <?php pkAjax_form("#submit-withdraw", "#withdraw-amt", "#res"); ?>
-                                </div>
+                        <div id="res"></div>
+                        <form id="withdraw-amt" action="/<?php echo home; ?>/req-redeem">
+                            <label for="">Select bank</label>
+                            <select class="my-2 form-select" name="bank">
+                                <?php
+                                $jsn = USER['jsn'];
+                                $obj = $jsn ? json_decode($jsn) : json_decode('[]');
+                                $bank_exists = false;
+                                if (isset($obj->banks)) {
+                                    foreach ($obj->banks as $key => $bnk) {
+                                        $bank_exists = true;
+                                ?>
+                                        <option value='<?php echo json_encode($bnk); ?>'><?php echo $bnk->iban; ?></option>
+                                <?php }
+                                }
+                                ?>
+                            </select>
+                            <label for="">Enter Point</label>
+                            <input type="number" name="point_out" value="10" min="0" scope="any" class="form-control">
+                            <input type="hidden" name="my_id" value="<?php echo $myid; ?>" min="0" scope="any" class="form-control">
+                            <?php
+                            if ($bank_exists) : ?>
+                                <button id="submit-withdraw" type="button" class="btn btn-primary my-3">Confirm</button>
+                            <?php else: ?>
+                                <a class="btn btn-primary my-2" href="/<?php echo home; ?>/profile">Add Bank Details First</a>
+                            <?php endif; ?>
+
+                        </form>
+                        <?php pkAjax_form("#submit-withdraw", "#withdraw-amt", "#res"); ?>
+                    </div>
                 </div>
             </div>
         </div>

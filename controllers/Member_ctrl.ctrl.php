@@ -378,7 +378,7 @@ class Member_ctrl
 
     function team_pv_sum_cr($db, $myid)
     {
-        $trn_group = '4'; //direct bonus
+        $trn_group = '4'; //Team commossions
         $trn_type = '1'; //credit amt
         $status = '1'; //active
         $sql = "
@@ -407,6 +407,21 @@ class Member_ctrl
         $cmsn = $db->showOne($sql)['total_db'];
         return $cmsn ? round($cmsn, 2) : 0;
     }
+    function requested_amount($db, $myid)
+    {
+        $trn_group = '3'; //withdrawal request
+        $trn_type = '2'; //debit
+        $status = '0'; //active/apporved
+        $sql = "
+        select SUM(amount) as total_db from transactions 
+        where transacted_to='$myid' 
+        AND trn_group='$trn_group'
+        AND trn_type='$trn_type'
+        AND status='$status'
+        ";
+        $cmsn = $db->showOne($sql)['total_db'];
+        return $cmsn ? round($cmsn, 2) : 0;
+    }
     // Lifetime earning / gross amount
     function lifetime_commission($db, $myid)
     {
@@ -418,20 +433,22 @@ class Member_ctrl
         // net income = bonus sum + team pv sum - debited amount
         return round(($this->bonus_sum_cr($db, $myid) + $this->team_pv_sum_cr($db, $myid) - $this->debited_amount($db, $myid)), 2);
     }
+    function net_balance_minus_requested_balance($db, $myid)
+    {
+        $old_req_point = $this->requested_amount($db, $myid);
+        $net_balance_point = $this->net_commission($db, $myid);
+        return $net_balance_point - $old_req_point;
+    }
     function withdrawal_request_list_extended($db, $myid, $req, $data_limit = 5)
     {
-        $trn_group = '3'; //with drwala request
+        $trn_group = '3'; //withdrawal request
         $trn_type = '2'; //debited
-        $status = '1'; //approved
         $sql = "
         select * from transactions 
         where transacted_to='$myid' 
         AND trn_group='$trn_group'
         AND trn_type='$trn_type'
-        AND status='$status'
         ";
-        // return $db->show($sql);
-
         $current_page = 0;
         $data_limit = $data_limit;
         $page_limit = "0,$data_limit";
@@ -451,17 +468,14 @@ class Member_ctrl
         if (isset($req->q)) {
             $q = $req->q;
         }
-        $trn_group = '2';
-        $trn_type = '1'; //credit amt
-        $status = '1';
+        $trn_group = '3'; //withdrawal request
+        $trn_type = '2'; //debit amt
         $sql = "
         select * from transactions 
         where transacted_to='$myid' 
         AND trn_group='$trn_group'
-        AND trn_type='$trn_type'
-        AND status='$status' ORDER BY id LIMIT $page_limit
+        AND trn_type='$trn_type' ORDER BY id LIMIT $page_limit
         ";
-        echo $sql;
         $commissions = $db->show($sql);
         return (object) array(
             'req' => obj($req),
@@ -474,28 +488,60 @@ class Member_ctrl
     {
         $trn_group = '3'; //with drwala request
         $trn_type = '2'; //debited
-        $status = '1'; //approved
         $sql = "
         select * from transactions 
         where transacted_to='$myid' 
         AND trn_group='$trn_group'
-        AND trn_type='$trn_type'
-        AND status='$status'
+        AND trn_type='$trn_type' ORDER BY id DESC
         ";
         return $db->show($sql);
     }
-    // function get_all_withdrawal_amt_sum($db, $myid)
-    // {
-    //     // $trn_group = '2';
-    //     $trn_type = '2'; //Debit amt
-    //     $status = '1';
-    //     $sql = "
-    //     select SUM(amount) as total_db from transactions 
-    //     where transacted_to='$myid' 
-    //     AND trn_type='$trn_type'
-    //     AND status='$status'
-    //     ";
-    //     $cmsn = $db->showOne($sql)['total_db'];
-    //     return $cmsn ? round($cmsn, 2) : 0;
-    // }
+    function all_withdrawal_request_list($db)
+    {
+        $trn_group = '3'; //with drwala request
+        $trn_type = '2'; //debited
+        $sql = "
+        select * from transactions 
+        where trn_group='$trn_group'
+        AND trn_type='$trn_type' 
+        AND status = '0'
+        ORDER BY id DESC
+        ";
+        return $db->show($sql);
+    }
+    function all_withdrawal_confirm_list($db)
+    {
+        $trn_group = '3'; //with drwala request
+        $trn_type = '2'; //debited
+        $sql = "
+        select * from transactions 
+        where trn_group='$trn_group'
+        AND trn_type='$trn_type' 
+        AND status = '1'
+        ORDER BY id DESC
+        ";
+        return $db->show($sql);
+    }
+    function all_withdrawal_cancelled_list($db)
+    {
+        $trn_group = '3'; //with drwala request
+        $trn_type = '2'; //debited
+        $sql = "
+        select * from transactions 
+        where trn_group='$trn_group'
+        AND trn_type='$trn_type' 
+        AND status = '2'
+        ORDER BY id DESC
+        ";
+        return $db->show($sql);
+    }
+    function top_members($db, $myid) {
+        $sql = "SELECT DISTINCT pk_user.email, pk_user.username, payment.amount, payment.user_id
+                FROM payment
+                JOIN pk_user ON payment.user_id = pk_user.id
+                WHERE payment.user_id IN (SELECT id FROM pk_user WHERE pk_user.ref = '$myid') order by amount desc";
+        // Assuming $db->show() handles the execution and fetching of data
+        return $db->show($sql, PDO::FETCH_ASSOC);
+    }
+    
 }
