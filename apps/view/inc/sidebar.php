@@ -3,7 +3,9 @@
         <div class="sb-sidenav-menu">
             <div class="nav">
                 <div class="sb-sidenav-menu-heading">
+                    <a href="/<?php echo home; ?>">
                     <img src="/<?php echo STATIC_URL ?>/assets/img/img7.jpg" class="img-fluid" alt="" srcset="">
+                    </a>
                 </div>
                 <div class="lsf_side">
                 <div class="sb-sidenav-menu-heading">Core</div>
