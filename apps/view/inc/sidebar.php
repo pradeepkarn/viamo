@@ -52,7 +52,7 @@
                         <?php
                         if (authenticate()) {
                         ?>
-                            <a class="nav-link" href="/<?php echo home; ?>/genology">Genology</a>
+                            <!-- <a class="nav-link" href="/<?php //echo home; ?>/genology">Genology</a> -->
                             <a class="nav-link" href="/<?php echo home; ?>/structure-tree">Structure Tree</a>
                         <?php
                         }

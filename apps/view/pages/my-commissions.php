@@ -120,6 +120,7 @@ $tp = isset($context['data']->total_cmsn) ? $context['data']->total_cmsn : 1;
                                         <!-- <th>Direct Bonus Paid</th> -->
                                         <th>Status</th>
                                         <th>Date</th>
+                                        <th>Bank</th>
                                     </tr>
                                 </thead>
 
@@ -181,6 +182,39 @@ $tp = isset($context['data']->total_cmsn) ? $context['data']->total_cmsn : 1;
 
 
                                             <th><?php echo $value['created_at']; ?></th>
+                                            <th>
+                                                <?php
+                                                $bank = $value['jsn'] != '' ? json_decode($value['jsn']) : [];
+                                                ?>
+
+                                                <table class="table table-sm table-primary">
+                                                    <tr>
+                                                        <th>IBAN</th>
+                                                        <td><?php echo $bank->iban; ?></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>BANK</th>
+                                                        <td><?php echo $bank->bank_name; ?></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>SWIFT CODE</th>
+                                                        <td><?php echo $bank->swift_code; ?></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>A/C</th>
+                                                        <td><?php echo $bank->bank_account; ?></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>COUNTRY CODE</th>
+                                                        <td><?php echo $bank->country_code; ?></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>COUNTRY</th>
+                                                        <td><?php echo $bank->country_name; ?></td>
+                                                    </tr>
+                                                </table>
+
+                                            </th>
 
                                         </tr>
                                     <?php
@@ -259,7 +293,7 @@ $tp = isset($context['data']->total_cmsn) ? $context['data']->total_cmsn : 1;
                             <?php
                             if ($bank_exists) : ?>
                                 <button id="submit-withdraw" type="button" class="btn btn-primary my-3">Confirm</button>
-                            <?php else: ?>
+                            <?php else : ?>
                                 <a class="btn btn-primary my-2" href="/<?php echo home; ?>/profile">Add Bank Details First</a>
                             <?php endif; ?>
 
