@@ -1,7 +1,7 @@
 <?php
 
 use PHPMailer\PHPMailer\PHPMailer;
-
+$sitename = SITE_NAME;
 $message = <<<MSG
 <!DOCTYPE html>
 <html lang="en">
@@ -22,9 +22,9 @@ $message = <<<MSG
     <p>Bitte bei Zahlungsreferenz "<strong>Order Nr. $context->order_id</strong>" angeben.</p>
    
     <p>Zahlung ausgeführt</p>
-    <p>You can log in as a reseller partner at DOM-Swiss.</p>
+    <p>You can log in as a reseller partner at $sitename.</p>
     <p>Best regards,</p>
-    <p>DOM-Swiss Backoffice-Team</p>
+    <p>$sitename Backoffice-Team</p>
 
   <hr>
   
@@ -36,10 +36,10 @@ $message = <<<MSG
     <p>Please use "<strong>Order Nr. $context->order_id</strong>" as payment reference.</p>
 
     <p>Payment executed</p>
-    <p>You can log in as a reseller partner at DOM-Swiss.</p>
+    <p>You can log in as a reseller partner at $sitename.</p>
 
     <p>Best regards,</p>
-    <p>DOM-Swiss Backoffice-Team</p>
+    <p>$sitename Backoffice-Team</p>
 </div>
 
 </body>
@@ -50,7 +50,7 @@ MSG;
 
 $mail = php_mailer(new PHPMailer());
 $mail->isHTML(true);
-$mail->Subject = 'DOM SWISS: Order Placed!!!';
+$mail->Subject = $sitename.': Order Placed!!!';
 $mail->Body = $message;
 $mail->setFrom(orderemail, SITE_NAME . "-New Order");
 if (!email_has_valid_dns($context->email)) {
