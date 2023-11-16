@@ -16,7 +16,8 @@ import("apps/view/inc/navbar.php");
                     <div class="row mb-4">
                         <div class="col-lg-12">
                             <div id="res"></div>
-                            <table id="datatablesSimple">
+                            <!-- <table id="datatablesSimple"> -->
+                            <table class="table table-bordered border-primary">
                                 <thead>
                                     <tr>
                                         <th>Order ID</th>
