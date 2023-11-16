@@ -94,31 +94,31 @@ $rv_sum = $udata->rv_gt;
                                 </div>
 
                             </div>
-                            <div class="card">
+                            <!-- <div class="card">
                                 <div class="card-body">
                                     <form action="" method="post">
                                         <div class="row m">
                                             <div class="col-md-6 my-3">
                                                 <input  min="0" placeholder="Commission" type="text" scope="any" name="commission" class="form-control">
-                                                <input type="hidden" name="added_to" value="<?php echo $user['id']; ?>">
+                                                <input type="hidden" name="added_to" value="<?php //echo $user['id']; ?>">
                                                 <input type="hidden" name="action" value="add_cmsn">
                                             </div>
                                             <div class="col-md-6 my-3">
                                                 <button type="submit" class="btn btn-primary">Add commission</button>
                                             </div>
                                         </div>
-                                    </form>
+                                    </form> 
                                 </div>
-                            </div>
+                            </div> -->
                             <div class="row mb-4">
 
                                 <div class="col-md-12">
                                     <div class="shadow-sm card h-100 px-3 py-2">
-                                        <h5>Lifetime Commission
-                                            <?php echo $cmsn_gt; ?>
+                                        <!-- <h5>Lifetime Commission -->
+                                            <?php //echo $cmsn_gt; ?>
 
                                         </h5>
-                                        <table  class="table table-bordered">
+                                        <!-- <table  class="table table-bordered">
                                             <thead>
                                                 <tr>
                                                     <th>Trans. ID</th>
@@ -154,12 +154,12 @@ $rv_sum = $udata->rv_gt;
                                                 <?php } ?>
 
                                             </tbody>
-                                        </table>
-                                        <h5>Retirement Foundation</h5>
+                                        </table> -->
+                                        <!-- <h5>Retirement Foundation</h5>
                                         Total Share Count <?php
-                                                            $share = my_all_share_count($user['id']);
-                                                            echo $share;
-                                                            ?>
+                                                            // $share = my_all_share_count($user['id']);
+                                                            // echo $share;
+                                                            ?> -->
                                     </div>
                                 </div>
 
@@ -202,7 +202,7 @@ $rv_sum = $udata->rv_gt;
 
 
                                 <!-- form end-->
-                                <form action="" method="post">
+                                <!-- <form action="" method="post">
                                     <div class="row m">
                                         <div class="col-md-6 my-3">
                                             <input min="0" placeholder="RV" type="number" name="rv" class="form-control">
@@ -213,10 +213,10 @@ $rv_sum = $udata->rv_gt;
                                             <button type="submit" class="btn btn-primary">Add on</button>
                                         </div>
                                     </div>
-                                </form>
+                                </form> -->
                                 <div class="row mb-4">
                                     <div class="col-lg-12">
-                                        <table id="datatablesSimple" class="table table-bordered">
+                                        <!-- <table id="datatablesSimple" class="table table-bordered">
                                             <thead>
                                                 <tr>
                                                     <th>Trans. ID</th>
@@ -261,7 +261,7 @@ $rv_sum = $udata->rv_gt;
                                             </tbody>
                                         </table>
                                         <h4>Total RV by admin : <?php echo $total_rv; ?></h4>
-                                        <h3>Total RV = <?php echo $rv_sum; ?></h3>
+                                        <h3>Total RV = <?php echo $rv_sum; ?></h3> -->
 
                                     </div>
                                 </div>
