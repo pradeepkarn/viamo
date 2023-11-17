@@ -28,6 +28,7 @@ if (isset($jsn->items)) {
 if (isset($jsn->countries)) {
     $selected_countries = $jsn->countries;
 }
+// myprint($pv);
 // myprint($jsn);
 // ini_set('display_errors', 1);
 // ini_set('display_startup_errors', 1);
@@ -86,7 +87,7 @@ import("apps/view/inc/navbar.php");
                                                     // Check if the current item is selected
                                                     foreach ($selected_countries as $ccode) {
                                                         if (in_array($cnt->code, array($ccode))) {
-                                                            $shpcost = calculate_shipping_cost($db = new Dbobjects, $gram=$pv->total_gram, $ccode=$ccode);
+                                                            $shpcost = calculate_shipping_cost($db = new Dbobjects, $gram=1000, $ccode=$ccode);
                                                             $shipping_charges[] = array(
                                                                 "ccode"=>$ccode,
                                                                 "shipping_cost"=>$shpcost
