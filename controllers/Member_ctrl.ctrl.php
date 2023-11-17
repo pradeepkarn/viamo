@@ -623,7 +623,7 @@ class Member_ctrl
                 payment
                 JOIN pk_user ON payment.user_id = pk_user.id
             WHERE
-                payment.user_id IN (SELECT id FROM pk_user WHERE pk_user.ref = '1')
+                payment.user_id IN (SELECT id FROM pk_user WHERE pk_user.ref = '$myid')
         )
         SELECT
             email,
