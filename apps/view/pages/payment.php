@@ -23,7 +23,7 @@ import("apps/view/inc/navbar.php");
                 <th width="10%" scope="col">Photo</th>
                 <th width="30%" scope="col">Product</th>
                 <th width="8%" scope="col">PV</th>
-                <th width="8%" scope="col">RV</th>
+                <!-- <th width="8%" scope="col">RV</th> -->
                 <!-- <th width="8%" scope="col">Direct Bonus</th> -->
                 <th width="11%" scope="col">Price € (excluding tax)</th>
                 <th width="10%" scope="col">Tax % </th>
@@ -72,7 +72,7 @@ import("apps/view/inc/navbar.php");
                   <th scope="row"><img src="/<?php echo home; ?>/media/upload/items/<?php echo $item->image; ?>" width="80px" alt="" srcset=""></th>
                   <td><?php echo $item->name; ?></td>
                   <td><?php echo $cv->pv; ?></td>
-                  <td><?php echo $cv->rv; ?></td>
+                  <!-- <td><?php //echo $cv->rv; ?></td> -->
                   <!-- <td><?php // echo $cv->direct_bonus; 
                             ?></td> -->
                   <td><?php echo round($price_without_tax, 2); ?></td>

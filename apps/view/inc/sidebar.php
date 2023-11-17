@@ -24,6 +24,10 @@
                         <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                         All Orders
                     </a>
+                    <a class="nav-link" href="/<?php echo home; ?>/my-realtime-bonus">
+                        <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        My Direct Bonus Points
+                    </a>
                     <a class="nav-link" href="/<?php echo home; ?>/withdrawal-requests">
                         <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                         Withdrawal Requests

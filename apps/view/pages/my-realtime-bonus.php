@@ -41,7 +41,7 @@ $tp = isset($context['data']->total_cmsn) ? $context['data']->total_cmsn : 1;
                         <div class="fnbox text-center">
                             <h3>Free to Request</h3>
                             <h4><?php echo $net_cmsn; ?></h4>
-                            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal">Withdraw</button>
+                            <!-- <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal">Withdraw</button> -->
                         </div>
                     </div>
                     <div class="col-3">
