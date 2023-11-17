@@ -118,14 +118,14 @@ class Order_ctrl
                     // $pvctrl->db = $dbobj;
                     // $pvctrl->save_commissions($purchaser_id = $_SESSION['user_id'], $order_id = $pay, $pv = $total_pv, $rv = $total_rv, $total_db);
                     ################# Direct bonus #####################
-                    if (USER['ref'] > 0) {
+                    if (USER['id'] != 1) {
                         $level = new Member_ctrl;
                         $db = $dbobj;
                         $trnArr = null;
                         $trnArr['transactedTo'] = USER['ref'];
                         $trnArr['transactedBy'] = USER['id'];
                         $trnArr['purchase_amt'] = round($total_amt, 2);
-                        $refuser = $db->showOne("SELECT * FROM pk_user WHERE pk_user.id = (SELECT ref FROM pk_user WHERE pk_user.id = '{$trnArr['transactedTo']}')");
+                        $refuser = $db->showOne("SELECT * FROM pk_user WHERE pk_user.id = (SELECT ref FROM pk_user WHERE pk_user.id = '{$trnArr['transactedBy']}')");
                         $cmsn = 0;
                         $refuser = $refuser ? obj($refuser) : null;
                         // $membercnt = $level->count_direct_partners($db, $myid = 1);

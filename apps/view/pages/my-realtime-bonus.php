@@ -114,7 +114,7 @@ $tp = isset($context['data']->total_cmsn) ? $context['data']->total_cmsn : 1;
                                         
                                         <!-- <th>Ring</th> -->
 
-                                        <th>PV</th>
+                                        <!-- <th>PV</th> -->
                                         <th>Point</th>
                                         
 
@@ -160,7 +160,7 @@ $tp = isset($context['data']->total_cmsn) ? $context['data']->total_cmsn : 1;
                                             <th><?php echo $orderbyusername ; ?></th>
 
 
-                                            <th><?php echo $value['purchase_amt']; ?></th>
+                                            <!-- <th><?php //echo $value['purchase_amt']; ?></th> -->
                                             <th><?php echo $value['amount']; ?></th>
                                             
 
