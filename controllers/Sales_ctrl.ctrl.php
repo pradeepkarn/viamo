@@ -325,7 +325,7 @@ class Sales_ctrl
     {
         $arr = [];
         $conn = $this->db;
-        $sql = "SELECT id as partner_id, username as partner, (select SUM(payment.amount) from payment where status = 'paid' and payment.user_id=pk_user.id) as amount FROM pk_user where ref=$my_id";
+        $sql = "SELECT id as partner_id,member_level, username as partner, (select SUM(payment.amount) from payment where status = 'paid' and payment.user_id=pk_user.id) as amount FROM pk_user where ref=$my_id";
         $data = $conn->show($sql);
         $pvctrl = new Pv_ctrl;
         $pvctrl->db = $conn;

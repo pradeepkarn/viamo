@@ -19,3 +19,8 @@ const REQ_FOR = array(
     1 => 'Money conversion',
     2 => 'Product purchase'
 );
+const MEMBER_LEVEL = array(
+    0 => 'NA',
+    1 => 'Money conversion',
+    2 => 'Product purchase'
+);
