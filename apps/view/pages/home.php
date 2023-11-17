@@ -198,7 +198,7 @@ SCRPT;
                 </div>
               </div>
             </div>
-            <div class="row mt-3">
+            <!-- <div class="row mt-3">
               <div class="col">
                 <h5><b>Active Days Left: </b>
                   <?php
@@ -211,7 +211,7 @@ SCRPT;
 
                   ?></h5>
               </div>
-            </div>
+            </div> -->
 
 
 

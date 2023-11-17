@@ -6,6 +6,8 @@
                                 <a target="_blank" href="/<?php echo home; ?>/privacy-policy">Privacy Policy</a>
                                 &middot;
                                 <a target="_blank" href="/<?php echo home; ?>/terms-and-conditions">Terms &amp; Conditions</a>
+                                &middot;
+                                <a target="_blank" href="/<?php echo home; ?>/terms-and-conditions-partners">Terms &amp; Conditions for Partners</a>
                             </div>
                         </div>
                     </div>
