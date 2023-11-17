@@ -256,6 +256,10 @@ switch ($path) {
       import("apps/view/pages/terms-and-conditions.php");
       return;
     }
+    if ($url[0] == "terms-and-conditions-partners") {
+      import("apps/view/pages/terms-and-conditions-partners.php");
+      return;
+    }
 
     if ($url[0] == "qualifications") {
       if (authenticate() == false) {
