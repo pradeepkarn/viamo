@@ -114,9 +114,9 @@ class Order_ctrl
                 if (intval($pay) && $arr['status'] == 'paid') {
                     $invid = generate_invoice_id($dbobj);
                     update_inv_if_not($pay, $invid, $dbobj);
-                    $pvctrl = new Pv_ctrl;
-                    $pvctrl->db = $dbobj;
-                    $pvctrl->save_commissions($purchaser_id = $_SESSION['user_id'], $order_id = $pay, $pv = $total_pv, $rv = $total_rv, $total_db);
+                    // $pvctrl = new Pv_ctrl;
+                    // $pvctrl->db = $dbobj;
+                    // $pvctrl->save_commissions($purchaser_id = $_SESSION['user_id'], $order_id = $pay, $pv = $total_pv, $rv = $total_rv, $total_db);
                     ################# Direct bonus #####################
                     if (USER['ref'] > 0) {
                         $level = new Member_ctrl;
@@ -193,9 +193,9 @@ class Order_ctrl
         $level = new Member_ctrl;
         $updated_at = date('Y-m-d H:i:s');
         $pmt = getData('payment', $id);
-        $pvctrl = new Pv_ctrl;
-        $pvctrl->db = new Dbobjects;
-        $pvctrl->save_commissions($purchaser_id = $pmt['user_id'], $order_id = $id, $pv = $pmt['pv'], $rv = $pmt['rv'], $pmt['direct_bonus']);
+        // $pvctrl = new Pv_ctrl;
+        // $pvctrl->db = new Dbobjects;
+        // $pvctrl->save_commissions($purchaser_id = $pmt['user_id'], $order_id = $id, $pv = $pmt['pv'], $rv = $pmt['rv'], $pmt['direct_bonus']);
         $upadeted = (new Model('payment'))->update($id, ['status' => 'paid', 'info' => $dataObj->info, 'updated_at' => $updated_at]);
         if ($upadeted) {
             $total_amt = $pmt['amount'];
