@@ -560,10 +560,67 @@ class Member_ctrl
             'commissions' => $commissions
         );
     }
+    function my_realtime_bonus_list_extended($db, $myid, $req, $data_limit = 5)
+    {
+        $trn_group = '2'; //direct bonus
+        $trn_type = '1'; //credited
+        $sql = "
+        select * from transactions 
+        where transacted_to='$myid' 
+        AND trn_group='$trn_group'
+        AND trn_type='$trn_type'
+        ";
+        $current_page = 0;
+        $data_limit = $data_limit;
+        $page_limit = "0,$data_limit";
+        $cp = 0;
+        if (isset($req->page) && intval($req->page)) {
+            $cp = $req->page;
+            $current_page = (abs($req->page) - 1) * $data_limit;
+            $page_limit = "$current_page,$data_limit";
+        }
+        $tp = count($db->show($sql));
+        if ($tp %  $data_limit == 0) {
+            $tp = $tp / $data_limit;
+        } else {
+            $tp = floor($tp / $data_limit) + 1;
+        }
+        $q = null;
+        if (isset($req->q)) {
+            $q = $req->q;
+        }
+        $trn_group = '2'; //direct bonus
+        $trn_type = '1'; //credited
+        $sql = "
+        select * from transactions 
+        where transacted_to='$myid' 
+        AND trn_group='$trn_group'
+        AND trn_type='$trn_type' ORDER BY id LIMIT $page_limit
+        ";
+        $commissions = $db->show($sql);
+        return (object) array(
+            'req' => obj($req),
+            'total_cmsn' => $tp,
+            'current_page' => $cp,
+            'commissions' => $commissions
+        );
+    }
     function withdrawal_request_list($db, $myid)
     {
         $trn_group = '3'; //with drwala request
         $trn_type = '2'; //debited
+        $sql = "
+        select * from transactions 
+        where transacted_to='$myid' 
+        AND trn_group='$trn_group'
+        AND trn_type='$trn_type' ORDER BY id DESC
+        ";
+        return $db->show($sql);
+    }
+    function bonus_list($db, $myid)
+    {
+        $trn_group = '2'; //with drwala request
+        $trn_type = '1'; //debited
         $sql = "
         select * from transactions 
         where transacted_to='$myid' 

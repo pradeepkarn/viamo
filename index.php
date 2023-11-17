@@ -293,6 +293,24 @@ switch ($path) {
       import("apps/view/pages/all-commissions.php", $context);
       return;
     }
+    if ($url[0] == "my-realtime-bonus") {
+      if (authenticate() == false) {
+        header("location:/$home/login");
+        return;
+      }
+      $context = null;
+      if (isset($_GET['page']) || isset($_GET['q'])) {
+        // $req = new stdClass;
+        $req = obj($_GET);
+        $req->my_id = USER['id'];
+        $level = new Member_ctrl;
+        $db = new Dbobjects;
+        $context['data'] = $level->my_realtime_bonus_list_extended($db,$myid=$req->my_id, $req, $data_limit = 5);
+        // $context['data'] = getMyCommissions($req, $data_limit = 5);
+      }
+      import("apps/view/pages/my-realtime-bonus.php", $context);
+      return;
+    }
     if ($url[0] == "my-commissions") {
       if (authenticate() == false) {
         header("location:/$home/login");
