@@ -198,8 +198,8 @@ import("apps/view/inc/navbar.php");
                                             <input id="netPrice" class="form-control my-2 valid" type="number" scope="any" min="0" name="net_price" value="<?php echo $total_net_price; ?>">
                                         </div>
                                         <div class="col-md">
-                                            <label for="">Customer Net Price</label>
-                                            <input id="custNetPrice" class="form-control my-2 valid" type="number" scope="any" min="0" name="cust_price" value="<?php echo $total_cust_net_price; ?>">
+                                            <!-- <label for="">Customer Net Price</label> -->
+                                            <input id="custNetPrice" class="form-control my-2 valid" type="hidden" scope="any" min="0" name="cust_price" value="<?php echo $total_cust_net_price; ?>">
                                         </div>
                                         <div class="col-md">
                                             <label for="">PV</label>
