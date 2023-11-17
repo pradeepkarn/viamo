@@ -56,7 +56,7 @@ try {
                     <header>
                         <div class="row">
                             <div class="col-7 text-center text-sm-start mb-3 mb-sm-0">
-                                <img id="logo" src="/<?php echo home; ?>/media/img/logo-dom-swiss.svg" width="200px" title="Koice" alt="Koice" />
+                                <img id="logo" src="/<?php echo STATIC_URL; ?>/assets/img/img7.jpg" width="180px" title="Koice" alt="Koice" />
                             </div>
                             <div class="col-5 text-center text-sm-end">
                                 <h4 class="text-7 mb-0">Invoice</h4>

@@ -63,8 +63,8 @@
                             New Partner</a>
                         <a class="nav-link" href="/<?php echo home; ?>/partners">
                             Your Partners</a>
-                        <a class="nav-link" href="/<?php echo home; ?>/customers">
-                            Your Customers</a>
+                        <!-- <a class="nav-link" href="/<?php echo home; ?>/customers">
+                            Your Customers</a> -->
                         <a class="nav-link" href="/<?php echo home; ?>/statistics">
                             Statistics</a>
                     </nav>

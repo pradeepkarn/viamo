@@ -386,14 +386,14 @@ switch ($path) {
 
       return;
     }
-    if ($url[0] == "customers") {
-      if (authenticate() == false) {
-        header("location:/$home/login");
-        return;
-      }
-      import("apps/view/pages/my-customers.php");
-      return;
-    }
+    // if ($url[0] == "customers") {
+    //   if (authenticate() == false) {
+    //     header("location:/$home/login");
+    //     return;
+    //   }
+    //   import("apps/view/pages/my-customers.php");
+    //   return;
+    // }
     if ($url[0] == "statistics") {
       if (authenticate() == false) {
         header("location:/$home/login");
