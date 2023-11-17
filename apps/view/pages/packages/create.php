@@ -102,8 +102,8 @@ import("apps/view/inc/navbar.php");
                                             <input id="netPrice" readonly class="form-control my-2 valid" type="number" scope="any" min="0" name="net_price">
                                         </div>
                                         <div class="col-md">
-                                            <label for="">Customer Net Price</label>
-                                            <input readonly id="custNetPrice" class="form-control my-2 valid" type="number" scope="any" min="0" name="cust_price">
+                                            <!-- <label for="">Customer Net Price</label> -->
+                                            <input readonly id="custNetPrice" class="form-control my-2 valid" type="hidden" scope="any" min="0" name="cust_price">
                                         </div>
                                         <div class="col-md">
                                             <label for="">PV</label>
@@ -116,10 +116,10 @@ import("apps/view/inc/navbar.php");
 
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-3">
+                                        <!-- <div class="col-md-3">
                                             <label for="">Direct Bonus</label>
                                             <input class="form-control my-2 valid" type="number" value="0" scope="any" min="0" name="direct_bonus">
-                                        </div>
+                                        </div> -->
                                         <div class="col-md-3">
                                             <label for="">Direct Bonus Percentage</label>
                                             <input class="form-control my-2 valid" type="number" value="0" scope="any" min="0" name="direct_bonus_percentage">
