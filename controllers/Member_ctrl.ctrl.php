@@ -632,9 +632,10 @@ class Member_ctrl
         FROM
             RankedPayments
         WHERE
-            rnk = 1;
+                rnk = 1
+            ORDER BY
+                amount DESC;
         ";
-        // Assuming $db->show() handles the execution and fetching of data
         return $db->show($sql);
     }
 }
