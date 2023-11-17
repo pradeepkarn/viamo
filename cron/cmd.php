@@ -7,14 +7,14 @@ require_once(__DIR__ . "/../config.php");
 require_once(__DIR__ . "/../includes/class-autoload.inc.php");
 require_once 'vendor/autoload.php';
 import('functions.php');
-$db = new Dbobjects;
-$users = $db->show("select * from pk_user where is_active = 1");
+// $db = new Dbobjects;
+// $users = $db->show("select * from pk_user where is_active = 1");
 $level = new Member_ctrl;
-foreach ($users as $key => $u) {
-    $level->update_level_by_direct_partners_count($db, $myid=$u['id']);
-    $level->update_level_by_purchase($db, $myid=$u['id']);
-}
-exit;
+// foreach ($users as $key => $u) {
+//     $level->update_level_by_direct_partners_count($db, $myid=$u['id']);
+//     $level->update_level_by_purchase($db, $myid=$u['id']);
+// }
+// exit;
 
 // $tree = $level->my_tree((new Dbobjects),150);
 
@@ -104,9 +104,10 @@ $data = '[
 ]';
 
 // $totalpv = $level->calculateTotalPV(json_decode($data,true));
-
+$db = new Dbobjects;
 // echo $totalpv;
-$level->save_pv_commissions((new Dbobjects));
+// $level->save_pv_commissions(($db));
+$level->save_diamond_commissions($db);
 // $tree =  json_encode($tree,JSON_PRETTY_PRINT);
 // file_put_contents('tree.json',$tree);
 exit;

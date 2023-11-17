@@ -200,7 +200,7 @@ class Member_ctrl
     }
     function order_details($db, $user_id)
     {
-        $sql_sum = "SELECT SUM(amount) AS purchase, SUM(pv) AS total_pv FROM payment WHERE user_id = '$user_id' AND status = 'paid' AND (invoice IS NOT NULL AND invoice <> '') AND updated_at >= '$this->firstDay' AND updated_at <= '$this->lastDay';";
+        $sql_sum = "SELECT SUM(amount) AS purchase, SUM(pv) AS total_pv FROM payment WHERE user_id = '$user_id' AND point_used='0' AND status = 'paid' AND (invoice IS NOT NULL AND invoice <> '') AND updated_at >= '$this->firstDay' AND updated_at <= '$this->lastDay';";
         return $db->show($sql_sum)[0];
     }
     function check_active($db, $user_id)
@@ -244,7 +244,7 @@ class Member_ctrl
     function save_pv_commissions($db)
     {
         $db->conn->beginTransaction();
-        $sql = "select id,member_level from pk_user where is_active=1;";
+        $sql = "select id,member_level,ref from pk_user where is_active=1;";
         $users = $db->show($sql);
         try {
             foreach ($users as $u) {
@@ -276,19 +276,61 @@ class Member_ctrl
                     $arr = null;
                     $arr['transacted_to'] = $u->id;
                     $arr['transacted_by'] = $u->id;
-                    $arr['trn_num'] = uniqid('team');
-                    $arr['purchase_amt'] = 0;
                     $arr['from_date'] = $this->firstDay;
                     $arr['to_date'] = $this->lastDay;
                     $arr['trn_group'] = 4; //team commission
+                    $already = $db->get($arr);
+                    $arr['trn_num'] = uniqid('team');
+                    $arr['purchase_amt'] = 0;
                     $arr['trn_type'] = 1; //1: credit, 2: debit
                     $arr['status'] = 1; //1: Active
-
-                    $already = $db->get($arr);
-                    if (!$already && $totalpv > 0) {
+                    $arr['ref'] = $u->ref; //reference
+                    if (!$already && $totalpv > 0 && $commission>0) {
                         $arr['amount'] = $commission;
                         $arr['team_pv_sum'] = $totalpv;
                         $arr['team_pv_percentage'] = $pv_percentage;
+                        $arr['member_level'] = $u->member_level;
+                        $db->insertData = $arr;
+                        $arr = null;
+                        $db->create();
+                    }
+                }
+            }
+            $db->conn->commit();
+        } catch (PDOException $th) {
+            echo $th;
+            $db->conn->rollback();
+        }
+    }
+    function save_diamond_commissions($db)
+    {
+        $db->conn->beginTransaction();
+        $sql = "select id,member_level,ref from pk_user where member_level=4 and is_active=1;";
+        $users = $db->show($sql);
+        try {
+            foreach ($users as $u) {
+                $u = obj($u);
+                $commission = 0;
+                $pv_percentage = 0;
+                if ($this->check_active($db, $u->id)) {
+                    $commission = $this->my_diamond_bonus($db,$u->id);
+                    $db->tableName = "transactions";
+                    $arr = null;
+                    $arr['transacted_to'] = $u->id;
+                    $arr['transacted_by'] = $u->id;
+                    $arr['from_date'] = $this->firstDay;
+                    $arr['to_date'] = $this->lastDay;
+                    $arr['trn_group'] = 1; //diamond commissions
+                    $already = $db->get($arr);
+                    $arr['trn_num'] = uniqid('team');
+                    $arr['purchase_amt'] = 0;
+                    $arr['trn_type'] = 1; //1: credit, 2: debit
+                    $arr['status'] = 1; //1: Active
+                    $arr['ref'] = $u->ref; //reference
+                    if (!$already && $commission>0) {
+                        $arr['amount'] = $commission;
+                        $arr['team_pv_sum'] = 0;
+                        $arr['team_pv_percentage'] = 0;
                         $arr['member_level'] = $u->member_level;
                         $db->insertData = $arr;
                         $arr = null;
@@ -323,6 +365,25 @@ class Member_ctrl
 
         return $prtdata;
     }
+    function my_diamond_bonus($db,$myid) {
+        $diamond_cmsn = 0;
+        $sql = "select SUM(amount) as t_amt from transactions where trn_group='4' and ref='$myid' and member_level = '4'";
+        $amt = $db->showOne($sql);
+        if ($amt['t_amt']) {
+            $diamond_cmsn = round(($amt['t_amt']*0.20),2);
+        }
+        $sql = "SELECT SUM(amount) as t_amt
+        FROM transactions 
+        WHERE ref IN (SELECT transacted_to FROM transactions WHERE trn_group='4' AND ref = '$myid') 
+        AND member_level = '4';
+        ";
+        $amtpartners = $db->showOne($sql);
+        if ($amtpartners['t_amt']) {
+            $diamond_cmsn += round((($amtpartners['t_amt']*0.20)*0.20),2);
+        }
+        return $diamond_cmsn;
+    }
+   
     function structure_tree(array $data)
     {
         // $sql = "select id, ref from pk_user where pk_user.id='{$myid}'";
@@ -352,6 +413,20 @@ class Member_ctrl
         foreach ($data as $item) {
             $totalPV += $item['pv'];
 
+            if (isset($item['tree']) && !empty($item['tree'])) {
+                // If the user has a tree, recursively calculate the total PV for the tree
+                $totalPV += $this->calculateTotalPV($item['tree']);
+            }
+        }
+
+        return $totalPV;
+    }
+    function calculateTotalPVForDiamond($data)
+    {
+        $totalPV = 0;
+
+        foreach ($data as $item) {
+            $totalPV += ($item['pv']*0.02);
             if (isset($item['tree']) && !empty($item['tree'])) {
                 // If the user has a tree, recursively calculate the total PV for the tree
                 $totalPV += $this->calculateTotalPV($item['tree']);

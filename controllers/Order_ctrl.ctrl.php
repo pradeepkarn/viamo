@@ -137,7 +137,10 @@ class Order_ctrl
                                 $trnArr['status'] = 1; // 1: Active, 2: cancelled  
                                 $trnArr['trnGroup'] = 2; // 1:pv commissions, 2: direct bonus
                                 $trnArr['trnType'] = 1; // 1: Credit, 2: debit
-                                $level->save_trn_data($db, $trnArr);
+                                if ($pay['point_used']==0) {
+                                    $level->save_trn_data($db, $trnArr);
+                                }
+                                
                             // }
                         }
                         $arr = null;
@@ -219,7 +222,9 @@ class Order_ctrl
                     $trnArr['status'] = 1; // 1: Active, 2: cancelled  
                     $trnArr['trnGroup'] = 2; // 1:pv commissions, 2: direct bonus
                     $trnArr['trnType'] = 1; // 1: Credit, 2: debit
-                    $level->save_trn_data($db, $trnArr);
+                    if ($pmt['point_used']==0) {
+                        $level->save_trn_data($db, $trnArr);
+                    }
                 // }
             }
             $level->update_level_by_direct_partners_count($db, $myid=$ref['ref']);
