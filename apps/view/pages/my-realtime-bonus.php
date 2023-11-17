@@ -108,9 +108,10 @@ $tp = isset($context['data']->total_cmsn) ? $context['data']->total_cmsn : 1;
                                 <thead>
                                     <tr>
                                         <th>ID</th>
+                                        <th>Transacted TO</th>
                                         <th>Transacted By</th>
                                         <!-- <th>Member Level</th> -->
-                                        <th>Transacted TO</th>
+                                        
                                         <!-- <th>Ring</th> -->
 
                                         <th>PV</th>
