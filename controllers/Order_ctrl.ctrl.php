@@ -149,7 +149,8 @@ class Order_ctrl
                 #################### Direct Bonus end #######################
                 $con->commit();
             } catch (PDOException $th) {
-                $_SESSION['msg'][] = $th;
+                // $_SESSION['msg'][] = $th;
+                echo $th;
                 $pay = false;
                 $con->rollback();
             }
