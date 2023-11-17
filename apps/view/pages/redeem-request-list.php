@@ -49,6 +49,7 @@ if (!authenticate()) {
                                         <th>Payee Email</th>
                                         <th>Date</th>
                                         <th>Status</th>
+                                        <th>Point</th>
                                         <th>Amount</th>
                                         <th>Remark</th>
                                         <th class="text-center" colspan="2">Action</th>
@@ -119,6 +120,7 @@ if (!authenticate()) {
                                             <td><?php echo $cms->created_at; ?></td>
                                             <td><?php echo getTextFromCode($cms->status, TRN_STATUS); ?></td>
                                             <td><?php echo $cms->amount; ?></td>
+                                            <td><?php echo $cms->real_amt; ?></td>
                                             <td><?php echo $cms->remark; ?></td>
                                             <td>
                                                 <?php if ($bank_account && $bank_name && $swift_code && $country_code) : ?>

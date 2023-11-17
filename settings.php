@@ -14,3 +14,8 @@ const TRN_GROUP = array(
     3 => 'Withdrawal request',
     4 => 'Team commission'
 );
+const REQ_FOR = array(
+    0 => 'NA',
+    1 => 'Money conversion',
+    2 => 'Product purchase'
+);

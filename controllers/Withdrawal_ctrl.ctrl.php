@@ -49,6 +49,8 @@ class Withdrawal_ctrl
         $arr['trn_group'] = 3; //with drawal
         $arr['trn_type'] = 2; //debit
         $arr['jsn'] = $_POST['bank'];
+        $arr['real_amt'] = round(($new_req_point*(5/6)),2);
+        $arr['req_for'] = 1; //money conversion
         $db->insertData = $arr;
         $db->create();
         $pdo->commit();

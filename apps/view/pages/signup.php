@@ -39,11 +39,10 @@ if (isset($_GET['sponserid']) && strval($_GET['sponserid'])) {
 // }
 ?>
 
-
 <div class="container mt-5" style="max-width: 800px;">
     <div class="row text-center">
         <div class="col-12">
-        <img style="max-height: 200px; width:100%; object-fit:contain;" src="/<?php echo home; ?>/static/assets/img/img7.jpg" width="400px" alt="" srcset="">
+            <img style="max-height: 200px; width:100%; object-fit:contain;" src="/<?php echo home; ?>/static/assets/img/img7.jpg" width="400px" alt="" srcset="">
         </div>
         <div class="card justify-content-between mt-5">
             <div class="card-header"></div>
@@ -62,7 +61,6 @@ if (isset($_GET['sponserid']) && strval($_GET['sponserid'])) {
             </div>
         </div>
         <div class="my-form">
-
             <h4 class="mb-3">Invitation details</h4>
             <form class="material-form" id="user_sign_form" action="/<?php echo home; ?>/signup-ajax" method="POST">
                 <div class="form-group row">
@@ -203,13 +201,13 @@ if (isset($_GET['sponserid']) && strval($_GET['sponserid'])) {
                     <input type="checkbox">
                     <label for="">I have read and accept <a href="/<?php echo home; ?>/terms-and-conditions" target="_blank">terms and conditions</a>.</label>
                 </div>
-                
+
                 <div class="custom-control custom-checkbox mb-3">
                     <input type="checkbox">
                     <label for="">I have read the <a href="/<?php echo home; ?>/privacy-policy" target="_blank">Privacy Policy</a>.</label>
                 </div>
                 <div id="res"></div>
-               
+
                 <button id="mysignup_btn" class="btn btn-light btn-block" name="signup_btn" type="button">FURTHER</button>
             </form>
         </div>

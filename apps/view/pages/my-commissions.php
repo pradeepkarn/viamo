@@ -116,8 +116,9 @@ $tp = isset($context['data']->total_cmsn) ? $context['data']->total_cmsn : 1;
                                         <!-- <th>Ring</th> -->
 
                                         <th>Point</th>
+                                        <th>Amount</th>
 
-                                        <!-- <th>Direct Bonus Paid</th> -->
+                                        <th>Remark</th>
                                         <th>Status</th>
                                         <th>Date</th>
                                         <th>Bank</th>
@@ -176,6 +177,8 @@ $tp = isset($context['data']->total_cmsn) ? $context['data']->total_cmsn : 1;
 
 
                                             <th><?php echo $value['amount']; ?></th>
+                                            <th><?php echo $value['real_amt']; ?></th>
+                                            <th><?php echo $value['remark']; ?></th>
                                             <th>
                                                 <div class="text-center p-1 <?php echo $statusclass; ?>"><?php echo $satus_text; ?></div>
                                             </th>
