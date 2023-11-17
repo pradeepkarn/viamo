@@ -20,7 +20,9 @@ const REQ_FOR = array(
     2 => 'Product purchase'
 );
 const MEMBER_LEVEL = array(
-    0 => 'NA',
-    1 => 'Money conversion',
-    2 => 'Product purchase'
+    0 => 'Just joined',
+    1 => 'VIP',
+    2 => 'SUPER VIP',
+    3 => 'ROYAL VIP',
+    4 => 'DIAMOND'
 );

@@ -130,7 +130,7 @@ import("apps/view/inc/navbar.php");
                                                 ?>
                                                     <tr>
                                                         <td><?php echo $ord->partner; ?></td>
-                                                        <td><?php echo $ord->member_level; ?></td>
+                                                        <td><?php echo getTextFromCode($ord->member_level,MEMBER_LEVEL); ?></td>
                                                         <td><?php echo $ord->amount; ?></td>
                                                     </tr>
                                                 <?php  } ?>
