@@ -285,7 +285,7 @@ class Member_ctrl
                     $arr['trn_type'] = 1; //1: credit, 2: debit
                     $arr['status'] = 1; //1: Active
                     $arr['ref'] = $u->ref; //reference
-                    if (!$already && $totalpv > 0 && $commission>0) {
+                    if (!$already && $totalpv > 0 && $commission > 0) {
                         $arr['amount'] = $commission;
                         $arr['team_pv_sum'] = $totalpv;
                         $arr['team_pv_percentage'] = $pv_percentage;
@@ -313,7 +313,7 @@ class Member_ctrl
                 $commission = 0;
                 $pv_percentage = 0;
                 if ($this->check_active($db, $u->id)) {
-                    $commission = $this->my_diamond_bonus($db,$u->id);
+                    $commission = $this->my_diamond_bonus($db, $u->id);
                     $db->tableName = "transactions";
                     $arr = null;
                     $arr['transacted_to'] = $u->id;
@@ -327,7 +327,7 @@ class Member_ctrl
                     $arr['trn_type'] = 1; //1: credit, 2: debit
                     $arr['status'] = 1; //1: Active
                     $arr['ref'] = $u->ref; //reference
-                    if (!$already && $commission>0) {
+                    if (!$already && $commission > 0) {
                         $arr['amount'] = $commission;
                         $arr['team_pv_sum'] = 0;
                         $arr['team_pv_percentage'] = 0;
@@ -365,12 +365,13 @@ class Member_ctrl
 
         return $prtdata;
     }
-    function my_diamond_bonus($db,$myid) {
+    function my_diamond_bonus($db, $myid)
+    {
         $diamond_cmsn = 0;
         $sql = "select SUM(amount) as t_amt from transactions where trn_group='4' and ref='$myid' and member_level = '4'";
         $amt = $db->showOne($sql);
         if ($amt['t_amt']) {
-            $diamond_cmsn = round(($amt['t_amt']*0.20),2);
+            $diamond_cmsn = round(($amt['t_amt'] * 0.20), 2);
         }
         $sql = "SELECT SUM(amount) as t_amt
         FROM transactions 
@@ -379,11 +380,11 @@ class Member_ctrl
         ";
         $amtpartners = $db->showOne($sql);
         if ($amtpartners['t_amt']) {
-            $diamond_cmsn += round((($amtpartners['t_amt']*0.20)*0.20),2);
+            $diamond_cmsn += round((($amtpartners['t_amt'] * 0.20) * 0.20), 2);
         }
         return $diamond_cmsn;
     }
-   
+
     function structure_tree(array $data)
     {
         // $sql = "select id, ref from pk_user where pk_user.id='{$myid}'";
@@ -426,7 +427,7 @@ class Member_ctrl
         $totalPV = 0;
 
         foreach ($data as $item) {
-            $totalPV += ($item['pv']*0.02);
+            $totalPV += ($item['pv'] * 0.02);
             if (isset($item['tree']) && !empty($item['tree'])) {
                 // If the user has a tree, recursively calculate the total PV for the tree
                 $totalPV += $this->calculateTotalPV($item['tree']);
@@ -610,13 +611,30 @@ class Member_ctrl
         ";
         return $db->show($sql);
     }
-    function top_members($db, $myid) {
-        $sql = "SELECT DISTINCT pk_user.email, payment.amount, payment.user_id
-                FROM payment
+    function top_members($db, $myid)
+    {
+        $sql = "WITH RankedPayments AS (
+            SELECT
+                pk_user.email,
+                payment.amount,
+                payment.user_id,
+                ROW_NUMBER() OVER (PARTITION BY pk_user.email ORDER BY payment.amount DESC) AS rnk
+            FROM
+                payment
                 JOIN pk_user ON payment.user_id = pk_user.id
-                WHERE payment.user_id IN (SELECT id FROM pk_user WHERE pk_user.ref = '$myid') order by amount desc";
+            WHERE
+                payment.user_id IN (SELECT id FROM pk_user WHERE pk_user.ref = '1')
+        )
+        SELECT
+            email,
+            amount,
+            user_id
+        FROM
+            RankedPayments
+        WHERE
+            rnk = 1;
+        ";
         // Assuming $db->show() handles the execution and fetching of data
         return $db->show($sql);
     }
-    
 }
