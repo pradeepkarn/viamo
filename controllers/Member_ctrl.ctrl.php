@@ -616,7 +616,7 @@ class Member_ctrl
                 JOIN pk_user ON payment.user_id = pk_user.id
                 WHERE payment.user_id IN (SELECT id FROM pk_user WHERE pk_user.ref = '$myid') order by amount desc";
         // Assuming $db->show() handles the execution and fetching of data
-        return $db->show($sql, PDO::FETCH_ASSOC);
+        return $db->show($sql);
     }
     
 }
