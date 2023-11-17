@@ -126,7 +126,7 @@ class Member_ctrl
 
                 // $vip_count = $db->showOne($sql)['vip_count'];
                 if ($vip_count >= 3) {
-                    if ($db->execSql("update pk user set member_level = '2' where id = '{$myid}'")) {
+                    if ($db->execSql("update pk_user set member_level = '2' where id = '{$myid}'")) {
                         $_SESSION['upgrade_msg'][] = "$myid Upgraded to super vip";
                         return true;
                     }
@@ -155,7 +155,7 @@ class Member_ctrl
                 $super_vip_count = count($purchases);
                 // $super_vip_count = $db->showOne($sql)['super_vip_count'];
                 if ($super_vip_count >= 3) {
-                    if ($db->execSql("update pk user set member_level = '3' where id = '{$myid}'")) {
+                    if ($db->execSql("update pk_user set member_level = '3' where id = '{$myid}'")) {
                         $_SESSION['upgrade_msg'][] = "$myid Upgraded to royal vip";
                         return true;
                     }
@@ -184,7 +184,7 @@ class Member_ctrl
                 // $royal_count = $db->showOne($sql)['royal_vip_count'];
 
                 if ($royal_count >= 3) {
-                    if ($db->execSql("update pk user set member_level = '4' where id = '{$myid}'")) {
+                    if ($db->execSql("update pk_user set member_level = '4' where id = '{$myid}'")) {
                         $_SESSION['upgrade_msg'][] = "$myid Upgraded to diamond vip";
                         return true;
                     }

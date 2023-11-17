@@ -150,7 +150,7 @@ class Order_ctrl
                 $con->commit();
             } catch (PDOException $th) {
                 // $_SESSION['msg'][] = $th;
-                echo $th;
+                // echo $th;
                 $pay = false;
                 $con->rollback();
             }
