@@ -611,7 +611,7 @@ class Member_ctrl
         return $db->show($sql);
     }
     function top_members($db, $myid) {
-        $sql = "SELECT DISTINCT pk_user.email, payment.amount, payment.user_id
+        $sql = "SELECT DISTINCT payment.user_id, pk_user.email, payment.amount
                 FROM payment
                 JOIN pk_user ON payment.user_id = pk_user.id
                 WHERE payment.user_id IN (SELECT id FROM pk_user WHERE pk_user.ref = '$myid') order by amount desc";
