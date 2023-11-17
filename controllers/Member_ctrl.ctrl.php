@@ -37,7 +37,7 @@ class Member_ctrl
     }
     function update_level_by_direct_partners_count($db, $myid)
     {
-        $current_level = $db->showOne("select member_level as current_level from pk_user where pk_user.id=$myid")['current_level'];
+        $current_level = $db->showOne("select member_level as current_level from pk_user where pk_user.id='$myid'")['current_level'];
         $count = $this->count_direct_partners($db, $myid);
         switch (strval($current_level)) {
             case '1':
@@ -77,7 +77,7 @@ class Member_ctrl
     }
     function update_level_by_purchase($db, $myid)
     {
-        $current_level = $db->showOne("select member_level as current_level from pk_user where pk_user.id=$myid")['current_level'];
+        $current_level = $db->showOne("select member_level as current_level from pk_user where pk_user.id='$myid'")['current_level'];
         switch (strval($current_level)) {
             case '0':
                 // Upgrade to vip
