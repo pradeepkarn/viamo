@@ -13,40 +13,46 @@ $message = <<<MSG
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Welcome to DOM Swiss</title>
+  <title>Welcome to VIAMO</title>
 </head>
 <body>
-<h2>Congratulations!</h2>
+<h2>Hallo $context->first_name</h2>
+  
+  <p>Herzlichen Glueckwunsch - ein neues Mitglied hat sich bei dir registriert: </p>
+  <p>Username: $context->username</p>
+  <p>Name: $context->name</p>
+  <p>Mailadresse: $context->email</p>
+  <p>Telefon: $context->mobile</p>
+  
+  
+  <p>Bitte setze dich mit dem neuen Mitglied in Verbindung und unterstütze, damit die VIAMO-Community schnell weiter wachsen kann.</p><br>
 
-<p>Your team is growing and a new direct partner has registered:</p>
-
-<p><strong>Name:</strong> $context->name<br>
-<strong>Username:</strong> $context->username</p>
-
-<p>Please support your new partner for your mutual success!</p>
-
-<p>You can log in and view your team at <a href="www.partners.domswiss.me">www.partners.domswiss.me</a>.</p>
-
-<p><strong>Vital greetings,</strong></p>
-
-<p>Your DOM-Swiss back office team</p>
+  <p>Dein VIAMO-World-Team</p>
+  <p>SPONSOR POWER AG</p>
+  <p>Schmiedgasse 6</p>
+  <p>CH-9100 Herisau</p>
+  <p>www.viamo.world</p>
+  <p>Mail: <a href="http://support@viamo.world">support@viamo.world</a> </p>
 
   <hr>
   
-  <h2>Herzlichen Glückwunsch!</h2>
+  <h2>Hello $context->first_name</h2>
+  
+  <p>Congratulations - a new member has registered with you: </p>
+  <p>Username: $context->username</p>
+  <p>Name: $context->name</p>
+  <p>Email address: $context->email</p>
+  <p>Phone: $context->mobile</p>
+  
+  
+  <p>Please contact the new member and support so that the VIAMO community can continue to grow quickly.</p><br>
 
-  <p>Dein Team wächst und ein neuer direkter Partner hat sich registriert:</p>
-  
-  <p><strong>Name:</strong> $context->name <br>
-  <strong>Username:</strong> $context->username</p>
-  
-  <p>Bitte unterstütze deinen neuen Partner für euren gemeinsamen Erfolg!</p>
-  
-  <p>Du kannst dich einloggen und dein Team unter <a href="www.partners.domswiss.me">www.partners.domswiss.me</a> ansehen.</p>
-  
-  <p><strong>Vitale Grüße,</strong></p>
-  
-  <p>Dein DOM-Swiss Backoffice-Team</p>
+  <p>Your VIAMO World team</p>
+  <p>SPONSOR POWER AG</p>
+  <p>Schmiedgasse 6</p>
+  <p>CH-9100 Herisau</p>
+  <p>www.viamo.world</p>
+  <p>Email: <a href="http://support@viamo.world">support@viamo.world</a> </p>
   
 </body>
 </html>

@@ -989,6 +989,7 @@ switch ($path) {
         $obj->username = $user->username;
         $obj->first_name = $user->first_name;
         $obj->last_name = $user->last_name;
+        $obj->mobile = $user->mobile;
         $obj->password = $_POST['password'];
         // Send signup email template
         send_sign_up_email($obj);
