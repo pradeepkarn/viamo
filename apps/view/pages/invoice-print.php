@@ -124,7 +124,7 @@ try {
                                             $cntr = $cntry->filter_index(['code' => $delivery_cntry_code]);
                                             $min_tax = 0;
                                             $max_tax = 0;
-                                            $discount = $context->payment['discount_by_bpt'];
+                                            $discount = round($context->payment['discount_by_bpt'],2);
                                             foreach ($context->cart as $itm) {
                                                 $cv = obj($itm);
 
