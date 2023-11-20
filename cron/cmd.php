@@ -9,6 +9,23 @@ require_once 'vendor/autoload.php';
 import('functions.php');
 // $db = new Dbobjects;
 // $users = $db->show("select * from pk_user where is_active = 1");
+
+$name = "John Doe Smith";
+
+// Split the name into an array using spaces as the delimiter
+$nameParts = explode(' ', $name);
+
+// Extract the first element as the first name
+$firstName = array_shift($nameParts);
+
+// Combine the remaining parts as the last name
+$lastName = implode(' ', $nameParts);
+
+// Output the results
+echo "First Name: $firstName<br>";
+echo "Last Name: $lastName<br>";
+exit;
+
 $level = new Member_ctrl;
 // foreach ($users as $key => $u) {
 //     $level->update_level_by_direct_partners_count($db, $myid=$u['id']);

@@ -2,6 +2,7 @@
 
 use PHPMailer\PHPMailer\PHPMailer;
 $sitename = SITE_NAME;
+$context->order_amt = round($context->order_amt,2);
 $message = <<<MSG
 <!DOCTYPE html>
 <html lang="en">
@@ -14,15 +15,15 @@ $message = <<<MSG
 
 <body>
   <div style="max-width: 100%; margin: 0 auto; font-family: Arial, sans-serif; line-height: 1.6;">
-    <h2>Vielen Dank für die Bestellung!</h2>
+    <h2>Vielen Dank fuer die Bestellung!</h2>
     <p>Deine Bestellung mit der Nummer <strong>$context->order_id</strong> wurde erfolgreich verbucht.</p>
     <p>Gesamtsumme der Bestellung beträgt: <strong>€ $context->order_amt</strong></p>
-    <p>Bitte überweise die Gesamtsumme auf das folgende Konto:</p>
+    <p>Bitte ueberweise die Gesamtsumme auf das folgende Konto:</p>
     $context->bank_account
-    <p>Bitte bei Zahlungsreferenz "<strong>Order Nr. $context->order_id</strong>" angeben.</p>
+    <p>Hier in das VIAMO-World-Backoffice einloggen "<strong>Order Nr. $context->order_id</strong>"</p>
    
-    <p>Zahlung ausgeführt</p>
-    <p>You can log in as a reseller partner at $sitename.</p>
+  
+    <p>Hier in das VIAMO-World-Backoffice einloggen.</p>
     <p>Best regards,</p>
     <p>$sitename Backoffice-Team</p>
 
@@ -36,7 +37,7 @@ $message = <<<MSG
     <p>Please use "<strong>Order Nr. $context->order_id</strong>" as payment reference.</p>
 
     <p>Payment executed</p>
-    <p>You can log in as a reseller partner at $sitename.</p>
+    <p>Login to your VIAMO-World-Backoffice.</p>
 
     <p>Best regards,</p>
     <p>$sitename Backoffice-Team</p>
