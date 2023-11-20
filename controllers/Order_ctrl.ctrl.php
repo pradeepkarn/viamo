@@ -42,7 +42,7 @@ class Order_ctrl
                 $gm = 0;
                 foreach ($phpobj->items as $pkey => $prd) {
                     $prod = (object) ($dbobj)->showOne("select id,qty,unit from item where id = '$prd->item'");
-                    $gm += calculate_gram($prod, $cv->qty);
+                    $gm += calculate_gram($prod, $cv->qty*$prd->qty);
                     $total_gm += $gm;
                 }
             endforeach;
