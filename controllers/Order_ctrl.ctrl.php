@@ -99,7 +99,6 @@ class Order_ctrl
                 $addrs->mobile == '' ||
                 $addrs->address_name == '' ||
                 $addrs->city == '' ||
-                $addrs->state == '' ||
                 $addrs->country == '' ||
                 $addrs->zipcode == '' ||
                 $addrs->isd_code == ''
@@ -113,7 +112,7 @@ class Order_ctrl
             $arr['mobile'] = $addrs->mobile;
             $arr['address'] = $addrs->address_name;
             $arr['city'] = $addrs->city;
-            $arr['state'] = $addrs->state;
+            $arr['state'] = isset($addrs->state)?$addrs->state:null;
             $arr['country'] = $addrs->country;
             $arr['zipcode'] = $addrs->zipcode;
             $arr['isd_code'] = $addrs->isd_code;
