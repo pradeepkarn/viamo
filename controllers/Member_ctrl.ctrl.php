@@ -22,11 +22,12 @@ class Member_ctrl
         if (
             isset($obj->transactedTo, $obj->transactedBy, $obj->amount, $obj->trnNum, $obj->status, $obj->trnGroup, $obj->trnType)
         ) {
+            $real_amt = isset($obj->realAmt) ? $obj->realAmt : 0;
             // $ref_active = $this->check_active($db,$obj->transactedTo);
             $sqlExists = "select id from transactions where trn_num='$obj->trnNum' and trn_group='$obj->trnGroup';";
             $if_exists = $db->showOne($sqlExists);
-            $sql = "INSERT INTO transactions (transacted_to, transacted_by, purchase_amt,amount, trn_num, status, trn_group, trn_type)
-                VALUES ('$obj->transactedTo', '$obj->transactedBy', '$obj->purchase_amt', '$obj->amount', '$obj->trnNum', '$obj->status', '$obj->trnGroup', '$obj->trnType')";
+            $sql = "INSERT INTO transactions (transacted_to, transacted_by, purchase_amt,amount, real_amt,trn_num, status, trn_group, trn_type)
+                VALUES ('$obj->transactedTo', '$obj->transactedBy', '$obj->purchase_amt', '$obj->amount', '$real_amt','$obj->trnNum', '$obj->status', '$obj->trnGroup', '$obj->trnType')";
             if (!$if_exists) {
                 $db->execSql($sql);
             }
