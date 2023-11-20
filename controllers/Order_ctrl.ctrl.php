@@ -42,7 +42,7 @@ class Order_ctrl
                 $gm = 0;
                 foreach ($phpobj->items as $pkey => $prd) {
                     $prod = (object) ($dbobj)->showOne("select id,qty,unit from item where id = '$prd->item'");
-                    $gm += calculate_gram($prod, $cv->qty*$prd->qty);
+                    $gm += calculate_gram($prod, $cv->qty * $prd->qty);
                     $total_gm += $gm;
                 }
             endforeach;
@@ -57,8 +57,8 @@ class Order_ctrl
                 $con->rollback();
                 return false;
             }
-           
-            
+
+
             try {
                 $total_amt = $dbobj->show($sql)[0]['total_amt'];
                 $total_pv = $dbobj->show($sql)[0]['total_pv'];
@@ -73,26 +73,24 @@ class Order_ctrl
                 $arr['direct_bonus'] = $total_db;
                 $arr['point_used'] = 0;
                 $arr['discount_by_point'] = 0;
+                $point = $level->net_balance_minus_requested_balance($db = $dbobj, $myid = USER['id']);
                 $commission = true;
-                $point = $level->net_balance_minus_requested_balance($db=$dbobj, $myid = USER['id']);
-            if (isset($req->redeem_point)) {
-                if (!($point == $req->point)) {
-                    $_SESSION['msg'][] = 'Point missmatched';
-                    $con->rollback();
-                    return false;
+                if (isset($req->redeem_point)) {
+                    // if ($point != $req->point) {
+                    //     $_SESSION['msg'][] = 'Point missmatched';
+                    //     $con->rollback();
+                    //     return false;
+                    // }
+                    if ($total_amt <= $point) {
+                        $commission = false;
+                        $arr['point_used'] = $total_amt;
+                        $arr['discount_by_bpt'] = $total_amt;
+                    } else if ($total_amt >= $point && $point > 0) {
+                        $commission = false;
+                        $arr['point_used'] = $point;
+                        $arr['discount_by_bpt'] = $point;
+                    }
                 }
-                if ($total_amt<=$point) {
-                    $commission = false;
-                    $arr['point_used'] = $total_amt;
-                    $arr['discount_by_bpt'] = $point;
-                }else if($total_amt>$point && $point>0){
-                    $commission = false;
-                    $arr['point_used'] = $point;
-                    $arr['discount_by_bpt'] = $point;
-                }
-            }
-
-
             } catch (PDOException $e) {
                 return false;
             }
@@ -128,8 +126,10 @@ class Order_ctrl
             $arr['updated_at'] = $_POST['payment_mode'] == 'Bank_transfer' ? null : date('Y-m-d H:i:s');
 
             try {
+                $redeempt = 0;
                 $dbobj->tableName = "payment";
                 $dbobj->insertData = $arr;
+                $redeempt = $arr['point_used'];
                 // myprint($dbobj->insertData);
                 // echo $dbobj->create_sql();
                 $ordernum = $arr['unique_id'];
@@ -142,19 +142,33 @@ class Order_ctrl
                     // $pvctrl->db = $dbobj;
                     // $pvctrl->save_commissions($purchaser_id = $_SESSION['user_id'], $order_id = $pay, $pv = $total_pv, $rv = $total_rv, $total_db);
                     ################# Direct bonus #####################
-                    if (USER['id'] != 1) {
-                        $level = new Member_ctrl;
-                        $db = $dbobj;
-                        $trnArr = null;
-                        $trnArr['transactedTo'] = USER['ref'];
-                        $trnArr['transactedBy'] = USER['id'];
-                        $trnArr['purchase_amt'] = round($total_amt, 2);
-                        $refuser = $db->showOne("SELECT * FROM pk_user WHERE pk_user.id = (SELECT ref FROM pk_user WHERE pk_user.id = '{$trnArr['transactedBy']}')");
-                        $cmsn = 0;
-                        $refuser = $refuser ? obj($refuser) : null;
-                        // $membercnt = $level->count_direct_partners($db, $myid = 1);
-                        if ($refuser) {
-                            if ($commission===true) {
+                    $level = new Member_ctrl;
+                    $db = $dbobj;
+                    $trnArr['transactedTo'] = USER['id'];
+                    $trnArr['transactedBy'] = USER['id'];
+                    if ($commission == false) {
+                        if ($redeempt > 0) {
+                            $trnArr['transactedTo'] = USER['id'];
+                            $trnArr['transactedBy'] = USER['id'];
+                            $trnArr['purchase_amt'] = round($total_amt, 2);
+                            $trnArr['amount'] =  $redeempt;
+                            $trnArr['trnNum'] = $ordernum;
+                            $trnArr['status'] = 1; // 1: Active, 2: cancelled  
+                            $trnArr['trnGroup'] = 5; // 1:pv commissions, 2: direct bonus
+                            $trnArr['trnType'] = 2; // 1: Credit, 2: debit
+                            $level->save_trn_data($db, $trnArr);
+                        }
+                    } else {
+                        if (USER['id'] != 1) {
+                            $trnArr = null;
+                            $refuser = $db->showOne("SELECT * FROM pk_user WHERE pk_user.id = (SELECT ref FROM pk_user WHERE pk_user.id = '{$trnArr['transactedBy']}')");
+                            $cmsn = 0;
+                            $refuser = $refuser ? obj($refuser) : null;
+                            // $membercnt = $level->count_direct_partners($db, $myid = 1);
+                            if ($refuser) {
+                                $trnArr['transactedTo'] = USER['ref'];
+                                $trnArr['transactedBy'] = USER['id'];
+                                $trnArr['purchase_amt'] = round($total_amt, 2);
                                 $cmsn = round($total_db, 2);
                                 $trnArr['amount'] =  $cmsn;
                                 $trnArr['trnNum'] = $ordernum;
@@ -162,18 +176,17 @@ class Order_ctrl
                                 $trnArr['trnGroup'] = 2; // 1:pv commissions, 2: direct bonus
                                 $trnArr['trnType'] = 1; // 1: Credit, 2: debit
                                 $level->save_trn_data($db, $trnArr);
-                                
                             }
                         }
-                        $arr = null;
-                        $level->update_level_by_direct_partners_count($db, $myid=USER['ref']);
-                        $level->update_level_by_purchase($db, $myid=USER['ref']);
                     }
+                    $arr = null;
+                    $level->update_level_by_direct_partners_count($db, $myid = USER['ref']);
+                    $level->update_level_by_purchase($db, $myid = USER['ref']);
                 }
                 #################### Direct Bonus end #######################
                 $con->commit();
             } catch (PDOException $th) {
-                // $_SESSION['msg'][] = $th;
+                $_SESSION['msg'][] = $th;
                 echo $th;
                 $pay = false;
                 $con->rollback();
@@ -238,7 +251,7 @@ class Order_ctrl
             $cmsn = 0;
             // $membercnt = $level->count_direct_partners($db, $myid = 1);
             if ($refuser) {
-                if ($pmt['point_used']==0) {
+                if ($pmt['point_used'] == 0) {
                     $cmsn = round($total_db, 2);
                     $trnArr['amount'] =  $cmsn;
                     $trnArr['trnNum'] = $ordernum;
@@ -248,12 +261,11 @@ class Order_ctrl
                     $level->save_trn_data($db, $trnArr);
                 }
             }
-            $level->update_level_by_direct_partners_count($db, $myid=$ref['ref']);
-            $level->update_level_by_purchase($db, $myid=$ref['ref']);
+            $level->update_level_by_direct_partners_count($db, $myid = $ref['ref']);
+            $level->update_level_by_purchase($db, $myid = $ref['ref']);
             return true;
         }
         return false;
-        
     }
     public function delet_order_and_cart($id)
     {

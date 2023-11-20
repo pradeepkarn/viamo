@@ -37,9 +37,13 @@ class Member_ctrl
     }
     function update_level_by_direct_partners_count($db, $myid)
     {
-        $current_level = $db->showOne("select member_level as current_level from pk_user where pk_user.id='$myid'")['current_level'];
+        $current_level = $db->showOne("select member_level as current_level from pk_user where pk_user.id='$myid'");
         $count = $this->count_direct_partners($db, $myid);
-        switch (strval($current_level)) {
+        $clv  = 0;
+        if ($current_level) {
+            $clv = $current_level['current_level'];
+        }
+        switch (strval($clv)) {
             case '1':
                 if ($count >= 20) {
                     if ($db->execSql("update pk_user set member_level = '2' where id = '{$myid}'")) {
@@ -77,8 +81,12 @@ class Member_ctrl
     }
     function update_level_by_purchase($db, $myid)
     {
-        $current_level = $db->showOne("select member_level as current_level from pk_user where pk_user.id='$myid'")['current_level'];
-        switch (strval($current_level)) {
+        $current_level = $db->showOne("select member_level as current_level from pk_user where pk_user.id='$myid'");
+        $clv  = 0;
+        if ($current_level) {
+            $clv = $current_level['current_level'];
+        }
+        switch (strval($clv)) {
             case '0':
                 // Upgrade to vip
                 // check perosons below me at least three people purchases if yes then update level to 1
@@ -483,6 +491,21 @@ class Member_ctrl
         $cmsn = $db->showOne($sql)['total_db'];
         return $cmsn ? round($cmsn, 2) : 0;
     }
+    function product_purchase_amount($db, $myid)
+    {
+        $trn_group = '5'; //withdrawal request
+        $trn_type = '2'; //debit
+        $status = '1'; //active/apporved
+        $sql = "
+        select SUM(amount) as total_db from transactions 
+        where transacted_to='$myid' 
+        AND trn_group='$trn_group'
+        AND trn_type='$trn_type'
+        AND status='$status'
+        ";
+        $cmsn = $db->showOne($sql)['total_db'];
+        return $cmsn ? round($cmsn, 2) : 0;
+    }
     function requested_amount($db, $myid)
     {
         $trn_group = '3'; //withdrawal request
@@ -507,7 +530,7 @@ class Member_ctrl
     function net_commission($db, $myid)
     {
         // net income = bonus sum + team pv sum - debited amount
-        return round(($this->bonus_sum_cr($db, $myid) + $this->team_pv_sum_cr($db, $myid) - $this->debited_amount($db, $myid)), 2);
+        return round(($this->bonus_sum_cr($db, $myid) + $this->team_pv_sum_cr($db, $myid) - $this->debited_amount($db, $myid) - $this->product_purchase_amount($db, $myid)), 2);
     }
     function net_balance_minus_requested_balance($db, $myid)
     {
@@ -522,7 +545,6 @@ class Member_ctrl
         $sql = "
         select * from transactions 
         where transacted_to='$myid' 
-        AND trn_group='$trn_group'
         AND trn_type='$trn_type'
         ";
         $current_page = 0;
@@ -607,12 +629,12 @@ class Member_ctrl
     }
     function withdrawal_request_list($db, $myid)
     {
-        $trn_group = '3'; //with drwala request
+        // $trn_group = '3'; //with drwala request
         $trn_type = '2'; //debited
         $sql = "
         select * from transactions 
         where transacted_to='$myid' 
-        AND trn_group='$trn_group'
+        
         AND trn_type='$trn_type' ORDER BY id DESC
         ";
         return $db->show($sql);
@@ -620,7 +642,7 @@ class Member_ctrl
     function bonus_list($db, $myid)
     {
         $trn_group = '2'; //with drwala request
-        $trn_type = '1'; //debited
+        $trn_type = '1'; //credited
         $sql = "
         select * from transactions 
         where transacted_to='$myid' 
@@ -635,7 +657,6 @@ class Member_ctrl
         $trn_type = '2'; //debited
         $sql = "
         select * from transactions 
-        where trn_group='$trn_group'
         AND trn_type='$trn_type' 
         AND status = '0'
         ORDER BY id DESC

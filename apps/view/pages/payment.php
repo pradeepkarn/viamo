@@ -135,28 +135,31 @@ $addrs = get_my_primary_address($userid = USER['id']);
                 <td colspan="6"></td>
                 <th>
                   <form method="post" id="discount_on_point" action="">
-                    Point <input <?php if (isset($_SESSION['use_point'])) {
+                    <?php echo $point; ?> Point <input <?php if (isset($_SESSION['use_point'])) {
                                       echo $_SESSION['use_point'] ? "checked" : null;
                                     } ?> name="use_point" onclick="toggleCheckboxes()" id="checkbox1" type="checkbox">
                     <input name="point_action" type="hidden">
                     <button class="btn btn-primary btn-sm" type="submit">Redeem</button>
                   </form>
                 </th>
-                <th>Point =</th>
+                <th>Discount =</th>
                 <th>
                   <?php
                   // $point = 0;
                   // myprint($cv);
+                  $redeem_point = 0;
                   if (isset($_SESSION['use_point'])) {
                     if ($_SESSION['use_point']===true) {
                       if ($total_amt <= $point) {
                         $total_amt = 0;
+                        $redeem_point = $total_amt;
                       } else if ($total_amt > $point && $point > 0) {
                         $total_amt  = $total_amt - $point;
+                        $redeem_point = $point;
                       }
                     }
                   }
-                  echo $point; ?>
+                  echo $redeem_point; ?>
                 </th>
               </tr>
               <tr class="text-end">
@@ -261,7 +264,7 @@ $addrs = get_my_primary_address($userid = USER['id']);
           <input style="display: none;" <?php if (isset($_SESSION['use_point'])) {
                                           echo $_SESSION['use_point'] ? "checked" : null;
                                         } ?> id="checkbox2" name="redeem_point" type="checkbox">
-          <input type="hidden" name="point" value="<?php echo $point; ?>">
+          <input type="hidden" name="point" value="<?php echo $redeem_point; ?>">
           <input type="hidden" name="total_amount" value="<?php echo $total_amt; ?>">
           <input type="hidden" name="total_gm" value="<?php echo $total_gm; ?>">
           <input type="hidden" name="shipping_cost" value="<?php echo $shpcost; ?>">
