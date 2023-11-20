@@ -161,6 +161,14 @@ if (isset($_GET['sponserid']) && strval($_GET['sponserid'])) {
                     </div>
                 </div>
                 <div class="form-group row mb-4">
+                    <div class="col-lg-6">
+                        <input class="form-control valid" type="text" required="" placeholder="Street" name="street" data-validation-required-message="Das ist ein Pflichtfeld" value="" aria-required="true" aria-invalid="false">
+                    </div>
+                    <div class="col-lg-6">
+                        <input class="form-control valid" type="text" required="" placeholder="Street number" name="street_num" data-validation-required-message="Das ist ein Pflichtfeld" value="" aria-required="true" aria-invalid="false">
+                    </div>
+                </div>
+                <div class="form-group row mb-4">
                     <div class="col-lg-4">
                         <input class="form-control valid" type="text" required="" placeholder="Postal code" name="zipcode" data-validation-required-message="Das ist ein Pflichtfeld" value="" aria-required="true" aria-invalid="false">
                     </div>

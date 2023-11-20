@@ -812,6 +812,12 @@ function usersignup()
       // }
       $arr['zipcode'] = sanitize_remove_tags($_POST['zipcode']);
     }
+    if (isset($_POST['street'])) {
+      $arr['street'] = sanitize_remove_tags($_POST['street']);
+    }
+    if (isset($_POST['street_num'])) {
+      $arr['street_num'] = sanitize_remove_tags($_POST['street_num']);
+    }
     if (isset($_POST['gender'])) {
       if (strlen(sanitize_remove_tags($_POST['gender'])) < 1) {
         $_SESSION['msg'][] = "Invalid Gender";
@@ -943,6 +949,12 @@ function createAddess($userid, $post)
   $arr['locality'] = $post['address'];
   $arr['city'] = $post['city'];
   $arr['state'] = $post['state'];
+  if (isset($post['street'])) {
+    $arr['street'] = sanitize_remove_tags($post['street']);
+  }
+  if (isset($post['street_num'])) {
+    $arr['street_num'] = sanitize_remove_tags($post['street_num']);
+  }
   $country = getData('countries', $post['country']);
   if ($country == false) {
     $_SESSION['msg'][] = ('Invalid country');
