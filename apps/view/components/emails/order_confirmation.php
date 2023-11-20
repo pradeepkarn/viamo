@@ -14,33 +14,32 @@ $message = <<<MSG
 </head>
 
 <body>
-  <div style="max-width: 100%; margin: 0 auto; font-family: Arial, sans-serif; line-height: 1.6;">
+  <div style="max-width: 100%; margin: 0 auto; font-family: Arial, sans-serif; line-height: 1.6; font-size:12px">
     <h2>Vielen Dank fuer die Bestellung!</h2>
     <p>Deine Bestellung mit der Nummer <strong>$context->order_id</strong> wurde erfolgreich verbucht.</p>
-    <p>Gesamtsumme der Bestellung beträgt: <strong>€ $context->order_amt</strong></p>
+    <p>Gesamtsumme der betraegt <strong>Euro $context->order_amt</strong></p>
     <p>Bitte ueberweise die Gesamtsumme auf das folgende Konto:</p>
     $context->bank_account
-    <p>Hier in das VIAMO-World-Backoffice einloggen "<strong>Order Nr. $context->order_id</strong>"</p>
+    <p>Bitte bei Zahlungsreferenz "<strong>Order Nr. $context->order_id</strong>" angeben</p>
    
-  
-    <p>Hier in das VIAMO-World-Backoffice einloggen.</p>
-    <p>Best regards,</p>
-    <p>$sitename Backoffice-Team</p>
+    <p><a href="/<?php echo home; ?>/login">Hier in das VIAMO-World-Backoffice einloggen.</a></p> 
+    <p>Powervolle Grüße dein</p>
+    <p>$sitename - World of Energy</p>
+    <p>Backoffice-Team</p>
 
   <hr>
   
     <h2>Thank you for your order!</h2>
     <p>Your order with the number <strong>$context->order_id</strong> has been successfully processed.</p>
-    <p>Total amount of the order is: <strong>€ $context->order_amt</strong></p>
+    <p>Total amount of the order is: <strong>Euro $context->order_amt</strong></p>
     <p>Please transfer the total amount to the following bank account:</p>
     $context->bank_account
     <p>Please use "<strong>Order Nr. $context->order_id</strong>" as payment reference.</p>
 
-    <p>Payment executed</p>
-    <p>Login to your VIAMO-World-Backoffice.</p>
-
-    <p>Best regards,</p>
-    <p>$sitename Backoffice-Team</p>
+    <p><a href="/<?php echo home; ?>/login">Login to your VIAMO-World-Backoffice.</a></p>
+   <p>Powerful geetings from your </p>
+    <p>$sitename - World of Energy</p>
+    <p>Backoffice-Team</p>
 </div>
 
 </body>
@@ -51,7 +50,7 @@ MSG;
 
 $mail = php_mailer(new PHPMailer());
 $mail->isHTML(true);
-$mail->Subject = $sitename.': Order Placed!!!';
+$mail->Subject = $sitename.': Neue Bestellung';
 $mail->Body = $message;
 $mail->setFrom(orderemail, SITE_NAME . "-New Order");
 if (!email_has_valid_dns($context->email)) {
