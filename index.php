@@ -1,4 +1,6 @@
 <?php
+ini_set('display_errors', 1);
+
 require_once(__DIR__ . "/config.php");
 import("/includes/class-autoload.inc.php");
 import('/vendor/autoload.php');
