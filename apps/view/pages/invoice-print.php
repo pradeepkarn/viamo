@@ -177,7 +177,7 @@ try {
                                             <?php
                                             } 
                                             $net_amt = 0;
-                                            $total_am = round($total_am,2);
+                                            $total_amt = round($total_amt,2);
                                             $net_amt = round($total_amt-$discount,2);
                                             ?>
 
