@@ -49,7 +49,9 @@ SCRPT;
         <div class="container px-4 ms-2">
           <div class="row">
             <div class="col bst_news">
-              <marquee class="marque_news mt-2" behavior="scroll" scrollamount="8" direction="left">Lorem ipsum dolor sit amet consectetur adipisicing elit. Vel maiores eos alias eius rerum qui expedita, architecto, quasi quae consequatur tenetur delectus perferendis numquam. Dolor ad laboriosam exercitationem expedita. Excepturi.</marquee>
+              <marquee class="marque_news mt-2" behavior="scroll" scrollamount="8" direction="left">
+              Herzlich Willkommen in der VIAMO-Community. Am 26. November starten wir die PRE-Launch-Phase mit Webinaren um 10:00/16:00/20:00 Uhr hier: https://us02web.zoom.us/j/86939220044
+              </marquee>
             </div>
           </div>
         </div>
