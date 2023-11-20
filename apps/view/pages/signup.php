@@ -199,7 +199,7 @@ if (isset($_GET['sponserid']) && strval($_GET['sponserid'])) {
                 </div>
                 <div class="custom-control custom-checkbox mb-3">
                     <input type="checkbox">
-                    <label for="">I have read and accept <a href="/<?php echo home; ?>/terms-and-conditions" target="_blank">terms and conditions</a>.</label>
+                    <label for="">I have read and accept <a href="/<?php echo home; ?>/terms-and-conditions-partners" target="_blank">Terms & Conditions for Partners</a>.</label>
                 </div>
 
                 <div class="custom-control custom-checkbox mb-3">

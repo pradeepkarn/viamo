@@ -25,7 +25,7 @@ $message = <<<MSG
   <p>Telefon: $context->mobile</p>
   
   
-  <p>Bitte setze dich mit dem neuen Mitglied in Verbindung und unterstütze, damit die VIAMO-Community schnell weiter wachsen kann.</p><br>
+  <p>Bitte setze dich mit dem neuen Mitglied in Verbindung und unterstuetze, damit die VIAMO-Community schnell weiter wachsen kann.</p><br>
 
   <p>Dein VIAMO-World-Team</p>
   <p>SPONSOR POWER AG</p>
