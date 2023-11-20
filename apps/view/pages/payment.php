@@ -59,9 +59,10 @@ $addrs = get_my_primary_address($userid = USER['id']);
               $item = (object) getData('item', $cv->item_id);
               $phpobj = json_decode($item->jsn);
               $gm = 0;
+              // myprint($phpobj->items);
               foreach ($phpobj->items as $pkey => $prd) {
                 $prod = (object) (new Dbobjects)->showOne("select id,qty,unit from item where id = '$prd->item'");
-                $gm += calculate_gram($prod, $cv->qty);
+                $gm += calculate_gram($prod, $cv->qty*$prd->qty);
                 $total_gm += $gm;
               }
 
