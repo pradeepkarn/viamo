@@ -3,9 +3,9 @@
 use PHPMailer\PHPMailer\PHPMailer;
 $sitename = SITE_NAME;
 $context->order_amt = round($context->order_amt,2);
-$home = home;
-$link_gr = "<a href='/$home/login'>Login to your VIAMO-World-Backoffice.</a>";
-$link_en = "<a href='/$home/login'>Hier in das VIAMO-World-Backoffice einloggen.</a>";
+$baseuri = BASE_URI;
+$link_gr = "<a href='$baseuri/login'>Login to your VIAMO-World-Backoffice.</a>";
+$link_en = "<a href='$baseuri/login'>Hier in das VIAMO-World-Backoffice einloggen.</a>";
 $message = <<<MSG
 <!DOCTYPE html>
 <html lang="en">
