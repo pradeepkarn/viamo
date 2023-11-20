@@ -1,7 +1,9 @@
 <?php
 
 use PHPMailer\PHPMailer\PHPMailer;
-
+$baseuri = BASE_URI;
+$link_gr = "<a href='/$baseuri/login'>Login to your VIAMO-World-Backoffice.</a>";
+$link_en = "<a href='/$baseuri/login'>Hier in das VIAMO-World-Backoffice einloggen.</a>";
 // $from_email = email;
 // $subject = "Welcome to Domswiss";
 
@@ -20,16 +22,16 @@ $message = <<<MSG
   
   <p>Wir freuen uns, dass du dich der VIAMO-Community angeschlossen hast!</p>
   
-  <p>tarte jetzt mit uns durch und schreibe mit uns eine einzigartige Geschichte</p>
-  <p>Wenn du möchtest, dann gebe diese wirklich einmalige Chance an Menschen weiter. Ganz besonders, wenn diese Menschen zu unserem Leitbild JA sagen können.:</p>
+  <p>Starte jetzt mit uns durch und schreibe mit uns eine einzigartige Geschichte</p>
+  <p>Wenn du moechtest, dann gebe diese wirklich einmalige Chance an Menschen weiter. Ganz besonders, wenn diese Menschen zu unserem Leitbild JA sagen koennen:</p>
   <ul>
     <li>Gesundheit erhalten</li>
-    <li>Finanzielle Unabhängigkeit erreichen</li>
+    <li>Finanzielle Unabhaengigkeit erreichen</li>
     <li>Soziale Vernetzung und Freundschaften leben</li>
   </ul>
   
   <p>Hier kannst du dich in das VIAMO-Backoffice einloggen: </p>
-  <p><strong>my.viamo.world/login </strong></p>
+  <p><strong>$link_gr</strong></p>
   <p>Username: $context->username</p>
   <p>Password: $context->password</p>
   
@@ -38,7 +40,7 @@ $message = <<<MSG
   <p>Schmiedgasse 6</p>
   <p>CH-9100 Herisau</p>
   <p>www.viamo.world</p>
-  <p>Mail: <a href="http://support@viamo.world">support@viamo.world</a> </p>
+  <p>Mail: <a href="mailto:support@viamo.world">support@viamo.world</a> </p>
 
   <hr>
   
@@ -55,7 +57,7 @@ $message = <<<MSG
   </ul>
   
   <p>You can log in to the VIAMO back office here: </p>
-  <p><strong>my.viamo.world/login </strong></p>
+  <p><strong>$link_en</strong></p>
   <p>Username: $context->username</p>
   <p>Password: $context->password</p>
   
@@ -64,7 +66,7 @@ $message = <<<MSG
   <p>Schmiedgasse 6</p>
   <p>CH-9100 Herisau</p>
   <p>www.viamo.world</p>
-  <p>Mail: <a href="http://support@viamo.world">support@viamo.world</a> </p>
+  <p>Mail: <a href="mailto:support@viamo.world">support@viamo.world</a> </p>
 </body>
 </html>
 
