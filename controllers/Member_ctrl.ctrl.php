@@ -634,7 +634,6 @@ class Member_ctrl
         $sql = "
         select * from transactions 
         where transacted_to='$myid' 
-        
         AND trn_type='$trn_type' ORDER BY id DESC
         ";
         return $db->show($sql);
@@ -657,7 +656,7 @@ class Member_ctrl
         $trn_type = '2'; //debited
         $sql = "
         select * from transactions 
-        AND trn_type='$trn_type' 
+        WHERE trn_type='$trn_type' 
         AND status = '0'
         ORDER BY id DESC
         ";

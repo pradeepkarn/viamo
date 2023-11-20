@@ -152,6 +152,7 @@ class Order_ctrl
                             $trnArr['transactedBy'] = USER['id'];
                             $trnArr['purchase_amt'] = round($total_amt, 2);
                             $trnArr['amount'] =  $redeempt;
+                            $trnArr['real_amt'] =  $redeempt;
                             $trnArr['trnNum'] = $ordernum;
                             $trnArr['status'] = 1; // 1: Active, 2: cancelled  
                             $trnArr['trnGroup'] = 5; // 1:pv commissions, 2: direct bonus

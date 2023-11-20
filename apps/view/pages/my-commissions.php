@@ -121,7 +121,7 @@ $tp = isset($context['data']->total_cmsn) ? $context['data']->total_cmsn : 1;
                                         <th>Remark</th>
                                         <th>Status</th>
                                         <th>Date</th>
-                                        <th>Bank</th>
+                                        <th>For </th>
                                     </tr>
                                 </thead>
 
@@ -217,7 +217,11 @@ $tp = isset($context['data']->total_cmsn) ? $context['data']->total_cmsn : 1;
                                                         <td><?php echo $bank->country_name; ?></td>
                                                     </tr>
                                                 </table>
-                                                <?php } ?>
+                                                <?php }
+                                                if ($value['trn_group']==5) {
+                                                    echo "Product purchase";
+                                                }
+                                                ?>
                                             </th>
 
                                         </tr>
