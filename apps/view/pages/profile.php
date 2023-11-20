@@ -85,7 +85,10 @@ if (!authenticate()) {
                                                                 </div>
 
 
-
+                                                                <div class="col-md-12">
+                                                                    <label for="">Company name</label>
+                                                                    <input type="text" name="company_name" value="<?php echo USER['company_name']; ?>" class="form-control">
+                                                                </div>
                                                                 <div class="col-md-6">
                                                                     <label for="">First name</label>
                                                                     <input type="text" name="first_name" value="<?php echo USER['first_name']; ?>" class="form-control">
@@ -94,13 +97,13 @@ if (!authenticate()) {
                                                                     <label for="">Last name</label>
                                                                     <input type="text" name="last_name" value="<?php echo USER['last_name']; ?>" class="form-control">
                                                                 </div>
+                                                                <div class="col-md-12">
+                                                                    <label for="">Address</label>
+                                                                    <input type="text" name="address" value="<?php echo USER['address']; ?>" class="form-control">
+                                                                </div>
                                                                 <div class="col-md-6">
                                                                     <label for="">City</label>
                                                                     <input type="text" name="city" value="<?php echo USER['city']; ?>" class="form-control">
-                                                                </div>
-                                                                <div class="col-md-6">
-                                                                    <label for="">State</label>
-                                                                    <input type="text" name="state" value="<?php echo USER['state']; ?>" class="form-control">
                                                                 </div>
                                                                 <div class="col-md-6">
                                                                     <label for="">Zip code</label>
@@ -120,6 +123,14 @@ if (!authenticate()) {
                                                                             <option <?php echo USER['country_code'] == $cnt->code ? 'selected' : null; ?> value="<?php echo $cnt->code; ?>"><?php echo $cnt->name; ?></option>
                                                                         <?php endforeach; ?>
                                                                     </select>
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <label for="">Phone Number</label>
+                                                                    <input type="text" name="mobile" value="<?php echo USER['mobile']; ?>" class="form-control">
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <label for="">Email</label>
+                                                                    <input type="text" readonly name="email" value="<?php echo USER['email']; ?>" class="form-control">
                                                                 </div>
                                                                 <div class="col-8 new_boxn">
                                                                     <h6 class="m-0">Status:</h6>
@@ -142,25 +153,50 @@ if (!authenticate()) {
                                                 <div id="personaldata" class="tabcontent1">
                                                     <h5>Shipping Address</h5>
                                                     <?php $addrs = get_my_primary_address(USER['id']);
-                                                    if ($addrs) { ?>
+                                                    if ($addrs) {
+
+                                                        // Split the name into an array using spaces as the delimiter
+                                                        $nameParts = explode(' ', $addrs->name);
+
+                                                        // Extract the first element as the first name
+                                                        $firstName = array_shift($nameParts);
+
+                                                        // Combine the remaining parts as the last name
+                                                        $lastName = implode(' ', $nameParts);
+
+                                                    ?>
 
 
                                                         <form class="material-form pt-2" id="update-address" action="/<?php echo home; ?>/update-address-ajax" method="POST">
                                                             <div class="form-group row mb-4">
-                                                                <div class="col-lg-7">
-                                                                    <input type="hidden" name="id" value="<?php echo $addrs->id; ?>">
-                                                                    <input class="form-control valid" type="text" required="" placeholder="" name="person_name" value="<?php echo $addrs->name; ?>" aria-required="true" aria-invalid="false">
+                                                                <div class="col-lg-12">
+                                                                    <input class="form-control valid" type="text" required="" placeholder="Company" name="company" value="<?php echo $addrs->company; ?>" aria-required="true" aria-invalid="false">
                                                                 </div>
-                                                                <div class="col-lg-5">
-                                                                    <input class="form-control valid" type="text" required="" placeholder="Inviting person's username" name="state" value="<?php echo $addrs->state; ?>" aria-required="true" aria-invalid="false">
-                                                                </div>
-
                                                             </div>
                                                             <div class="form-group row mb-4">
-                                                                <div class="col-lg-12">
-                                                                    <input class="form-control valid" type="text" required="" placeholder="Your Address" name="address_name" value="<?php echo $addrs->address_name; ?>" aria-required="true" aria-invalid="false">
+                                                                <div class="col-lg-6">
+                                                                    <input type="hidden" name="id" value="<?php echo $addrs->id; ?>">
+                                                                    <input class="form-control valid" type="text" required="" placeholder="" name="first_name" value="<?php echo $firstName; ?>" aria-required="true" aria-invalid="false">
+                                                                </div>
+                                                                <div class="col-lg-6">
+                                                                    <input class="form-control valid" type="text" required="" placeholder="" name="last_name" value="<?php echo $lastName; ?>" aria-required="true" aria-invalid="false">
                                                                 </div>
                                                             </div>
+
+                                                            <div class="form-group row mb-4">
+                                                                <div class="col-lg-12">
+                                                                    <input class="form-control valid" type="text" required="" placeholder="Street" name="street" value="<?php echo $addrs->street; ?>" aria-required="true" aria-invalid="false">
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group row mb-4">
+                                                                <div class="col-lg-6">
+                                                                    <input class="form-control valid" type="text" required="" placeholder="Postal Code" name="zipcode" value="<?php echo $addrs->zipcode; ?>" aria-required="true" aria-invalid="false">
+                                                                </div>
+                                                                <div class="col-lg-6">
+                                                                    <input class="form-control valid" type="text" required="" placeholder="City" name="city" value="<?php echo $addrs->city; ?>" aria-required="true" aria-invalid="false">
+                                                                </div>
+                                                            </div>
+
 
                                                             <div class="form-group row mb-4">
 
@@ -180,28 +216,19 @@ if (!authenticate()) {
                                                                     </select>
                                                                 </div>
 
-
-
-                                                                <div class="col-md-6">
-                                                                    <input class="form-control valid" type="text" required="" placeholder="Street (Optional)" name="street" data-validation-required-message="Das ist ein Pflichtfeld" value="<?php echo $addrs->street; ?>" aria-required="true" aria-invalid="false">
-                                                                </div>
-                                                                <div class="col-md-6">
-                                                                    <input class="form-control valid" type="text" required="" placeholder="Your City" name="city" data-validation-required-message="Das ist ein Pflichtfeld" value="<?php echo $addrs->city; ?>" aria-required="true" aria-invalid="false">
-                                                                </div>
                                                             </div>
 
                                                             <div class="form-group row mb-4">
-                                                                <div class="col-lg-8">
-                                                                    <input class="form-control valid" type="text" required="" placeholder="Zip-Code" name="zipcode" data-validation-required-message="Das ist ein Pflichtfeld" value="<?php echo $addrs->zipcode; ?>" aria-required="true" aria-invalid="false">
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="form-group row">
                                                                 <div class="col-lg-2">
                                                                     <input class="form-control valid" placeholder="ISD Code" type="text" name="isd_code" value="<?php echo $addrs->isd_code; ?>">
                                                                 </div>
                                                                 <div class="col-lg-6">
                                                                     <input class="form-control valid" type="number" required="" placeholder="Mobile" name="mobile" data-validation-required-message="Das ist ein Pflichtfeld" value="<?php echo $addrs->mobile; ?>" aria-required="true" aria-invalid="false">
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group row">
+                                                                <div class="col-lg-12">
+                                                                    <input class="form-control valid" placeholder="Email" type="text" name="email" readonly value="<?php echo USER['email']; ?>">
                                                                 </div>
                                                             </div>
 
@@ -424,7 +451,7 @@ if (!authenticate()) {
                                                                                 <div>
                                                                                     <label for="">Action</label>
                                                                                     <button id="uploadKycAddreesBtn" type="button" class="btn btn-primary">Upload</button>
-                                                                                    
+
                                                                                 </div>
                                                                             </div>
 

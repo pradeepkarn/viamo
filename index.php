@@ -466,9 +466,10 @@ switch ($path) {
         $myobj->tableName = "address";
         $id = $_POST['id'];
         $myobj->pk($id);
-        $myobj->insertData['name'] = $_POST['person_name'];
-        $myobj->insertData['state'] = $_POST['state'];
-        $myobj->insertData['address_name'] = $_POST['address_name'];
+        $myobj->insertData['company'] = $_POST['company'];
+        $myobj->insertData['name'] = $_POST['first_name']." ".$_POST['last_name'];
+        $myobj->insertData['state'] = isset($_POST['state']) ? ($_POST['state']) : null;
+        $myobj->insertData['address_name'] = isset($_POST['address_name']) ? ($_POST['address_name']) : null;
         if (isset($_POST['country_code'])) {
           $myobj->insertData['country_code'] = $_POST['country_code'];
           $country = getCountryData($countryCode = $_POST['country_code']);
@@ -482,7 +483,7 @@ switch ($path) {
         // myprint($data);
         $myobj->update();
         echo js_alert('Updated');
-        echo RELOAD;
+        // echo RELOAD;
       }
       exit;
     }
@@ -499,8 +500,14 @@ switch ($path) {
       if (isset($_POST['first_name'])) {
         $uobj->insertData['first_name'] = $_POST['first_name'];
       }
+      if (isset($_POST['company_name'])) {
+        $uobj->insertData['company_name'] = $_POST['company_name'];
+      }
       if (isset($_POST['last_name'])) {
         $uobj->insertData['last_name'] = $_POST['last_name'];
+      }
+      if (isset($_POST['address'])) {
+        $uobj->insertData['address'] = $_POST['address'];
       }
       if (isset($_POST['city'])) {
         $uobj->insertData['city'] = $_POST['city'];
@@ -510,6 +517,9 @@ switch ($path) {
       }
       if (isset($_POST['zipcode'])) {
         $uobj->insertData['zipcode'] = $_POST['zipcode'];
+      }
+      if (isset($_POST['mobile'])) {
+        $uobj->insertData['mobile'] = $_POST['mobile'];
       }
       if (isset($_POST['country_code'])) {
         $uobj->insertData['country_code'] = $_POST['country_code'];
@@ -584,6 +594,7 @@ switch ($path) {
       $arr['mobile'] = $_POST['mobile'];
       $arr['city'] = $_POST['city'];
       $arr['street'] = isset($_POST['street']) ? ($_POST['street']) : null;
+      $arr['company'] = $_POST['company'];
       $arr['state'] = $_POST['state'];
       // $arr['country'] = $_POST['country'];
       if (isset($_POST['country'])) {

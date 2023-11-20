@@ -216,6 +216,10 @@ if (!$prmadrs) {
                                         <label for="">Street(Optional)</label>
                                         <input type="text" class="form-control my-2 valid" placeholder="" name="street">
                                     </div>
+                                    <div class="col">
+                                        <label for="">Company</label>
+                                        <input type="text" class="form-control my-2 valid" placeholder="" name="company">
+                                    </div>
                                 </div>
                                 <div class="row">
                                     <div class="col">
