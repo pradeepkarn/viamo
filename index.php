@@ -476,6 +476,7 @@ switch ($path) {
           $myobj->insertData['country'] = $country->name;
         }
         $myobj->insertData['street'] = isset($_POST['street']) ? ($_POST['street']) : null;
+        $myobj->insertData['street_num'] = isset($_POST['street_num']) ? ($_POST['street_num']) : null;
         $myobj->insertData['city'] = $_POST['city'];
         $myobj->insertData['zipcode'] = $_POST['zipcode'];
         $myobj->insertData['isd_code'] = $_POST['isd_code'];
