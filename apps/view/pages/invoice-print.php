@@ -80,7 +80,7 @@ try {
                                     <?php echo $shpadrs->company; ?> <br>
                                     <?php echo $shpadrs->name; ?> <br>
                                     <?php echo $shpadrs->city; ?> <br>
-                                    <?php echo $shpadrs->street != '' ? "Street: $shpadrs->street <br>" : null; ?>
+                                    <?php echo $shpadrs->street != '' ? "Street: $shpadrs->street <br>" : "Street: "; ?>
                                     <?php echo $shpadrs->state; ?> <br>
                                     <?php echo $shpadrs->country; ?> <br>
                                     <?php echo $shpadrs->zipcode; ?>
