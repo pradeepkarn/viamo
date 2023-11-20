@@ -187,6 +187,7 @@ $tp = isset($context['data']->total_cmsn) ? $context['data']->total_cmsn : 1;
                                             <th><?php echo $value['created_at']; ?></th>
                                             <th>
                                                 <?php
+                                                if ($value['trn_group']==3) {
                                                 $bank = $value['jsn'] != '' ? json_decode($value['jsn']) : [];
                                                 ?>
 
@@ -216,7 +217,7 @@ $tp = isset($context['data']->total_cmsn) ? $context['data']->total_cmsn : 1;
                                                         <td><?php echo $bank->country_name; ?></td>
                                                     </tr>
                                                 </table>
-
+                                                <?php } ?>
                                             </th>
 
                                         </tr>
