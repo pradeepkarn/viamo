@@ -157,7 +157,7 @@ if (isset($_GET['sponserid']) && strval($_GET['sponserid'])) {
                         <?php pkAjax("#cntrysrch", "/country-search-ajax", "#cntrysrch", "#res-cntr", 'keyup'); ?>
                     </div>
                     <div class="col-lg-6">
-                        <input class="form-control valid" type="text" required="" placeholder="State" name="state" data-validation-required-message="Das ist ein Pflichtfeld" value="" aria-required="true" aria-invalid="false">
+                        <input class="form-control valid" type="text" required="" placeholder="State (optional)" name="state" data-validation-required-message="Das ist ein Pflichtfeld" value="" aria-required="true" aria-invalid="false">
                     </div>
                 </div>
                 <div class="form-group row mb-4">

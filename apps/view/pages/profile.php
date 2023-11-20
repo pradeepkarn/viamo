@@ -465,7 +465,7 @@ if (!authenticate()) {
                                                     <form class="material-form pt-2" id="update_bank_details_form" method="post" action="/<?php echo home; ?>/save-bank-account-ajax">
                                                         <div class="form-group row mb-4">
                                                             <div class="col-md-6">
-                                                                <label for="">Account Number</label>
+                                                                <label for="">Name of Account Holder</label>
                                                                 <input type="text" name="bank_account" value="<?php echo $bank_account; ?>" class="form-control" placeholder="Bank Account Number">
                                                             </div>
                                                             <div class="col-md-6">

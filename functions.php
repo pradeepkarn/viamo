@@ -785,10 +785,10 @@ function usersignup()
       $arr['city'] = sanitize_remove_tags($_POST['city']);
     }
     if (isset($_POST['state'])) {
-      if (strlen(sanitize_remove_tags($_POST['state'])) < 2) {
-        $_SESSION['msg'][] = "Invalid state name";
-        return;
-      }
+      // if (strlen(sanitize_remove_tags($_POST['state'])) < 2) {
+      //   $_SESSION['msg'][] = "Invalid state name";
+      //   return;
+      // }
       $arr['state'] = sanitize_remove_tags($_POST['state']);
     }
     if (isset($_POST['address'])) {
@@ -945,10 +945,6 @@ function createAddess($userid, $post)
   }
   if ($arr['city'] == "") {
     $_SESSION['msg'][] = ('city cannot be empty');
-    return;
-  }
-  if ($arr['state'] == "") {
-    $_SESSION['msg'][] = ('state cannot be empty');
     return;
   }
   if ($arr['country'] == "") {
@@ -1420,6 +1416,7 @@ function send_sign_up_email($obj)
       "email" => $obj->email,
       "username" => $obj->username,
       "password" => $obj->password,
+      "first_name" => $obj->first_name,
     )
   );
   if ($obj->partner_email != null) {
@@ -1428,6 +1425,8 @@ function send_sign_up_email($obj)
       (object) array(
         "email" => $obj->partner_email,
         "username" => $obj->username,
+        "mobile" => $obj->mobile,
+        "first_name" => $obj->first_name,
         "name" => $obj->first_name . " " . $obj->last_name
       )
     );

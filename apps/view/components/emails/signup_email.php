@@ -13,44 +13,58 @@ $message = <<<MSG
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Welcome to DOM Swiss</title>
+  <title>Welcome to VIAMO</title>
 </head>
 <body>
-  <h2>It's time. Get started with us now!</h2>
+  <h2>Hallo $context->first_name</h2>
   
-  <p>If you want to write history with us and make a difference yourself, then take this really unique opportunity.</p>
+  <p>Wir freuen uns, dass du dich der VIAMO-Community angeschlossen hast!</p>
   
-  <p>If this is important to you:</p>
+  <p>tarte jetzt mit uns durch und schreibe mit uns eine einzigartige Geschichte</p>
+  <p>Wenn du möchtest, dann gebe diese wirklich einmalige Chance an Menschen weiter. Ganz besonders, wenn diese Menschen zu unserem Leitbild JA sagen können.:</p>
   <ul>
-    <li>Your health and that of your loved ones</li>
-    <li>A sustainable really good income</li>
-    <li>Career without risk</li>
+    <li>Gesundheit erhalten</li>
+    <li>Finanzielle Unabhängigkeit erreichen</li>
+    <li>Soziale Vernetzung und Freundschaften leben</li>
   </ul>
   
-  <p>... and would like to get actively involved with us in one of the fastest growing markets, then log in now and pass this opportunity on!</p>
-  
-  <p><strong>The login details are:</strong></p>
+  <p>Hier kannst du dich in das VIAMO-Backoffice einloggen: </p>
+  <p><strong>my.viamo.world/login </strong></p>
   <p>Username: $context->username</p>
   <p>Password: $context->password</p>
   
-  <p>You can log in as a reseller partner at <a href="http://www.partners.domswiss.me">www.partners.domswiss.me</a></p>
-  
-  <p>Best regards,<br>Your DOM Swiss back office team</p>
+  <p>Dein VIAMO-World-Team</p>
+  <p>SPONSOR POWER AG</p>
+  <p>Schmiedgasse 6</p>
+  <p>CH-9100 Herisau</p>
+  <p>www.viamo.world</p>
+  <p>Mail: <a href="http://support@viamo.world">support@viamo.world</a> </p>
 
   <hr>
   
-  <h2>Herzlichen Glückwunsch!</h2>
+  <h2>Hello  $context->first_name</h2>
   
-  <p>Dein Team wächst und ein neuer direkter Partner hat sich registriert:</p>
+  <p>We are pleased that you have joined the VIAMO community! </p>
   
+  <p>Get started with us now and write a unique story with us</p>
+  <p>If you want, pass this truly unique opportunity on to people. Especially when these people can say YES to our mission statement:</p>
+  <ul>
+    <li>Maintain health</li>
+    <li>Achieve financial independence</li>
+    <li>Live social networking and friendships</li>
+  </ul>
+  
+  <p>You can log in to the VIAMO back office here: </p>
+  <p><strong>my.viamo.world/login </strong></p>
   <p>Username: $context->username</p>
   <p>Password: $context->password</p>
   
-  <p>Bitte unterstütze deinen neuen Partner für euren gemeinsamen Erfolg!</p>
-  
-  <p>Unter <a href="http://www.partners.domswiss.me">www.partners.domswiss.me</a> kannst du dich einloggen und dein Team ansehen.</p>
-  
-  <p>Vitale Grüße,<br>Dein DOM-Swiss Backoffice-Team</p>
+  <p>Dein VIAMO-World-Team</p>
+  <p>SPONSOR POWER AG</p>
+  <p>Schmiedgasse 6</p>
+  <p>CH-9100 Herisau</p>
+  <p>www.viamo.world</p>
+  <p>Mail: <a href="http://support@viamo.world">support@viamo.world</a> </p>
 </body>
 </html>
 
