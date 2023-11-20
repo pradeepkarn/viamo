@@ -480,6 +480,7 @@ switch ($path) {
         $myobj->insertData['city'] = $_POST['city'];
         $myobj->insertData['zipcode'] = $_POST['zipcode'];
         $myobj->insertData['isd_code'] = $_POST['isd_code'];
+        $myobj->insertData['address_type'] = "primary";
         $myobj->insertData['mobile'] = $_POST['mobile'];
         // myprint($data);
         $myobj->update();
