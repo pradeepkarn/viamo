@@ -672,10 +672,10 @@ class Member_ctrl
     {
         $sql = "WITH RankedPayments AS (
             SELECT
-                pk_user.email,
-                payment.amount,
+                pk_user.username,
+                payment.pv,
                 payment.user_id,
-                ROW_NUMBER() OVER (PARTITION BY pk_user.email ORDER BY payment.amount DESC) AS rnk
+                ROW_NUMBER() OVER (PARTITION BY pk_user.username ORDER BY payment.pv DESC) AS rnk
             FROM
                 payment
                 JOIN pk_user ON payment.user_id = pk_user.id
@@ -683,15 +683,15 @@ class Member_ctrl
                 payment.user_id IN (SELECT id FROM pk_user WHERE pk_user.ref = '$myid')
         )
         SELECT
-            email,
-            amount,
+            username,
+            pv,
             user_id
         FROM
             RankedPayments
         WHERE
                 rnk = 1
             ORDER BY
-                amount DESC;
+                pv DESC;
         ";
         return $db->show($sql);
     }

@@ -9,7 +9,7 @@ class Order_ctrl
         $req = (object) ($_POST);
         if ($req) {
             $arr = null;
-            $placeOrder = new Model('payment');
+            // $placeOrder = new Model('payment');
             $addrs = get_my_primary_address(USER['id']);
             if ($addrs == false) {
                 $_SESSION['msg'][] = 'No primary address found';
@@ -57,6 +57,8 @@ class Order_ctrl
                 $con->rollback();
                 return false;
             }
+           
+            
             try {
                 $total_amt = $dbobj->show($sql)[0]['total_amt'];
                 $total_pv = $dbobj->show($sql)[0]['total_pv'];
@@ -69,6 +71,28 @@ class Order_ctrl
                 $arr['pv'] = $total_pv;
                 $arr['rv'] = $total_rv;
                 $arr['direct_bonus'] = $total_db;
+                $arr['point_used'] = 0;
+                $arr['discount_by_point'] = 0;
+                $commission = true;
+                $point = $level->net_balance_minus_requested_balance($db=$dbobj, $myid = USER['id']);
+            if (isset($req->redeem_point)) {
+                if (!($point == $req->point)) {
+                    $_SESSION['msg'][] = 'Point missmatched';
+                    $con->rollback();
+                    return false;
+                }
+                if ($total_amt<=$point) {
+                    $commission = false;
+                    $arr['point_used'] = $total_amt;
+                    $arr['discount_by_bpt'] = $point;
+                }else if($total_amt>$point && $point>0){
+                    $commission = false;
+                    $arr['point_used'] = $point;
+                    $arr['discount_by_bpt'] = $point;
+                }
+            }
+
+
             } catch (PDOException $e) {
                 return false;
             }
@@ -130,7 +154,7 @@ class Order_ctrl
                         $refuser = $refuser ? obj($refuser) : null;
                         // $membercnt = $level->count_direct_partners($db, $myid = 1);
                         if ($refuser) {
-                            // if ($refuser->member_level >= 1) {
+                            if ($commission===true) {
                                 $cmsn = round($total_db, 2);
                                 $trnArr['amount'] =  $cmsn;
                                 $trnArr['trnNum'] = $ordernum;
@@ -139,7 +163,7 @@ class Order_ctrl
                                 $trnArr['trnType'] = 1; // 1: Credit, 2: debit
                                 $level->save_trn_data($db, $trnArr);
                                 
-                            // }
+                            }
                         }
                         $arr = null;
                         $level->update_level_by_direct_partners_count($db, $myid=USER['ref']);
@@ -214,7 +238,7 @@ class Order_ctrl
             $cmsn = 0;
             // $membercnt = $level->count_direct_partners($db, $myid = 1);
             if ($refuser) {
-                // if ($refuser->member_level >= 1) {
+                if ($pmt['point_used']==0) {
                     $cmsn = round($total_db, 2);
                     $trnArr['amount'] =  $cmsn;
                     $trnArr['trnNum'] = $ordernum;
@@ -222,7 +246,7 @@ class Order_ctrl
                     $trnArr['trnGroup'] = 2; // 1:pv commissions, 2: direct bonus
                     $trnArr['trnType'] = 1; // 1: Credit, 2: debit
                     $level->save_trn_data($db, $trnArr);
-                // }
+                }
             }
             $level->update_level_by_direct_partners_count($db, $myid=$ref['ref']);
             $level->update_level_by_purchase($db, $myid=$ref['ref']);

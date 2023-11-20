@@ -123,6 +123,7 @@ try {
                                             $cntr = $cntry->filter_index(['code' => $delivery_cntry_code]);
                                             $min_tax = 0;
                                             $max_tax = 0;
+                                            $discount = $context->payment['discount_by_bpt'];
                                             foreach ($context->cart as $itm) {
                                                 $cv = obj($itm);
 
@@ -173,7 +174,10 @@ try {
                                                 } ?>
 
                                             <?php
-                                            } ?>
+                                            } 
+                                            $net_amt = 0;
+                                            $net_amt = $total_amt-$discount;
+                                            ?>
 
                                         </tbody>
                                     
@@ -221,12 +225,12 @@ try {
 
                                             <tr>
                                                 <th class="text-end">Discount =</th>
-                                                <th class="text-end">0</th>
+                                                <th class="text-end"><?php echo $discount; ?></th>
                                             </tr>
                                             <tr>
 
                                                 <th class="text-end">Total =</th>
-                                                <th class="text-end"><?php echo $total_amt; ?></th>
+                                                <th class="text-end"><?php echo $net_amt; ?></th>
                                             </tr>
                                             <tr>
 
@@ -236,7 +240,7 @@ try {
                                             <tr>
 
                                                 <th class="text-end">Final =</th>
-                                                <th class="text-end"><?php echo $context->payment['shipping_cost']+$total_amt; ?></th>
+                                                <th class="text-end"><?php echo $context->payment['shipping_cost']+$net_amt; ?></th>
                                             </tr>
                                         </tfoot>
 

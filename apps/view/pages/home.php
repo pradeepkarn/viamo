@@ -63,8 +63,8 @@ SCRPT;
                 <div class="col-4 mb-2">
                   <div class="card text-center">
                     <div class="card-body">
-                      <h5 class="card-title text-center pb-3"><?php echo $mbr->email; ?></h5>
-                      <h6 class="card-subtitle mb-2 text-body-secondary">Sale: <?php echo $mbr->amount; ?></h6>
+                      <h5 class="card-title text-center pb-3"><?php echo $mbr->username; ?></h5>
+                      <h6 class="card-subtitle mb-2 text-body-secondary">PV: <?php echo $mbr->pv; ?></h6>
                     </div>
                   </div>
                 </div>

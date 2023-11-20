@@ -1,7 +1,13 @@
 <?php
 import("apps/view/inc/header.php");
 import("apps/view/inc/navbar.php");
-$addrs = get_my_primary_address($userid=USER['id']);
+if (isset($_POST['point_action'])) {
+  $_SESSION['use_point'] = isset($_POST['use_point']) ? true : false;
+}
+$db = new Dbobjects;
+$level = new Member_ctrl;
+$point = $level->net_balance_minus_requested_balance($db, $myid = USER['id']);
+$addrs = get_my_primary_address($userid = USER['id']);
 // myprint($addrs);
 ?>
 <div id="layoutSidenav">
@@ -74,7 +80,8 @@ $addrs = get_my_primary_address($userid=USER['id']);
                   <th scope="row"><img src="/<?php echo home; ?>/media/upload/items/<?php echo $item->image; ?>" width="80px" alt="" srcset=""></th>
                   <td><?php echo $item->name; ?></td>
                   <td><?php echo $cv->pv; ?></td>
-                  <!-- <td><?php //echo $cv->rv; ?></td> -->
+                  <!-- <td><?php //echo $cv->rv; 
+                            ?></td> -->
                   <!-- <td><?php // echo $cv->direct_bonus; 
                             ?></td> -->
                   <td><?php echo round($price_without_tax, 2); ?></td>
@@ -122,20 +129,58 @@ $addrs = get_my_primary_address($userid=USER['id']);
                 <td colspan="1">Total Amount = </td>
                 <td><?php echo $total_amt; ?> </td>
               </tr>
+
+              <tr class="text-end">
+                <td colspan="6"></td>
+                <th>
+                  <form method="post" id="discount_on_point" action="">
+                    Point <input <?php if (isset($_SESSION['use_point'])) {
+                                      echo $_SESSION['use_point'] ? "checked" : null;
+                                    } ?> name="use_point" onclick="toggleCheckboxes()" id="checkbox1" type="checkbox">
+                    <input name="point_action" type="hidden">
+                    <button class="btn btn-primary btn-sm" type="submit">Redeem</button>
+                  </form>
+                </th>
+                <th>Point =</th>
+                <th>
+                  <?php
+                  // $point = 0;
+                  // myprint($cv);
+                  if (isset($_SESSION['use_point'])) {
+                    if ($_SESSION['use_point']===true) {
+                      if ($total_amt <= $point) {
+                        $total_amt = 0;
+                      } else if ($total_amt > $point && $point > 0) {
+                        $total_amt  = $total_amt - $point;
+                      }
+                    }
+                  }
+                  echo $point; ?>
+                </th>
+              </tr>
+              <tr class="text-end">
+                <td colspan="7"></td>
+                <th>
+                  Discounted amount =
+                </th>
+                <th>
+                  <?php echo $total_amt; ?>
+                </th>
+              </tr>
               <tr class="text-end">
                 <td colspan="5"></td>
                 <td colspan="">Weight = </td>
                 <td colspan=""><?php echo $total_gm; ?> gm</td>
                 <td colspan="1">Shipping Cost =</td>
-                <td><?php $shpcost = calculate_shipping_cost(db:(new Dbobjects), gram:$total_gm, ccode:$addrs->country_code);
-               //$addrs->country_code;
-               echo  $shpcost; ?> 
+                <td><?php $shpcost = calculate_shipping_cost(db: $db, gram: $total_gm, ccode: $addrs->country_code);
+                    //$addrs->country_code;
+                    echo  $shpcost; ?>
                 </td>
               </tr>
               <tr class="text-end">
-              <td colspan="7"></td>
+                <td colspan="7"></td>
                 <th>Final Amount = </th>
-                <th><?php echo $total_amt+$shpcost; ?></th>
+                <th><?php echo $total_amt + $shpcost; ?></th>
               </tr>
             </tbody>
           </table>
@@ -212,7 +257,10 @@ $addrs = get_my_primary_address($userid=USER['id']);
 
             </div>
           </div>
-
+          <input style="display: none;" <?php if (isset($_SESSION['use_point'])) {
+                                          echo $_SESSION['use_point'] ? "checked" : null;
+                                        } ?> id="checkbox2" name="redeem_point" type="checkbox">
+          <input type="hidden" name="point" value="<?php echo $point; ?>">
           <input type="hidden" name="total_amount" value="<?php echo $total_amt; ?>">
           <input type="hidden" name="total_gm" value="<?php echo $total_gm; ?>">
           <input type="hidden" name="shipping_cost" value="<?php echo $shpcost; ?>">
@@ -245,6 +293,26 @@ $addrs = get_my_primary_address($userid=USER['id']);
 </div>
 
 <script>
+  function toggleCheckboxes() {
+    var checkbox1 = document.getElementById('checkbox1');
+    var checkbox2 = document.getElementById('checkbox2');
+
+    // If checkbox1 is checked, uncheck checkbox2 and vice versa
+    if (checkbox1.checked === true) {
+      checkbox2.checked = true;
+    }
+    if (checkbox1.checked === false) {
+      checkbox2.checked = false;
+    }
+
+  }
+
+
+
+
+
+
+
   var stripeBtn = document.getElementById('stripeBtn');
   var btRadio = document.getElementById('btRadio');
 

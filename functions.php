@@ -1850,7 +1850,7 @@ function get_order_details($orderid)
         if (isset($jsn->items)) {
           $ord['cart'][] = array(
             'package' => $cart,
-            // 'products' => $jsn->items,
+            // 'pmt' => $pmtObj,
             'products' => $cart_jsn
           );
         }
