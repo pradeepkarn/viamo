@@ -184,8 +184,11 @@ if (!authenticate()) {
                                                             </div>
 
                                                             <div class="form-group row mb-4">
-                                                                <div class="col-lg-12">
+                                                                <div class="col-lg-6">
                                                                     <input class="form-control valid" type="text" required="" placeholder="Street" name="street" value="<?php echo $addrs->street; ?>" aria-required="true" aria-invalid="false">
+                                                                </div>
+                                                                <div class="col-lg-6">
+                                                                    <input class="form-control valid" type="text" required="" placeholder="Street Number" name="street_num" value="<?php echo $addrs->street_num; ?>" aria-required="true" aria-invalid="false">
                                                                 </div>
                                                             </div>
                                                             <div class="form-group row mb-4">
