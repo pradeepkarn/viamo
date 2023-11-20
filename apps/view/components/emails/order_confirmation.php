@@ -3,6 +3,9 @@
 use PHPMailer\PHPMailer\PHPMailer;
 $sitename = SITE_NAME;
 $context->order_amt = round($context->order_amt,2);
+$home = home;
+$link_gr = "<a href='/$home/login'>Login to your VIAMO-World-Backoffice.</a>";
+$link_en = "<a href='/$home/login'>Hier in das VIAMO-World-Backoffice einloggen.</a>";
 $message = <<<MSG
 <!DOCTYPE html>
 <html lang="en">
@@ -22,7 +25,7 @@ $message = <<<MSG
     $context->bank_account
     <p>Bitte bei Zahlungsreferenz "<strong>Order Nr. $context->order_id</strong>" angeben</p>
    
-    <p><a href="/<?php echo home; ?>/login">Hier in das VIAMO-World-Backoffice einloggen.</a></p> 
+    <p>$link_gr</p> 
     <p>Powervolle Grüße dein</p>
     <p>$sitename - World of Energy</p>
     <p>Backoffice-Team</p>
@@ -36,7 +39,7 @@ $message = <<<MSG
     $context->bank_account
     <p>Please use "<strong>Order Nr. $context->order_id</strong>" as payment reference.</p>
 
-    <p><a href="/<?php echo home; ?>/login">Login to your VIAMO-World-Backoffice.</a></p>
+    <p>$link_en</p>
    <p>Powerful geetings from your </p>
     <p>$sitename - World of Energy</p>
     <p>Backoffice-Team</p>
