@@ -32,7 +32,7 @@ $message = <<<MSG
   <p>Schmiedgasse 6</p>
   <p>CH-9100 Herisau</p>
   <p>www.viamo.world</p>
-  <p>Mail: <a href="http://support@viamo.world">support@viamo.world</a> </p>
+  <p>Mail: <a href="mailto:support@viamo.world">support@viamo.world</a> </p>
 
   <hr>
   
@@ -52,7 +52,7 @@ $message = <<<MSG
   <p>Schmiedgasse 6</p>
   <p>CH-9100 Herisau</p>
   <p>www.viamo.world</p>
-  <p>Email: <a href="http://support@viamo.world">support@viamo.world</a> </p>
+  <p>Email: <a href="mailto:support@viamo.world">support@viamo.world</a> </p>
   
 </body>
 </html>

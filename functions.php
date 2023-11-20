@@ -798,6 +798,20 @@ function usersignup()
       }
       $arr['address'] = sanitize_remove_tags($_POST['address']);
     }
+    if (isset($_POST['company_name'])) {
+      // if (strlen(sanitize_remove_tags($_POST['company_name'])) < 1) {
+      //   $_SESSION['msg'][] = "Invalid Name";
+      //   return;
+      // }
+      $arr['company_name'] = sanitize_remove_tags($_POST['company_name']);
+    }
+    if (isset($_POST['zipcode'])) {
+      // if (strlen(sanitize_remove_tags($_POST['company_name'])) < 1) {
+      //   $_SESSION['msg'][] = "Invalid Name";
+      //   return;
+      // }
+      $arr['zipcode'] = sanitize_remove_tags($_POST['zipcode']);
+    }
     if (isset($_POST['gender'])) {
       if (strlen(sanitize_remove_tags($_POST['gender'])) < 1) {
         $_SESSION['msg'][] = "Invalid Gender";
@@ -923,7 +937,7 @@ function createAddess($userid, $post)
   $arr = null;
   $itemAddress = new Model('address');
   $arr['user_id'] = $userid;
-  $arr['name'] = $post['first_name'];
+  $arr['name'] = $post['first_name']." ".$post['last_name'];
   $arr['isd_code'] = $post['country_code'];
   $arr['mobile'] = $post['mobile'];
   $arr['locality'] = $post['address'];
@@ -934,6 +948,10 @@ function createAddess($userid, $post)
     $_SESSION['msg'][] = ('Invalid country');
     return;
   }
+  if (isset($_POST['company_name'])) {
+    $arr['company'] = sanitize_remove_tags($post['company_name']);
+  }
+ 
   $arr['country'] = $country['name'];
   $arr['country_code'] = $country['code'];
   $arr['zipcode'] = $post['zipcode'];
