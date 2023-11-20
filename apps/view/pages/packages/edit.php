@@ -87,7 +87,7 @@ import("apps/view/inc/navbar.php");
                                                     // Check if the current item is selected
                                                     foreach ($selected_countries as $ccode) {
                                                         if (in_array($cnt->code, array($ccode))) {
-                                                            $shpcost = calculate_shipping_cost($db = new Dbobjects, $gram=1000, $ccode=$ccode);
+                                                            $shpcost = calculate_shipping_cost($db = (new Dbobjects), $gram=1000, $ccode=$ccode);
                                                             $shipping_charges[] = array(
                                                                 "ccode"=>$ccode,
                                                                 "shipping_cost"=>$shpcost

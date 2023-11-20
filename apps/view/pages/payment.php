@@ -1,6 +1,8 @@
 <?php
 import("apps/view/inc/header.php");
 import("apps/view/inc/navbar.php");
+$addrs = get_my_primary_address($userid=USER['id']);
+// myprint($addrs);
 ?>
 <div id="layoutSidenav">
   <?php import("apps/view/inc/sidebar.php"); ?>
@@ -125,7 +127,10 @@ import("apps/view/inc/navbar.php");
                 <td colspan="">Weight = </td>
                 <td colspan=""><?php echo $total_gm; ?> gm</td>
                 <td colspan="1">Shipping Cost =</td>
-                <td><?php echo $shpcost = calculate_shipping_cost(db:new Dbobjects, gram:$total_gm, ccode:USER['country_code']); ?> </td>
+                <td><?php $shpcost = calculate_shipping_cost(db:new Dbobjects, gram:$total_gm, ccode:$addrs->country_code);
+               //$addrs->country_code;
+               echo  $shpcost; ?> 
+                </td>
               </tr>
               <tr class="text-end">
               <td colspan="7"></td>

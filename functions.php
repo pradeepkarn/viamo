@@ -2221,11 +2221,13 @@ function calculate_gram(Object $item, float $qty)
   return $total_gm;
 }
 // calculate shipping charges if gram and country code is available
-function calculate_shipping_cost($db = new Dbobjects, $gram = 0, $ccode = '')
+function calculate_shipping_cost($db, $gram = 0, $ccode = '')
 {
   $cost = 0;
-  $shp = (object)$db->showOne("select shipping from countries where code = '$ccode';");
-  if ($shp != '') {
+  $shp = $db->showOne("select shipping from countries where code = '$ccode';");
+  // myprint($shp);
+  if ($shp) {
+    $shp = obj($shp);
     $shpng = json_decode($shp->shipping ?? '[]');
     if (isset($shpng->shipping_cost)) {
       $shpcost = $shpng->shipping_cost;
