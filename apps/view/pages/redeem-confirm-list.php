@@ -1,4 +1,4 @@
-index.php apps/view/pages/redeem-confirm-list.php<?php
+<?php
 
 use League\Csv\Writer;
 
