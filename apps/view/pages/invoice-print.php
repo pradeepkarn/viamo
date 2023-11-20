@@ -77,6 +77,7 @@ try {
 
                             <div class="col-4"> <strong>Invoiced To:</strong>
                                 <address>
+                                    <?php echo $shpadrs->company; ?> <br>
                                     <?php echo $shpadrs->name; ?> <br>
                                     <?php echo $shpadrs->city; ?> <br>
                                     <?php echo $shpadrs->street != '' ? "Street: $shpadrs->street <br>" : null; ?>
@@ -176,7 +177,8 @@ try {
                                             <?php
                                             } 
                                             $net_amt = 0;
-                                            $net_amt = $total_amt-$discount;
+                                            $total_am = round($total_am,2);
+                                            $net_amt = round($total_amt-$discount,2);
                                             ?>
 
                                         </tbody>
