@@ -127,7 +127,7 @@ $addrs = get_my_primary_address($userid=USER['id']);
                 <td colspan="">Weight = </td>
                 <td colspan=""><?php echo $total_gm; ?> gm</td>
                 <td colspan="1">Shipping Cost =</td>
-                <td><?php $shpcost = calculate_shipping_cost(db:new Dbobjects, gram:$total_gm, ccode:$addrs->country_code);
+                <td><?php $shpcost = calculate_shipping_cost(db:(new Dbobjects), gram:$total_gm, ccode:$addrs->country_code);
                //$addrs->country_code;
                echo  $shpcost; ?> 
                 </td>

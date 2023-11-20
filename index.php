@@ -5,7 +5,7 @@ import('/vendor/autoload.php');
 import('/settings.php');
 $url = explode("/", $_SERVER["QUERY_STRING"]);
 $path = $_SERVER["QUERY_STRING"];
-ini_set('display_errors', 1);
+// ini_set('display_errors', 1);
 define('direct_access', '1');
 
 function get_my_primary_address($userid)
