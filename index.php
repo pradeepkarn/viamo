@@ -616,8 +616,9 @@ switch ($path) {
         return;
       }
     }
+    // v1
     if ($url[0] == "products") {
-      if (!authenticate()) {
+      if (!is_superuser()) {
         header("Location: /$home/");
         exit;
       }
@@ -737,22 +738,23 @@ switch ($path) {
       import("apps/view/pages/checkout.php");
       return;
     }
+    // v1
     if ($url[0] == "payment") {
-      if (!authenticate()) {
+      if (!is_superuser()) {
         header("Location: /$home/");
         exit;
       }
       import("apps/view/pages/payment.php");
       return;
     }
-    if ($url[0] == "commissions") {
-      if (!authenticate()) {
-        header("Location: /$home/");
-        exit;
-      }
-      import("apps/view/pages/commissions.php");
-      return;
-    }
+    // if ($url[0] == "commissions") {
+    //   if (!authenticate()) {
+    //     header("Location: /$home/");
+    //     exit;
+    //   }
+    //   import("apps/view/pages/commissions.php");
+    //   return;
+    // }
     if ($url[0] == "shopping-link") {
       if (authenticate() == false) {
         import("apps/view/pages/login.php");
