@@ -1,4 +1,7 @@
 <?php
+if (!authenticate()) {
+  die("Login first");
+}
 import("apps/view/inc/header.php");
 import("apps/view/inc/navbar.php");
 if (isset($_POST['point_action'])) {

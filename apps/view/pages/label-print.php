@@ -52,7 +52,7 @@ $delv_info = $invData->delv_info;
         <div class="container" style="height: 297mm;">
             <div class="row mt-3">
                 <div class="col-md-4 mx-auto text-center">
-                    <img id="logo" src="/<?php echo home; ?>/media/img/logo-dom-swiss.svg" width="150px" title="Koice" alt="Koice" />
+                    <img id="logo" src="/<?php echo STATIC_URL; ?>/assets/img/img7.jpg" width="150px" title="Koice" alt="Koice" />
                 </div>
             </div>
             <div class="row mt-1">
@@ -156,7 +156,7 @@ $delv_info = $invData->delv_info;
         <div class="container" style="height: 297mm;">
             <div class="row">
                 <div class="col-md-4 mx-auto text-center">
-                    <img id="logo" src="/<?php echo home; ?>/media/img/logo-dom-swiss.svg" width="150px" title="Koice" alt="Koice" />
+                    <img id="logo" src="/<?php echo STATIC_URL; ?>/assets/img/img7.jpg" width="150px" title="Koice" alt="Koice" />
                 </div>
             </div>
             <div class="row mt-1">
