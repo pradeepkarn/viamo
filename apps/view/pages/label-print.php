@@ -264,7 +264,7 @@ $delv_info = $invData->delv_info;
             <div class="row">
                 <div class="col-md-12 text-center">
                     <?php echo $invoice_address; ?>
-                    Email: <a href="mailto:support@domswiss.me">support@domswiss.me</a>
+                    Email: <a href="mailto:<?php echo email; ?>"><?php echo email; ?></a>
                 </div>
             </div>
             <!-- Footer -->
