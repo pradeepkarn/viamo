@@ -468,6 +468,8 @@ switch ($path) {
         $myobj->pk($id);
         $myobj->insertData['company'] = $_POST['company'];
         $myobj->insertData['name'] = $_POST['first_name']." ".$_POST['last_name'];
+        $myobj->insertData['first_name'] = $_POST['first_name'];
+        $myobj->insertData['last_name'] = $_POST['last_name'];
         $myobj->insertData['state'] = isset($_POST['state']) ? ($_POST['state']) : null;
         $myobj->insertData['address_name'] = isset($_POST['address_name']) ? ($_POST['address_name']) : null;
         if (isset($_POST['country_code'])) {
