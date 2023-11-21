@@ -78,11 +78,10 @@ try {
                             <div class="col-4"> <strong>Invoiced To:</strong>
                                 <address>
                                     <?php echo $shpadrs->company; ?> <br>
-                                    <?php echo $shpadrs->name; ?> <?php echo $shpadrs->city; ?> <br>
-                                    <?php echo $shpadrs->street." ".$shpadrs->street_num; ?>
-                                    <?php echo $shpadrs->state; ?> <br>
+                                    <?php echo $shpadrs->name; ?>  <br>
+                                    <?php echo $shpadrs->street." ".$shpadrs->street_num; ?> <br>
+                                    <?php echo $shpadrs->zipcode; ?> <?php echo $shpadrs->city; ?> <br>
                                     <?php echo $shpadrs->country; ?> <br>
-                                    <?php echo $shpadrs->zipcode; ?>
                                 </address>
                             </div>
                             <div class="col-4"> <strong>Pay To:</strong>
