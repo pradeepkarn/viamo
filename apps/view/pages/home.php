@@ -50,7 +50,9 @@ SCRPT;
           <div class="row">
             <div class="col bst_news">
               <marquee class="marque_news mt-2" behavior="scroll" scrollamount="8" direction="left">
-              Herzlich Willkommen in der VIAMO-Community. Am 26. November starten wir die PRE-Launch-Phase mit Webinaren um 10:00/16:00/20:00 Uhr hier: <a href="https://us02web.zoom.us/j/86939220044">https://us02web.zoom.us/j/86939220044</a>
+              Herzlich Willkommen in der VIAMO-Community. 
+              Am 26. November starten wir die PRE-Launch-Phase mit Webinaren um 10:00/16:00/20:00 Uhr hier: 
+              <a href="https://us02web.zoom.us/j/86939220044">https://us02web.zoom.us/j/86939220044</a>
               </marquee>
             </div>
           </div>

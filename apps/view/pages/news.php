@@ -15,7 +15,11 @@ import("apps/view/inc/navbar.php");
                     <div class="container px-4 ms-2">
                         <div class="row">
                             <div class="col bst_news">
-                                <marquee class="marque_news mt-2" behavior="scroll" scrollamount="8" direction="left">Lorem ipsum dolor sit amet consectetur adipisicing elit. Vel maiores eos alias eius rerum qui expedita, architecto, quasi quae consequatur tenetur delectus perferendis numquam. Dolor ad laboriosam exercitationem expedita. Excepturi.</marquee>
+                                <marquee class="marque_news mt-2" behavior="scroll" scrollamount="8" direction="left">
+                                    Herzlich Willkommen in der VIAMO-Community.
+                                    Am 26. November starten wir die PRE-Launch-Phase mit Webinaren um 10:00/16:00/20:00 Uhr hier:
+                                    <a href="https://us02web.zoom.us/j/86939220044">https://us02web.zoom.us/j/86939220044</a>
+                                </marquee>
                             </div>
                         </div>
                     </div>
@@ -25,7 +29,11 @@ import("apps/view/inc/navbar.php");
                                 <div class="card">
                                     <div class="card-body">
                                         <h5 class="card-title pb-3">Title</h5>
-                                        <p class="card-text">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptate error aut dolor explicabo facilis culpa enim numquam quia, earum blanditiis asperiores fugiat! Animi velit eligendi consequatur illo laudantium cum in.</p>
+                                        <p class="card-text">
+                                            Herzlich Willkommen in der VIAMO-Community.
+                                            Am 26. November starten wir die PRE-Launch-Phase mit Webinaren um 10:00/16:00/20:00 Uhr hier:
+                                            <a href="https://us02web.zoom.us/j/86939220044">https://us02web.zoom.us/j/86939220044</a>
+                                        </p>
                                         <a href="#" class="card-link" style="color:black; text-decoration:none">Date</a>
                                     </div>
                                 </div>
