@@ -116,39 +116,40 @@
                                 <?php
                                 }
                                 ?>
-                            <?php
-                        }
-                            ?>
+
                             </nav>
+                        <?php
+                        }
+                        ?>
                     </div>
-                    <?php if(is_superuser()) :?>
-                    <div class="sb-sidenav-menu-heading">Addons</div>
-                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages4" aria-expanded="false" aria-controls="collapsePages4">
-                        <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
-                        Products
-                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                    </a>
-                    <div class="collapse" id="collapsePages4" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
-                        <nav class="sb-sidenav-menu-nested nav">
-                            <a class="nav-link" href="/<?php echo home; ?>/shop">Product Order</a>
-                            <?php
-                            $addrs = new Model('address');
-                            $addrs = $addrs->filter_index(['user_id' => $_SESSION['user_id'], 'address_type' => 'primary']);
-                            $is_valid_primary = count($addrs);
-                            if ($is_valid_primary == 1) {
-                            ?>
+                    <?php if (is_superuser()) : ?>
+                        <div class="sb-sidenav-menu-heading">Addons</div>
+                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages4" aria-expanded="false" aria-controls="collapsePages4">
+                            <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
+                            Products
+                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                        </a>
+                        <div class="collapse" id="collapsePages4" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
+                            <nav class="sb-sidenav-menu-nested nav">
+                                <a class="nav-link" href="/<?php echo home; ?>/shop">Product Order</a>
                                 <?php
-                                if (authenticate()) {
+                                $addrs = new Model('address');
+                                $addrs = $addrs->filter_index(['user_id' => $_SESSION['user_id'], 'address_type' => 'primary']);
+                                $is_valid_primary = count($addrs);
+                                if ($is_valid_primary == 1) {
                                 ?>
-                                    <a class="nav-link" href="/<?php echo home; ?>/products">All Products</a>
+                                    <?php
+                                    if (authenticate()) {
+                                    ?>
+                                        <a class="nav-link" href="/<?php echo home; ?>/products">All Products</a>
+                                    <?php
+                                    }
+                                    ?>
                                 <?php
                                 }
                                 ?>
-                            <?php
-                            }
-                            ?>
-                        </nav>
-                    </div>
+                            </nav>
+                        </div>
                     <?php endif; ?>
                     <?php
                     if (is_superuser()) {
