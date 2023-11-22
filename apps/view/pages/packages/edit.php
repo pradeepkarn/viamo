@@ -117,6 +117,7 @@ import("apps/view/inc/navbar.php");
                                                     <?php
                                                     $total_net_price = 0;
                                                     $total_cust_net_price = 0;
+                                                    $total_mrp = 0;
 
                                                     $prods = new Model('item');
                                                     $all_active_products = $prods->filter_index(['item_group' => 'product', 'is_active' => 1]);
@@ -148,14 +149,17 @@ import("apps/view/inc/navbar.php");
                                                                         break;
                                                                 }
 
+                                                                $mrp = isset($selectedItem->mrp) ? floatval($selectedItem->mrp) : 0;
                                                                 $net_price = isset($selectedItem->net_price) ? floatval($selectedItem->net_price) : 0;
                                                                 $cust_net_price = isset($selectedItem->cust_net_price) ? floatval($selectedItem->cust_net_price) : 0;
                                                                 $total_net_price += $net_price * $qty;
+                                                                $total_mrp += $mrp * $qty;
                                                                 $total_cust_net_price += floatval($cust_net_price) * $qty;
                                                                 break;
                                                             } else {
                                                                 $isChecked = false;
                                                                 $qty = null;
+                                                                $mrp = null;
                                                                 $net_price = null;
                                                                 $cust_net_price = null;
                                                             }
@@ -164,8 +168,9 @@ import("apps/view/inc/navbar.php");
 
                                                         <input onchange="total_net_price()" onkeyup="total_net_price()" <?php echo $isChecked ? 'checked' : null; ?> class="pointer items" type="checkbox" name="items[]" value="<?php echo $item->id; ?>">
                                                         <input placeholder="Qty" onchange="total_net_price()" style="width:90px;" min='0' type="number" class="qtys itemQtys" scope="any" name="qty<?php echo $item->id; ?>" value="<?php echo $qty; ?>">
+                                                        <input placeholder="MRP" onchange="total_net_price()" onkeyup="total_net_price()" onblur="total_net_price()" style="width:90px;" min='0' type="number" class="qtys mrp" scope="any" name="mrp<?php echo $item->id; ?>" value="<?php echo $mrp; ?>">
                                                         <input placeholder="Net Price" onchange="total_net_price()" onkeyup="total_net_price()" onblur="total_net_price()" style="width:90px;" min='0' type="number" class="qtys netpr" scope="any" name="net_price<?php echo $item->id; ?>" value="<?php echo $net_price; ?>">
-                                                        <input placeholder="Cust. Net Price" onchange="total_net_price()" onkeyup="total_net_price()" onblur="total_net_price()" style="width:90px;" min='0' type="number" class="qtys custnetpr" scope="any" name="cust_net_price<?php echo $item->id; ?>" value="<?php echo $cust_net_price; ?>">
+                                                        <input placeholder="Cust. Net Price" onchange="total_net_price()" onkeyup="total_net_price()" onblur="total_net_price()" style="width:90px;" min='0' type="number" class="qtys custnetpr hide" scope="any" name="cust_net_price<?php echo $item->id; ?>" value="<?php echo $cust_net_price; ?>">
                                                         <!-- <img style="height: 40px; width:40px; object-fit:cover;" src="/<?php //echo home; 
                                                                                                                             ?>/media/upload/items/<?php // echo $item->image; 
                                                                                                                                                     ?>" alt="items"> -->
@@ -194,10 +199,14 @@ import("apps/view/inc/navbar.php");
                                             <input class="form-control my-2 valid" type="text" scope="any" min="0" name="qty">
                                         </div> -->
                                         <div class="col-md">
+                                            <label for="">MRP</label>
+                                            <input id="mrp" class="form-control my-2 valid" type="number" scope="any" min="0" name="mrp" value="<?php echo $total_mrp; ?>">
+                                        </div>
+                                        <div class="col-md">
                                             <label for="">Net Price</label>
                                             <input id="netPrice" class="form-control my-2 valid" type="number" scope="any" min="0" name="net_price" value="<?php echo $total_net_price; ?>">
                                         </div>
-                                        <div class="col-md">
+                                        <div class="col-md hide">
                                             <!-- <label for="">Customer Net Price</label> -->
                                             <input id="custNetPrice" class="form-control my-2 valid" type="hidden" scope="any" min="0" name="cust_price" value="<?php echo $total_cust_net_price; ?>">
                                         </div>
@@ -205,10 +214,10 @@ import("apps/view/inc/navbar.php");
                                             <label for="">PV</label>
                                             <input class="form-control my-2 valid" type="number" scope="any" min="0" name="pv" value="<?php echo $pv->pv; ?>">
                                         </div>
-                                        <div class="col-md">
+                                        <!-- <div class="col-md">
                                             <label for="">Rannk Advance (RV)</label>
-                                            <input class="form-control my-2 valid" type="number" scope="any" min="0" name="rv" value="<?php echo $pv->rv; ?>">
-                                        </div>
+                                            <input class="form-control my-2 valid" type="number" scope="any" min="0" name="rv" value="<?php //echo $pv->rv; ?>">
+                                        </div> -->
                                     </div>
                                     <div class="row">
                                         <!-- <div class="col-md-3">
@@ -280,20 +289,24 @@ import("apps/view/inc/navbar.php");
     var quantityInputs = document.querySelectorAll('.qtys');
 
     function total_net_price() {
+        const mrp = document.querySelectorAll('.mrp');
         const netprice = document.querySelectorAll('.netpr');
         const custNetPrice = document.querySelectorAll('.custnetpr');
         const items = document.querySelectorAll('.items');
         const qtys = document.querySelectorAll('.itemQtys');
+        let tmrp = [];
         let tnpr = [];
         let tcnpr = [];
         for (let i = 0; i < items.length; i++) {
             if (items[i].checked && qtys[i].value) {
                 // var qty = qtys[i].value;
+                tmrp.push(mrp[i].value ? parseFloat(mrp[i].value) * qtys[i].value : 0);
                 tnpr.push(netprice[i].value ? parseFloat(netprice[i].value) * qtys[i].value : 0);
                 tcnpr.push(custNetPrice[i].value ? parseFloat(custNetPrice[i].value) * qtys[i].value : 0);
             }
 
         }
+        document.getElementById('mrp').value = arraySum(tmrp);
         document.getElementById('netPrice').value = arraySum(tnpr);
         document.getElementById('custNetPrice').value = arraySum(tcnpr);
     }

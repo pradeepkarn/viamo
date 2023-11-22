@@ -72,10 +72,11 @@ import("apps/view/inc/navbar.php");
                                                 foreach ($all_active_products as $item) :
                                                     $item = obj($item);
                                                 ?>
-                                                    <input onchange="total_net_price()" class="pointer items" type="checkbox" name="items[]" value="<?php echo $item->id; ?>">
-                                                    <input placeholder="Qty" onchange="total_net_price()" onkeyup="total_net_price()" onblur="total_net_price()" style="width:90px;" min='0' type="number" class="qtys itemQtys" scope="any" name="qty<?php echo $item->id; ?>">
-                                                    <input placeholder="Net Price" onchange="total_net_price()" onkeyup="total_net_price()" onblur="total_net_price()" style="width:90px;" min='0' type="number" class="qtys netpr" scope="any" name="net_price<?php echo $item->id; ?>">
-                                                    <input placeholder="Cust. Net Price" onchange="total_net_price()" onkeyup="total_net_price()" onblur="total_net_price()" style="width:90px;" min='0' type="number" class="qtys custnetpr" scope="any" name="cust_net_price<?php echo $item->id; ?>">
+                                                    <input onchange="total_mrp()" class="pointer items" type="checkbox" name="items[]" value="<?php echo $item->id; ?>">
+                                                    <input placeholder="Qty" onchange="total_mrp()" onkeyup="total_mrp()" onblur="total_mrp()" style="width:90px;" min='0' type="number" class="qtys itemQtys" scope="any" name="qty<?php echo $item->id; ?>">
+                                                    <input placeholder="MRP" onchange="total_mrp()" onkeyup="total_mrp()" onblur="total_mrp()" style="width:90px;" min='0' type="number" class="qtys mrp" scope="any" name="mrp<?php echo $item->id; ?>">
+                                                    <input placeholder="Net Price" value="0" onchange="total_mrp()" onkeyup="total_mrp()" onblur="total_mrp()" style="width:90px;" min='0' type="number" class="qtys netpr" scope="any" name="net_price<?php echo $item->id; ?>">
+                                                    <input placeholder="Cust. Net Price" value="0" onchange="total_mrp()" onkeyup="total_mrp()" onblur="total_mrp()" style="width:90px;" min='0' type="number" class="qtys custnetpr hide" scope="any" name="cust_net_price<?php echo $item->id; ?>">
                                                     <!-- <img style="height: 40px; width:40px; object-fit:cover;" src="/<?php // echo home; 
                                                                                                                         ?>/media/upload/items/<?php // echo $item->image; 
                                                                                                                                                 ?>" alt="items"> -->
@@ -98,21 +99,25 @@ import("apps/view/inc/navbar.php");
                                             <input class="form-control my-2 valid" type="text" scope="any" min="0" name="qty">
                                         </div> -->
                                         <div class="col-md">
+                                            <label for="">MRP</label>
+                                            <input id="mrp" class="form-control my-2 valid" type="number" scope="any" min="0" name="mrp">
+                                        </div>
+                                        <div class="col-md">
                                             <label for="">Net Price</label>
                                             <input id="netPrice" readonly class="form-control my-2 valid" type="number" scope="any" min="0" name="net_price">
                                         </div>
-                                        <div class="col-md">
-                                            <!-- <label for="">Customer Net Price</label> -->
-                                            <input readonly id="custNetPrice" class="form-control my-2 valid" type="hidden" scope="any" min="0" name="cust_price">
+                                        <div class="col-md hide">
+                                            <label for="">Customer Net Price</label>
+                                            <input id="custNetPrice" class="hide form-control my-2 valid" type="hidden" scope="any" min="0" name="cust_price">
                                         </div>
                                         <div class="col-md">
                                             <label for="">PV</label>
                                             <input class="form-control my-2 valid" type="number" scope="any" min="0" name="pv">
                                         </div>
-                                        <div class="col-md">
+                                        <!-- <div class="col-md">
                                             <label for="">Rannk Advance (RV)</label>
                                             <input class="form-control my-2 valid" type="number" scope="any" min="0" name="rv">
-                                        </div>
+                                        </div> -->
 
                                     </div>
                                     <div class="row">
@@ -148,7 +153,7 @@ import("apps/view/inc/navbar.php");
 
                                     </div>
                                     <div id="uplpr"></div>
-                                    <button onclick="total_net_price()" id="mypackage_btn" class="btn btn-light btn-block" name="upload_product_btn" type="button">UPLOAD</button>
+                                    <button onclick="total_mrp()" id="mypackage_btn" class="btn btn-light btn-block" name="upload_product_btn" type="button">UPLOAD</button>
                             </form>
                         </div>
 
@@ -168,37 +173,49 @@ import("apps/view/inc/navbar.php");
 </div>
 <script>
     var quantityInputs = document.querySelectorAll('.qtys');
-    // function total_net_price() {
+ 
+    
+    // function total_mrp() {
+    //     const mrp = document.querySelectorAll('.mrp');
     //     const netprice = document.querySelectorAll('.netpr');
     //     const custNetPrice = document.querySelectorAll('.custnetpr');
     //     const items = document.querySelectorAll('.items');
-    //     let tnpr = 0;
-    //     let tcnpr = 0;
+    //     const qtys = document.querySelectorAll('.itemQtys');
+    //     let tmrp = [];
+    //     let tnpr = [];
+    //     let tcnpr = [];
     //     for (let i = 0; i < items.length; i++) {
-    //         if(items[i].checked){
-    //             tnpr += netprice[i].value?parseFloat(netprice[i].value):0;
-    //             tcnpr += custNetPrice[i].value?parseFloat(custNetPrice[i].value):0;
+    //         if (items[i].checked && qtys[i].value) {
+    //             // var qty = qtys[i].value;
+    //             tnpr.push(mrp[i].value ? parseFloat(mrp[i].value) * qtys[i].value : 0);
+    //             tnpr.push(netprice[i].value ? parseFloat(netprice[i].value) * qtys[i].value : 0);
+    //             tcnpr.push(custNetPrice[i].value ? parseFloat(custNetPrice[i].value) * qtys[i].value : 0);
     //         }
 
     //     }
-    //     document.getElementById('netPrice').value =  tnpr;
-    //     document.getElementById('custNetPrice').value =  tcnpr;
+    //     document.getElementById('mrp').value = arraySum(mrp);
+    //     document.getElementById('netPrice').value = arraySum(tnpr);
+    //     document.getElementById('custNetPrice').value = arraySum(tcnpr);
     // }
-    function total_net_price() {
+    function total_mrp() {
+        const mrp = document.querySelectorAll('.mrp');
         const netprice = document.querySelectorAll('.netpr');
         const custNetPrice = document.querySelectorAll('.custnetpr');
         const items = document.querySelectorAll('.items');
         const qtys = document.querySelectorAll('.itemQtys');
+        let tmrp = [];
         let tnpr = [];
         let tcnpr = [];
         for (let i = 0; i < items.length; i++) {
             if (items[i].checked && qtys[i].value) {
                 // var qty = qtys[i].value;
+                tmrp.push(mrp[i].value ? parseFloat(mrp[i].value) * qtys[i].value : 0);
                 tnpr.push(netprice[i].value ? parseFloat(netprice[i].value) * qtys[i].value : 0);
                 tcnpr.push(custNetPrice[i].value ? parseFloat(custNetPrice[i].value) * qtys[i].value : 0);
             }
 
         }
+        document.getElementById('mrp').value = arraySum(tmrp);
         document.getElementById('netPrice').value = arraySum(tnpr);
         document.getElementById('custNetPrice').value = arraySum(tcnpr);
     }

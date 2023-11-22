@@ -51,11 +51,13 @@ class Package_ctrl
                 $_SESSION['msg'][] = "Direct bonus percentage field is empty";
                 $ok = false;
             }
+            // $req->net_price = 0;
+            // $req->cust_price = 0;
             if ($ok == true) {
                 if (
                     $req->name == '' ||
-                    $req->net_price == '' ||
-                    $req->cust_price == '' ||
+                    // $req->net_price == '' ||
+                    // $req->cust_price == '' ||
                     $req->pv == '' ||
                     $req->details == ''
 
@@ -71,8 +73,9 @@ class Package_ctrl
             if ($ok == true) {
                 $arr['name'] = $req->name;
                 $arr['qty'] = 1;
-                $arr['net_price'] = $req->net_price;
-                $arr['cust_price'] = $req->cust_price;
+                $arr['mrp'] = isset($req->mrp) ? $req->mrp : 0;
+                $arr['net_price'] = isset($req->net_price) ? $req->net_price : 0; 
+                $arr['cust_price'] = isset($req->cust_price) ? $req->cust_price : 0;
                 $arr['pv'] = $req->pv;
                 if (isset($req->rv)) {
                     $arr['rv'] = $req->rv;
@@ -82,7 +85,7 @@ class Package_ctrl
                 $arr['price'] = $req->cust_price;
                 // $arr['tax'] = $req->tax;
                 $arr['details'] = $req->details;
-                $arr['direct_bonus'] = round((($arr['net_price']*$req->direct_bonus_percentage)/100),2);
+                $arr['direct_bonus'] = round((($arr['mrp'] * $req->direct_bonus_percentage) / 100), 2);
                 if (isset($req->direct_bonus_percentage)) {
                     $arr['direct_bonus_percentage'] = $req->direct_bonus_percentage;
                 }
@@ -100,6 +103,7 @@ class Package_ctrl
                 // }
                 foreach ($req->items as $item) {
                     $item_qty = "qty" . $item;
+                    $mrp = "mrp" . $item;
                     $net_price = "net_price" . $item;
                     $cust_net_price = "cust_net_price" . $item;
                     if ($req->$item_qty == '') {
@@ -111,7 +115,8 @@ class Package_ctrl
                         'item' => $item,
                         'qty' => $req->$item_qty,
                         'net_price' => $req->$net_price,
-                        'cust_net_price' => $req->$cust_net_price
+                        'cust_net_price' => $req->$cust_net_price,
+                        'mrp' => $req->$mrp
                     );
                 }
                 $arr['jsn'] = json_encode(array(
@@ -201,8 +206,8 @@ class Package_ctrl
                 if (
                     !intval($req->product_id) ||
                     $req->name == '' ||
-                    $req->net_price == '' ||
-                    $req->cust_price == '' ||
+                    // $req->net_price == '' ||
+                    // $req->cust_price == '' ||
                     $req->pv == '' ||
                     $req->details == ''
                 ) {
@@ -214,15 +219,16 @@ class Package_ctrl
             if ($ok == true) {
                 $arr['name'] = $req->name;
                 $arr['qty'] = 1;
-                $arr['net_price'] = $req->net_price;
-                $arr['cust_price'] = $req->cust_price;
+                $arr['mrp'] = isset($req->mrp) ? $req->mrp : 0;
+                $arr['net_price'] = isset($req->net_price) ? $req->net_price : 0; 
+                $arr['cust_price'] = isset($req->cust_price) ? $req->cust_price : 0;
                 $arr['pv'] = $req->pv;
                 if (isset($req->rv)) {
                     $arr['rv'] = $req->rv;
                 }
                 $arr['price'] = $req->cust_price;
                 $arr['details'] = $req->details;
-                $arr['direct_bonus'] = round((($arr['net_price']*$req->direct_bonus_percentage)/100),2);
+                $arr['direct_bonus'] = round((($arr['net_price'] * $req->direct_bonus_percentage) / 100), 2);
                 if (isset($req->direct_bonus_percentage)) {
                     $arr['direct_bonus_percentage'] = $req->direct_bonus_percentage;
                 }
@@ -232,6 +238,7 @@ class Package_ctrl
                 $db = new Dbobjects;
                 foreach ($req->items as $item) {
                     $item_qty = "qty" . $item;
+                    $mrp = "mrp" . $item;
                     $net_price = "net_price" . $item;
                     $cust_net_price = "cust_net_price" . $item;
                     if ($req->$item_qty == '') {
@@ -243,7 +250,8 @@ class Package_ctrl
                         'item' => $item,
                         'qty' => $req->$item_qty,
                         'net_price' => $req->$net_price,
-                        'cust_net_price' => $req->$cust_net_price
+                        'cust_net_price' => $req->$cust_net_price,
+                        'mrp' => $req->$mrp
                     );
                     $prod = (object)$db->showOne("select id,qty,unit from item where item.id = $item");
                     $total_gram += calculate_gram($prod, $req->$item_qty);
@@ -256,7 +264,7 @@ class Package_ctrl
                         "shipping_cost" => $shpcost
                     );
                 }
-                $arr['shipping']=json_encode(array(
+                $arr['shipping'] = json_encode(array(
                     'shipping' => $shipping_charges
                 ));
                 $arr['jsn'] = json_encode(array(

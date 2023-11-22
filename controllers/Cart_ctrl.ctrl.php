@@ -54,7 +54,8 @@ class Cart_ctrl
                 $it->tax_applied = $pr->suppliment == 1 ? 'max_tax' : 'min_tax';
                 $it->tax_value = $tax;
                 $it->my_country = MY_COUNTRY;
-                $prices[] = round(((($it->net_price * ($tax / 100)) + $it->net_price) * $it->qty), 2);
+                // $prices[] = round(((($it->net_price * ($tax / 100)) + $it->net_price) * $it->qty), 2);
+                $prices[] = round(($it->mrp * $it->qty), 2);
                 $qtys[] = $it->qty;
             }
             $price = array_sum($prices);

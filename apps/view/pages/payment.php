@@ -70,7 +70,7 @@ $addrs = get_my_primary_address($userid = USER['id']);
               }
 
               $price_with_tax = round($cv->price);
-              $price_without_tax = $price_with_tax / (100 + $cv->tax) * 100;
+              $price_without_tax = ($price_with_tax / (100 + $cv->tax)) * 100;
               $amt = round(($cv->qty * $cv->price), 2);
               $total_rv = round(($cv->qty * $cv->rv), 2);
               $total_amt += $amt;

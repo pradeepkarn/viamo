@@ -99,7 +99,8 @@ if (!$prmadrs) {
                       $current_cntry = 'CH';
                       $tax = 0;
                     }
-                    $prices[] = round(((($it->net_price * $tax / 100) + $it->net_price) * $it->qty), 2);
+                    // $prices[] = round(((($it->net_price * $tax / 100) + $it->net_price) * $it->qty), 2);
+                    $prices[] = round(($it->mrp*$it->qty), 2);
                     $qtys[] = $it->qty;
                   }
                   $price = array_sum($prices);

@@ -104,12 +104,13 @@ try {
                                                 <td><strong>QTY</strong></td>
                                                 <td><strong>Amt W/O Tax</strong></td>
                                                 <td><strong>Tax</strong></td>
-                                                <td class="text-end"><strong>Amount</strong></td>
+                                                <td class="text-end"><strong>Amount WOT</strong></td>
                                             </tr>
                                         </thead>
                                         <tbody>
 
                                             <?php
+                                            $total_amt_wot = 0;
                                             $total_amt = 0;
                                             $total_pv = 0;
 
@@ -143,19 +144,29 @@ try {
                                                     $itemname = $pr->item_name;
                                                     // $pid = select_col('item', $pr->item, 'product_id');
                                                     $pid = $pr->product_id;
-                                                    $amt = round(((($pr->net_price * ($tax / 100)) + $pr->net_price) * $pr->qty), 2) * $pkg->qty;
-                                                    $amt_wot = round(($pr->net_price * $pr->qty), 2) * $pkg->qty;
+                                                    // $amt = round(((($pr->net_price * ($tax / 100)) + $pr->net_price) * $pr->qty), 2) * $pkg->qty;
+                                                    $amt = round(($pr->mrp * $pr->qty), 2) * $pkg->qty;
+                                                    // $amt_wot = round(($pr->net_price * $pr->qty), 2) * $pkg->qty;
+                                                    $price_wot =  round((($pr->mrp / (100 + $tax)) * 100),2);
+                                                    $amt_wot =  round((($pr->mrp / (100 + $tax)) * 100),2) * $pkg->qty;
                                                     $total_amt += $amt;
+                                                    $total_amt_wot += $amt_wot;
 
                                                     if ($suppliment) {
-                                                        $max_tax += round(((($pr->net_price * ($tax / 100))) * $pr->qty), 2) * $pkg->qty;
+                                                        $ntprce = ($pr->mrp / (100 + $tax))*100;
+                                                        $max_tax += round(((($ntprce * ($tax / 100))) * $pr->qty), 2) * $pkg->qty;
+                                                        // $max_tax += round(((($pr->net_price * ($tax / 100))) * $pr->qty), 2) * $pkg->qty;
                                                     } else {
-                                                        $min_tax += round(((($pr->net_price * ($tax / 100))) * $pr->qty), 2) * $pkg->qty;
+                                                        $ntprcemin = ($pr->mrp / (100 + $tax))*100;
+                                                        // $min_tax += round(((($pr->net_price * ($tax / 100))) * $pr->qty), 2) * $pkg->qty;
+                                                        $min_tax += round(((($ntprcemin * ($tax / 100))) * $pr->qty), 2) * $pkg->qty;
                                                     }
                                                     if ($suppliment) {
-                                                        $tax_value = round(((($pr->net_price * ($tax / 100))) * $pr->qty), 2) * $pkg->qty;
+                                                        $ntprce = ($pr->mrp / (100 + $tax))*100;
+                                                        $tax_value = round(((($ntprce * ($tax / 100))) * $pr->qty), 2) * $pkg->qty;
                                                     } else {
-                                                        $tax_value = round(((($pr->net_price * ($tax / 100))) * $pr->qty), 2) * $pkg->qty;
+                                                        $ntprce = ($pr->mrp / (100 + $tax))*100;
+                                                        $tax_value = round(((($ntprce * ($tax / 100))) * $pr->qty), 2) * $pkg->qty;
                                                     }
                                                     // $qtys[] = $pr->qty;
                                             ?>
@@ -163,11 +174,11 @@ try {
                                                         <td><?php echo $j; ?></td>
                                                         <td><?php echo $pid; ?></td>
                                                         <td><?php echo $itemname; ?></td>
-                                                        <td><?php echo $pr->net_price; ?>/-</td>
+                                                        <td><?php echo $price_wot; ?>/-</td>
                                                         <td><?php echo $pr->qty * $pkg->qty; ?> unit</td>
                                                         <td><?php echo $amt_wot; ?>/-</td>
                                                         <td><?php echo $tax_value; ?></td>
-                                                        <td class="text-end"><?php echo $amt; ?>/-</td>
+                                                        <td class="text-end"><?php echo $amt_wot; ?>/-</td>
                                                     </tr>
                                                 <?php $j++;
                                                 } ?>
@@ -175,6 +186,7 @@ try {
                                             <?php
                                             } 
                                             $net_amt = 0;
+                                            $total_amt_wot = round($total_amt_wot,2);
                                             $total_amt = round($total_amt,2);
                                             $net_amt = round($total_amt-$discount,2);
                                             ?>
@@ -182,8 +194,8 @@ try {
                                         </tbody>
                                     
                                             <tr>
-                                                <td colspan="7" class="text-end border-bottom-0"><strong>Total:</strong></td>
-                                                <td colspan="1" class="text-end border-bottom-0"><?php echo $total_amt; ?></td>
+                                                <td colspan="7" class="text-end border-bottom-0"><strong>Total WOT:</strong></td>
+                                                <td colspan="1" class="text-end border-bottom-0"><?php echo $total_amt_wot; ?></td>
                                             </tr>
 
 

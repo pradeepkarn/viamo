@@ -13,6 +13,10 @@
         <link rel="icon" type="image/x-icon" href="/<?php echo home; ?>/static/assets/img/img7.jpg">
         <link href="/<?php echo home; ?>/static/css/styles.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+        <style>
+            .hide{
+                display: none !important;
+            }
+        </style>
     </head>
     <body class="sb-nav-fixed">
-    
