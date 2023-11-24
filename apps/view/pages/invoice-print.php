@@ -148,7 +148,7 @@ try {
                                                     $amt = round(($pr->mrp * $pr->qty), 2) * $pkg->qty;
                                                     // $amt_wot = round(($pr->net_price * $pr->qty), 2) * $pkg->qty;
                                                     $price_wot =  round((($pr->mrp / (100 + $tax)) * 100),2);
-                                                    $amt_wot =  round((($pr->mrp / (100 + $tax)) * 100),2) * $pkg->qty;
+                                                    $amt_wot =  round(($price_wot * $pr->qty* $pkg->qty),2);
                                                     $total_amt += $amt;
                                                     $total_amt_wot += $amt_wot;
 
@@ -174,11 +174,11 @@ try {
                                                         <td><?php echo $j; ?></td>
                                                         <td><?php echo $pid; ?></td>
                                                         <td><?php echo $itemname; ?></td>
-                                                        <td><?php echo $price_wot; ?>/-</td>
+                                                        <td><?php echo $price_wot; ?></td>
                                                         <td><?php echo $pr->qty * $pkg->qty; ?> unit</td>
-                                                        <td><?php echo $amt_wot; ?>/-</td>
+                                                        <td><?php echo $amt_wot; ?></td>
                                                         <td><?php echo $tax_value; ?></td>
-                                                        <td class="text-end"><?php echo $amt_wot; ?>/-</td>
+                                                        <td class="text-end"><?php echo $amt_wot; ?></td>
                                                     </tr>
                                                 <?php $j++;
                                                 } ?>
@@ -242,7 +242,7 @@ try {
                                             <tr>
 
                                                 <th class="text-end">Total =</th>
-                                                <th class="text-end"><?php echo $net_amt; ?></th>
+                                                <th class="text-end"><?php echo $total_amt; ?></th>
                                             </tr>
                                             <tr>
 
@@ -252,7 +252,7 @@ try {
                                             <tr>
 
                                                 <th class="text-end">Final =</th>
-                                                <th class="text-end"><?php echo $context->payment['shipping_cost']+$net_amt; ?></th>
+                                                <th class="text-end">&#8364; <?php echo $context->payment['shipping_cost']+$total_amt; ?></th>
                                             </tr>
                                         </tfoot>
 

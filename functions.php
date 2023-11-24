@@ -943,7 +943,7 @@ function createAddess($userid, $post)
   $arr = null;
   $itemAddress = new Model('address');
   $arr['user_id'] = $userid;
-  $arr['name'] = $post['first_name']." ".$post['last_name'];
+  $arr['name'] = $post['first_name'] . " " . $post['last_name'];
   $arr['isd_code'] = $post['country_code'];
   $arr['mobile'] = $post['mobile'];
   $arr['locality'] = $post['address'];
@@ -963,7 +963,7 @@ function createAddess($userid, $post)
   if (isset($_POST['company_name'])) {
     $arr['company'] = sanitize_remove_tags($post['company_name']);
   }
- 
+
   $arr['country'] = $country['name'];
   $arr['country_code'] = $country['code'];
   $arr['zipcode'] = $post['zipcode'];
@@ -1454,9 +1454,10 @@ function send_sign_up_email($obj)
       "apps/view/components/emails/partners_signup_email.php",
       (object) array(
         "email" => $obj->partner_email,
+        "uemail" => $obj->email,
         "username" => $obj->username,
         "mobile" => $obj->mobile,
-        "first_name" => $obj->first_name,
+        "pname" => $obj->partner_fname . " " . $obj->partner_lname,
         "name" => $obj->first_name . " " . $obj->last_name
       )
     );
@@ -1644,6 +1645,8 @@ function user_list($keywords = null, $ord = "DESC", $limit = 1, $active = 1)
     $user_list[] = [
       'id' => $user->id,
       'username' => $user->username,
+      'first_name' => $user->last_name,
+      'last_name' => $user->first_name,
       'email' => $user->email,
       'created_at' => $user->created_at,
       'status' => $user->status,
@@ -1690,6 +1693,18 @@ function updateUserDetails($data)
         $_SESSION['msg'][] = 'Email already existed';
       }
     }
+  }
+  if (isset($data['ref'])) {
+    if ($data['ref'] == $data['userid']) {
+      $_SESSION['msg'][] = 'You can not sponser yourself';
+    }else{
+      $arr['ref'] = intval($data['ref']);
+    }
+  }
+  if (isset($data['company_name'],$data['first_name'],$data['last_name'])) {
+    $arr['company_name'] = $data['company_name'];
+    $arr['first_name'] = $data['first_name'];
+    $arr['last_name'] = $data['last_name'];
   }
   if (isset($arr)) {
     (new Model('pk_user'))->update($data['userid'], $arr);
@@ -2202,30 +2217,30 @@ function old_data($key_name = "direct_bonus", $userid = 0, $db = null)
 
 function structure_tree($data)
 {
-    $output = null;
+  $output = null;
 
-    foreach ($data as $item) {
-        $mmbrcnt = count($item['tree']);
-        $text_muted = $mmbrcnt == 0 ? 'text-muted' : 'text-bold has-members';
-        $partners = $mmbrcnt > 1 ? 'partners' : 'partner';
+  foreach ($data as $item) {
+    $mmbrcnt = count($item['tree']);
+    $text_muted = $mmbrcnt == 0 ? 'text-muted' : 'text-bold has-members';
+    $partners = $mmbrcnt > 1 ? 'partners' : 'partner';
 
-        // Check if is_active is equal to 1
-        $isActiveClass = $item['is_active'] == 1 ? 'text-dark' : 'text-danger';
-        $caret = $item['is_active'] == 1 ? 'text-danger' : '';
+    // Check if is_active is equal to 1
+    $isActiveClass = $item['is_active'] == 1 ? 'text-dark' : 'text-danger';
+    $caret = $item['is_active'] == 1 ? 'text-danger' : '';
 
-        $output .= '<li>';
-        $output .= "<span class='caret $text_muted $isActiveClass'>" . $item['username'] . " - (" . count($item['tree']) . " $partners)</span>";
+    $output .= '<li>';
+    $output .= "<span class='caret $text_muted $isActiveClass'>" . $item['username'] . " - (" . count($item['tree']) . " $partners)</span>";
 
-        if (!empty($item['tree'])) {
-            $output .= '<ul class="nested">';
-            $output .= structure_tree($item['tree']);
-            $output .= '</ul>';
-        }
-
-        $output .= '</li>';
+    if (!empty($item['tree'])) {
+      $output .= '<ul class="nested">';
+      $output .= structure_tree($item['tree']);
+      $output .= '</ul>';
     }
 
-    return $output;
+    $output .= '</li>';
+  }
+
+  return $output;
 }
 
 // use in package to sum grams of total product in a package
@@ -2274,7 +2289,7 @@ function calculate_shipping_cost($db, $gram = 0, $ccode = '')
   }
   return $cost;
 }
-function getTextFromCode($code,$arr)
+function getTextFromCode($code, $arr)
 {
   if (array_key_exists($code, $arr)) {
     return $arr[$code];

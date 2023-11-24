@@ -5,11 +5,26 @@ if (!authenticate()) {
     die('Login required');
 }
 ?>
+<style>
+    /* Media query for mobile devices */
+    @media only screen and (max-width: 768px) {
+        .nav_tabs {
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .btn {
+            width: 100%;
+            margin-bottom: 5px;
+        }
+    }
+</style>
 <div id="layoutSidenav">
     <?php import("apps/view/inc/sidebar.php"); ?>
     <div id="layoutSidenav_content">
         <main>
-            <div class="container-fluid px-4">
+            <div class="container-fluid">
                 <!-- <h1 class="mt-4">Dashboard</h1> -->
                 <ol class="breadcrumb mt-3 mb-4">
                     <li class="breadcrumb-item active mycl">My Profile</li>
@@ -18,7 +33,7 @@ if (!authenticate()) {
                 <div class="container">
                     <div class="row mb-4">
 
-                        <div class="col-lg-8">
+                        <div class="col-md-12">
                             <div class="spl-box">
                                 <div class="card">
                                     <div class="card-header">
@@ -27,20 +42,15 @@ if (!authenticate()) {
                                     <div class="card-body">
                                         <div class="nav_tabs">
                                             <button class="btn tablinks1" onclick="openProfile(event, 'account')" id="defaultOpen1">All Data</button>
-
-                                            <button class="btn tablinks1" onclick="openProfile(event, 'personaldata')" id="defaultOpen1"><i class="bi bi-person"></i> Delivery Address</button>
-
-                                            <!-- <button class="btn tablinks1" onclick="openProfile(event, 'deliveryaddress')" id="defaultOpen1"><i class="bi bi-person"></i> all addresses</button> -->
-
-                                            <button class="btn tablinks1" onclick="openProfile(event, 'documents')" id="defaultOpen1"><i class="bi bi-person"></i> KYC</button>
-
-                                            <button class="btn tablinks1" onclick="openProfile(event, 'bankaccounts')" id="defaultOpen1"><i class="bi bi-person"></i> Bank-Account's</button>
-
-                                            <button class="btn tablinks1" onclick="openProfile(event, 'security')" id="defaultOpen1"><i class="bi bi-person"></i> Password</button>
+                                            <button class="btn tablinks1" onclick="openProfile(event, 'personaldata')" id="defaultOpen2"><i class="bi bi-person"></i> Delivery Address</button>
+                                            <button class="btn tablinks1" onclick="openProfile(event, 'documents')" id="defaultOpen3"><i class="bi bi-person"></i> KYC</button>
+                                            <button class="btn tablinks1" onclick="openProfile(event, 'bankaccounts')" id="defaultOpen4"><i class="bi bi-person"></i> Bank Accounts</button>
+                                            <button class="btn tablinks1" onclick="openProfile(event, 'security')" id="defaultOpen5"><i class="bi bi-person"></i> Password</button>
                                         </div>
+
                                         <div class="row mt-3 mb-3">
                                             <div id="account" class="tabcontent1">
-                                                <div class="col-lg-12">
+                                                <div class="col-md-12">
                                                     <?php
                                                     // $slaeCtrl = new Sales_ctrl;
                                                     // $sale = $slaeCtrl->get_sale_volume();
@@ -65,22 +75,22 @@ if (!authenticate()) {
                                                         <form action="/<?php echo home; ?>/update-personal-data" id="update-p-data-form" method="post">
                                                             <!-- Form starts -->
                                                             <div class="row">
-                                                                <div class="col-8 new_boxn">
+                                                                <div class="col-md-8 new_boxn">
                                                                     <h6 class="m-0">id:</h6>
                                                                 </div>
-                                                                <div class="col-4 new_boxn">
+                                                                <div class="col-md-4 new_boxn">
                                                                     <span><?php echo USER['id']; ?></span>
                                                                 </div>
-                                                                <div class="col-8 new_boxn">
+                                                                <div class="col-md-8 new_boxn">
                                                                     <h6 class="m-0">Username:</h6>
                                                                 </div>
-                                                                <div class="col-4 new_boxn">
+                                                                <div class="col-md-4 new_boxn">
                                                                     <span><?php echo USER['username']; ?></span>
                                                                 </div>
-                                                                <div class="col-8 new_boxn">
+                                                                <div class="col-md-8 new_boxn">
                                                                     <h6 class="m-0">Sponser Username:</h6>
                                                                 </div>
-                                                                <div class="col-4 new_boxn">
+                                                                <div class="col-md-4 new_boxn">
                                                                     <span><?php echo sponser_username(USER['ref']); ?></span>
                                                                 </div>
 
@@ -132,10 +142,10 @@ if (!authenticate()) {
                                                                     <label for="">Email</label>
                                                                     <input type="text" readonly name="email" value="<?php echo USER['email']; ?>" class="form-control">
                                                                 </div>
-                                                                <div class="col-8 new_boxn">
+                                                                <div class="col-md-8 new_boxn">
                                                                     <h6 class="m-0">Status:</h6>
                                                                 </div>
-                                                                <div class="col-4 new_boxn">
+                                                                <div class="col-md-4 new_boxn">
                                                                     <span class="text-success"><?php echo USER['is_active'] == 1 ? 'Active' : 'In active'; ?></span>
                                                                 </div>
                                                                 <div class="col-md-12">
@@ -149,7 +159,7 @@ if (!authenticate()) {
                                                 </div>
                                             </div>
 
-                                            <div class="col-lg-12">
+                                            <div class="col-md-12">
                                                 <div id="personaldata" class="tabcontent1">
                                                     <h5>Shipping Address</h5>
                                                     <?php $addrs = get_my_primary_address(USER['id']);
@@ -169,33 +179,33 @@ if (!authenticate()) {
 
                                                         <form class="material-form pt-2" id="update-address" action="/<?php echo home; ?>/update-address-ajax" method="POST">
                                                             <div class="form-group row mb-4">
-                                                                <div class="col-lg-12">
+                                                                <div class="col-md-12">
                                                                     <input class="form-control valid" type="text" required="" placeholder="Company" name="company" value="<?php echo $addrs->company; ?>" aria-required="true" aria-invalid="false">
                                                                 </div>
                                                             </div>
                                                             <div class="form-group row mb-4">
-                                                                <div class="col-lg-6">
+                                                                <div class="col-md-6">
                                                                     <input type="hidden" name="id" value="<?php echo $addrs->id; ?>">
                                                                     <input class="form-control valid" type="text" required="" placeholder="" name="first_name" value="<?php echo $firstName; ?>" aria-required="true" aria-invalid="false">
                                                                 </div>
-                                                                <div class="col-lg-6">
+                                                                <div class="col-md-6">
                                                                     <input class="form-control valid" type="text" required="" placeholder="" name="last_name" value="<?php echo $lastName; ?>" aria-required="true" aria-invalid="false">
                                                                 </div>
                                                             </div>
 
                                                             <div class="form-group row mb-4">
-                                                                <div class="col-lg-6">
+                                                                <div class="col-md-6">
                                                                     <input class="form-control valid" type="text" required="" placeholder="Street" name="street" value="<?php echo $addrs->street; ?>" aria-required="true" aria-invalid="false">
                                                                 </div>
-                                                                <div class="col-lg-6">
+                                                                <div class="col-md-6">
                                                                     <input class="form-control valid" type="text" required="" placeholder="Street Number" name="street_num" value="<?php echo $addrs->street_num; ?>" aria-required="true" aria-invalid="false">
                                                                 </div>
                                                             </div>
                                                             <div class="form-group row mb-4">
-                                                                <div class="col-lg-6">
+                                                                <div class="col-md-6">
                                                                     <input class="form-control valid" type="text" required="" placeholder="Postal Code" name="zipcode" value="<?php echo $addrs->zipcode; ?>" aria-required="true" aria-invalid="false">
                                                                 </div>
-                                                                <div class="col-lg-6">
+                                                                <div class="col-md-6">
                                                                     <input class="form-control valid" type="text" required="" placeholder="City" name="city" value="<?php echo $addrs->city; ?>" aria-required="true" aria-invalid="false">
                                                                 </div>
                                                             </div>
@@ -222,20 +232,20 @@ if (!authenticate()) {
                                                             </div>
 
                                                             <div class="form-group row mb-4">
-                                                                <div class="col-lg-2">
+                                                                <div class="col-md-2">
                                                                     <input class="form-control valid" placeholder="ISD Code" type="text" name="isd_code" value="<?php echo $addrs->isd_code; ?>">
                                                                 </div>
-                                                                <div class="col-lg-6">
+                                                                <div class="col-md-6">
                                                                     <input class="form-control valid" type="number" required="" placeholder="Mobile" name="mobile" data-validation-required-message="Das ist ein Pflichtfeld" value="<?php echo $addrs->mobile; ?>" aria-required="true" aria-invalid="false">
                                                                 </div>
                                                             </div>
                                                             <div class="form-group row">
-                                                                <div class="col-lg-12">
+                                                                <div class="col-md-12">
                                                                     <input class="form-control valid" placeholder="Email" type="text" name="email" readonly value="<?php echo USER['email']; ?>">
                                                                 </div>
                                                             </div>
 
-                                                            <div class="col-lg-12 mb-4">
+                                                            <div class="col-md-12 mb-4">
                                                             </div>
 
 
@@ -251,7 +261,7 @@ if (!authenticate()) {
                                                 </div>
                                             </div>
 
-                                            <div class="col-lg-12">
+                                            <div class="col-md-12">
                                                 <div id="deliveryaddress" class="tabcontent1">
                                                     <div class="deliver_add">
                                                         <h5>delivery addresses</h5>
@@ -260,7 +270,7 @@ if (!authenticate()) {
                                                     </div>
                                                     <form class="material-form pt-2">
                                                         <div class="form-group row">
-                                                            <div class="col-lg-12">
+                                                            <div class="col-md-12">
 
                                                                 <div class="form-group my-3" style="height: 200px; overflow-y:scroll; background-color:white;">
                                                                     <?php
@@ -397,13 +407,13 @@ if (!authenticate()) {
 
                                                 </div>
                                             </div>
-                                            <div class="col-lg-12">
+                                            <div class="col-md-12">
                                                 <div id="documents" class="tabcontent1">
                                                     <div class="card">
 
                                                         <div class="card-body">
                                                             <div class="row mt-3 mb-3">
-                                                                <div class="col-lg-12">
+                                                                <div class="col-md-12">
                                                                     <div class="card-header">
                                                                         <h5>identity document</h5>
                                                                     </div>
@@ -433,7 +443,7 @@ if (!authenticate()) {
                                                                         <a class="upl_txt" href="/<?php echo home; ?>/media/docs/profiles/<?php echo USER['nid_doc']; ?>">VIEW</a>
                                                                     </div>
                                                                 </div>
-                                                                <div class="col-lg-12 pt-3">
+                                                                <div class="col-md-12 pt-3">
                                                                     <div class="card-header">
                                                                         <h5>Proof of address</h5>
                                                                     </div>
@@ -469,7 +479,7 @@ if (!authenticate()) {
                                                     <button class="btn btn-primary kyc_btn mt-3"><a href="/<?php echo home; ?>/kyc-upload">KYC upload</a></button>
                                                 </div>
                                             </div>
-                                            <div class="col-lg-12">
+                                            <div class="col-md-12">
                                                 <div id="bankaccounts" class="tabcontent1">
                                                     <h5>Bank account</h5>
                                                     <?php
@@ -535,19 +545,19 @@ if (!authenticate()) {
                                                             </div>
                                                         </div>
                                                         <!-- <div class="form-group row mb-4">
-                                                                <div class="col-lg-6">
+                                                                <div class="col-md-6">
                                                                     <input class="form-control valid" type="text" required="" placeholder="account holder" name="name" data-validation-required-message="Das ist ein Pflichtfeld" aria-required="true" aria-invalid="false">
                                                                 </div>
-                                                                <div class="col-lg-6">
+                                                                <div class="col-md-6">
                                                                     <input class="form-control valid" type="text" required="" placeholder="bank name" name="name" data-validation-required-message="Das ist ein Pflichtfeld" aria-required="true" aria-invalid="false">
                                                                 </div>
                                                             </div> -->
 
                                                         <!-- <div class="form-group row mb-4">
-                                                                <div class="col-lg-7">
+                                                                <div class="col-md-7">
                                                                     <input class="form-control valid" type="text" required="" placeholder="IBAN (Just the number without spaces)" name="name" data-validation-required-message="Das ist ein Pflichtfeld" aria-required="true" aria-invalid="false">
                                                                 </div>
-                                                                <div class="col-lg-5">
+                                                                <div class="col-md-5">
                                                                     <input class="form-control valid" type="text" required="" placeholder="SWIFT / BIC (Just the number without spaces)" name="name" data-validation-required-message="Das ist ein Pflichtfeld" aria-required="true" aria-invalid="false">
                                                                 </div>
                                                             </div> -->
@@ -557,13 +567,13 @@ if (!authenticate()) {
                                                 </div>
                                             </div>
 
-                                            <div class="col-lg-12">
+                                            <div class="col-md-12">
                                                 <div id="security" class="tabcontent1">
                                                     <h5>Change password</h5>
                                                     <div id="pass-change"></div>
                                                     <form id="change-pass-form" action="/<?php echo home; ?>/change-password-ajax" class="material-form pt-2">
                                                         <div class="form-group row mb-4">
-                                                            <div class="col-lg-6">
+                                                            <div class="col-md-6">
                                                                 <label for="">Old Password</label>
                                                                 <input class="form-control valid" type="password" name="old_pass">
                                                                 <label for="">New Password</label>

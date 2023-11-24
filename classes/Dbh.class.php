@@ -19,5 +19,3 @@ class Dbh {
     }
     
 }
-$pdo = null;
-?>

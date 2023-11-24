@@ -34,7 +34,7 @@ if (is_superuser()) :
             }
         }
     }
-    if (isset($_POST['delete_amt_id']) && isset($_POST['action']) && $_POST['action']=="cmsndlt") {
+    if (isset($_POST['delete_amt_id']) && isset($_POST['action']) && $_POST['action'] == "cmsndlt") {
         if (intval($_POST['delete_amt_id'])) {
             $rvdb = new Model('extra_credits');
             $rvdb->destroy($_POST['delete_amt_id']);
@@ -100,7 +100,8 @@ $rv_sum = $udata->rv_gt;
                                         <div class="row m">
                                             <div class="col-md-6 my-3">
                                                 <input  min="0" placeholder="Commission" type="text" scope="any" name="commission" class="form-control">
-                                                <input type="hidden" name="added_to" value="<?php //echo $user['id']; ?>">
+                                                <input type="hidden" name="added_to" value="<?php //echo $user['id']; 
+                                                                                            ?>">
                                                 <input type="hidden" name="action" value="add_cmsn">
                                             </div>
                                             <div class="col-md-6 my-3">
@@ -115,7 +116,8 @@ $rv_sum = $udata->rv_gt;
                                 <div class="col-md-12">
                                     <div class="shadow-sm card h-100 px-3 py-2">
                                         <!-- <h5>Lifetime Commission -->
-                                            <?php //echo $cmsn_gt; ?>
+                                        <?php //echo $cmsn_gt; 
+                                        ?>
 
                                         </h5>
                                         <!-- <table  class="table table-bordered">
@@ -176,8 +178,65 @@ $rv_sum = $udata->rv_gt;
                                         <input type="email" name="email" value="<?php echo $user['email']; ?>" class="form-control" id="inputEmail4">
                                     </div>
                                     <div class="col-md-6 my-2">
+                                        <label for="fname" class="form-label">Firstname</label>
+                                        <input type="text" name="first_name" value="<?php echo $user['first_name']; ?>" class="form-control" id="fname">
+                                    </div>
+                                    <div class="col-md-6 my-2">
+                                        <label for="lname" class="form-label">Lastname</label>
+                                        <input type="text" name="last_name" value="<?php echo $user['last_name']; ?>" class="form-control" id="lname">
+                                    </div>
+                                    <div class="col-md-6 my-2">
                                         <label for="inputUsername" class="form-label">Username</label>
                                         <input type="text" name="username" value="<?php echo $user['username']; ?>" class="form-control" id="inputUsername">
+                                    </div>
+                                    <div class="col-md-6 my-2">
+                                        <label for="comp" class="form-label">Company</label>
+                                        <input type="text" name="company_name" value="<?php echo $user['company_name']; ?>" class="form-control" id="comp">
+                                    </div>
+
+                                    <div class="col-md-6 my-2">
+                                        <div id="postioncont"></div>
+                                        <label for="">Sponser</label>
+                                        <style>
+                                            /* Apply the height to the select within #isdCodeSearchContainer */
+                                            .select2-selection--single,
+                                            #mobileInput {
+                                                height: 35px !important;
+                                                width: 100% !important;
+                                                margin-top: 10px;
+                                            }
+                                        </style>
+                                        <select id="positions" class="form-select mb-2">
+                                            <?php
+                                            $db = new Dbobjects;
+                                            $users = $db->show("select id, username from pk_user where id != '{$user['id']}' AND is_active=1");;
+                                            $usrrr = [];
+                                            foreach ($users as $key => $usr) {
+                                            ?>
+                                                <option value="<?php echo $usr['id']; ?>"><?php echo $usr['username']; ?></option>
+                                            <?php }
+                                            $jsnusers = json_encode($users);
+                                            ?>
+                                        </select>
+                                        <script>
+                                            $(document).ready(function() {
+                                                let prevIsdCode = "<?php echo $user['ref']; ?>";
+                                                if (prevIsdCode) {
+                                                    $('#positions').val(prevIsdCode);
+                                                }
+                                                // Initialize Select2 on the ISD code search input
+                                                $('#positions').select2({
+                                                    placeholder: 'Search Sponser',
+                                                    data: <?php echo $jsnusers; ?>
+                                                });
+                                                // Handle search functionality
+                                                $('#positions').on('change', function() {
+                                                    var selectedCode = $(this).val();
+                                                    // Add the selected value to the form data
+                                                    $("#postioncont").html('<input type="hidden" name="ref" value="' + selectedCode + '">');
+                                                });
+                                            });
+                                        </script>
                                     </div>
                                     <div class="col-md-6 my-2">
                                         <label for="inputPassword4" class="form-label">Password</label>

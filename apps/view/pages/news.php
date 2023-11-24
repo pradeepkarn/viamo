@@ -12,7 +12,7 @@ import("apps/view/inc/navbar.php");
                     <li class="breadcrumb-item active">News</li>
                 </ol>
                 <section>
-                    <div class="container px-4 ms-2">
+                    <div class="container ms-2">
                         <div class="row">
                             <div class="col bst_news">
                                 <marquee class="marque_news mt-2" behavior="scroll" scrollamount="8" direction="left">
@@ -23,9 +23,9 @@ import("apps/view/inc/navbar.php");
                             </div>
                         </div>
                     </div>
-                    <div class="container px-4 mb-5">
+                    <div class="container mb-5">
                         <div class="row">
-                            <div class="col-5 mb-2">
+                            <div class="col-md-6 mb-2">
                                 <div class="card">
                                     <div class="card-body">
                                         <h5 class="card-title pb-3">Title</h5>

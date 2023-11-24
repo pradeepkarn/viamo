@@ -16,6 +16,14 @@
                     <?php
                     if (is_superuser()) {
                     ?>
+                        <a class="nav-link desktop-hide" href="/<?php echo home; ?>/news">
+                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                            News
+                        </a>
+                        <a class="nav-link desktop-hide" href="/<?php echo home; ?>/profile">
+                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                            Profile
+                        </a>
                         <a class="nav-link" href="/<?php echo home; ?>/all-users/?page=1">
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                             All Users

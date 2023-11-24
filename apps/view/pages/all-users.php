@@ -77,6 +77,7 @@ $tp = isset($context['data']->total_users) ? $context['data']->total_users : 5;
                                         <th>ID</th>
                                         <th>Edit user</th>
                                         <th>username</th>
+                                        <th>Name</th>
                                         <th>Email</th>
                                         <th>sponser username</th>
                                         <th>Reg. date</th>
@@ -88,6 +89,7 @@ $tp = isset($context['data']->total_users) ? $context['data']->total_users : 5;
                                         <th>ID</th>
                                         <th>Edit user</th>
                                         <th>username</th>
+                                        <th>Name</th>
                                         <th>Email</th>
                                         <th>sponser username</th>
                                         <th>Reg. date</th>
@@ -110,6 +112,7 @@ $tp = isset($context['data']->total_users) ? $context['data']->total_users : 5;
                                             <th><?php echo $value['id']; ?></th>
                                             <th><a target="_blank" href="/<?php echo home; ?>/edit-user/?userid=<?php echo $value['id']; ?>">Edit</a></th>
                                             <th><?php echo $value['username']; ?></th>
+                                            <th><?php echo "{$value['first_name']} {$value['last_name']}"; ?></th>
                                             <th><?php echo $value['email']; ?></th>
                                             <th><?php echo $sponser; ?></th>
                                             <th><?php echo $value['created_at']; ?></th>

@@ -11,11 +11,12 @@
             <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>
         </div>
     </form> -->
-    <div class="lsqq">
+    <div class="lsqq mobile-hide">
         <a href="/<?php echo home; ?>">Dashboard <span>|</span></a>
         <a href="/<?php echo home; ?>/news">News <span>|</span></a>
         <a href="/<?php echo home; ?>/profile">Profile </a>
     </div>
+    <div id="google_translate_element"></div>
     <div style="float: right !important;" class="cart_items ms-auto">
         <?php
         $currency_flag = null;
@@ -24,7 +25,7 @@
         $currency_symbol = null;
         $country_name = null;
         if (authenticate()) {
-            $count = isset(USER['id'])?cart_items(USER['id']):0;
+            $count = isset(USER['id']) ? cart_items(USER['id']) : 0;
             $curr = getCurrency($keyword = MY_COUNTRY);
             // myprint($curr);
             if (count($curr) > 0) {
@@ -54,10 +55,11 @@
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                 <li>
                     <a class="dropdown-item" href="#!">
-                        <img src="data:image/png;base64,<?php echo $currency_flag; ?>" alt="<?php echo USER!=false?USER['country']:null; ?>">
+                        <img src="data:image/png;base64,<?php echo $currency_flag; ?>" alt="<?php echo USER != false ? USER['country'] : null; ?>">
                         <?php echo $country_name; ?>
                     </a>
                 </li>
+                
                 <li>
                     <hr class="dropdown-divider" />
                 </li>

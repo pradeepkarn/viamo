@@ -2,8 +2,8 @@
 
 use PHPMailer\PHPMailer\PHPMailer;
 $baseuri = BASE_URI;
-$link_gr = "<a href='/$baseuri/login'>Login to your VIAMO-World-Backoffice.</a>";
-$link_en = "<a href='/$baseuri/login'>Hier in das VIAMO-World-Backoffice einloggen.</a>";
+$link_en = "<a href='$baseuri/login'>Login to your VIAMO-World-Backoffice.</a>";
+$link_gr = "<a href='$baseuri/login'>Hier in das VIAMO-World-Backoffice einloggen.</a>";
 // $from_email = email;
 // $subject = "Welcome to Domswiss";
 

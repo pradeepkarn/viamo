@@ -999,9 +999,13 @@ switch ($path) {
         $user = (object)(getData('pk_user', $userid));
         $obj = new stdClass;
         $obj->partner_email = null;
+        $obj->partner_fname = null;
+        $obj->partner_lname = null;
         if (intval($user->ref) > 0) {
           $referby = (object)(getData('pk_user', $user->ref));
           $obj->partner_email = $referby->email;
+          $obj->partner_fname = $referby->first_name;
+          $obj->partner_lname = $referby->last_name;
         }
         $obj->email = $_POST['email'];
         $obj->username = $user->username;

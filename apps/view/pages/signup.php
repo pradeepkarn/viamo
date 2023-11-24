@@ -14,6 +14,11 @@
     <link rel="icon" type="image/x-icon" href="/<?php echo home; ?>/media/img/lizenz-logo.jpg">
     <link href="/<?php echo home; ?>/static/css/styles.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <style>
+        .hide{
+            display: none;
+        }
+    </style>
 </head>
 
 
@@ -124,14 +129,14 @@ if (isset($_GET['sponserid']) && strval($_GET['sponserid'])) {
                         <input type="date" class="form-control" placeholder="Date of Birth YYYY-MM-DD" id="birthday" name="birthday" required="" data-validation-required-message="Das ist ein Pflichtfeld" aria-required="true">
                     </div>
                 </div>
-                <div class="form-group row mb-4">
+                <div class="form-group row mb-4 hide">
                     <div class="col-lg-12">
-                        <input class="form-control valid" type="text" required="" placeholder="Address 1" name="address" data-validation-required-message="Das ist ein Pflichtfeld" value="" aria-required="true" aria-invalid="false">
+                        <input class="form-control valid" type="text" required="" placeholder="Address 1" name="address" data-validation-required-message="Das ist ein Pflichtfeld" value="Address line1" aria-required="true" aria-invalid="false">
                     </div>
                 </div>
-                <div class="form-group row mb-4">
+                <div class="form-group row mb-4 hide">
                     <div class="col-lg-12">
-                        <input class="form-control valid" type="text" required="" placeholder="Address 2 (optional)" name="address2" data-validation-required-message="Das ist ein Pflichtfeld" value="" aria-required="true" aria-invalid="false">
+                        <input class="form-control valid" type="text" required="" placeholder="Address 2 (optional)" name="address2" data-validation-required-message="Das ist ein Pflichtfeld" value="Address line2" aria-required="true" aria-invalid="false">
                     </div>
                 </div>
                 <div class="form-group row mb-4">

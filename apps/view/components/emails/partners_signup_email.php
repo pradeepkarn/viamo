@@ -16,12 +16,12 @@ $message = <<<MSG
   <title>Welcome to VIAMO</title>
 </head>
 <body>
-<h2>Hallo $context->first_name</h2>
+<h2>Hallo $context->pname</h2>
   
   <p>Herzlichen Glueckwunsch - ein neues Mitglied hat sich bei dir registriert: </p>
   <p>Username: $context->username</p>
   <p>Name: $context->name</p>
-  <p>Mailadresse: $context->email</p>
+  <p>Mail adresse: $context->uemail</p>
   <p>Telefon: $context->mobile</p>
   
   
@@ -36,12 +36,12 @@ $message = <<<MSG
 
   <hr>
   
-  <h2>Hello $context->first_name</h2>
+  <h2>Hello $context->pname</h2>
   
   <p>Congratulations - a new member has registered with you: </p>
   <p>Username: $context->username</p>
   <p>Name: $context->name</p>
-  <p>Email address: $context->email</p>
+  <p>Email address: $context->uemail</p>
   <p>Phone: $context->mobile</p>
   
   

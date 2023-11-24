@@ -92,7 +92,7 @@ SCRPT;
 
 
                     <div class="form-group row">
-                      <div class="col-6">
+                      <div class="col-md-6 col-12">
                         <label class="control-label">
                           <font style="vertical-align: inherit;">
                             <font style="vertical-align: inherit;">To partner</font>
@@ -129,7 +129,7 @@ SCRPT;
 
 
                         <div class="input-group copyarea">
-                          <input type="text" class="form-control" value="https:/<?php echo home; ?>/signup/?sponserid=<?php echo $my_username; ?>" readonly="">
+                          <input type="text" class="form-control" value="<?php echo BASE_URI; ?>/signup/?sponserid=<?php echo $my_username; ?>" readonly="">
                           <div class="input-group-append">
                             <span onclick="copyToClipboard('#p1')" class="input-group-text1 pointer"><i class="far fa-copy"></i></span>
                           </div>
