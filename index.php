@@ -1,4 +1,7 @@
 <?php
+
+use PHPMailer\PHPMailer\PHPMailer;
+
 require_once(__DIR__ . "/config.php");
 import("/includes/class-autoload.inc.php");
 import('/vendor/autoload.php');
@@ -936,14 +939,16 @@ switch ($path) {
     if ($url[0] == "forgot-password") {
       if (isset($_POST['reset_my_account_pass'])) {
         // print_r($_POST);
-        $db = new Mydb('pk_user');
-        $checkemail = $db->filterData(['email' => $_POST['email']]);
+        $db = new Dbobjects;
+        $db->tableName = 'pk_user';
+        $checkemail = $db->filter(['email' => $_POST['email']]);
         if (count($checkemail) > 0) {
           $home = home;
           $token = bin2hex(random_bytes(32));
           $to      = $_POST['email'];
+          $baseuri = BASE_URI;
           $subject = 'Password reset';
-          $link = "Go to reset password: <a href='https:/{$home}/reset-account/?token={$token}&email={$_POST['email']}'>Reset</a>";
+          $link = "Go to reset password: <a href='{$baseuri}/reset-account/?token={$token}&email={$_POST['email']}'>Reset</a>";
           $message = <<<MSG
             <!DOCTYPE html>
             <html lang="en">
@@ -971,16 +976,33 @@ switch ($path) {
             </html>
             MSG;
 
-          $headers  = 'MIME-Version: 1.0' . "\r\n";
-          $headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
-          $headers .= 'From: ' . email . "\r\n";
-          $headers .= 'Content-type: text/html; charset=utf-8' . "\r\n";
-          if (mail($to, $subject, $message, $headers)) {
+          // $headers  = 'MIME-Version: 1.0' . "\r\n";
+          // $headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
+          // $headers .= 'From: ' . email . "\r\n";
+          // $headers .= 'Content-type: text/html; charset=utf-8' . "\r\n";
+          
+
+          $mail = php_mailer(new PHPMailer());
+          $mail->isHTML(true);
+          $mail->Subject = 'Passwor reset link!';
+          $mail->Body = $message;
+          $mail->setFrom(email, SITE_NAME . " Password reset link");
+          if (!email_has_valid_dns($to)) {
+            $_SESSION['msg'][] = "Invalid email, mail not sent to customer: $to";
+          }
+          $mail->addAddress($to, $to);
+          
+          if (!email_has_valid_dns($to)) {
+            $_SESSION['msg'][] = "Invalid email, mail not sent to customer: $to";
+          }
+          try {
+            $mail->send();
             $arr = null;
             $arr['remember_token'] = $token;
-            $db->updateData($arr);
+            $db->insertData = $arr;
+            $db->update();
             $_SESSION['msg'][] = "A password reset link sent to your registered email: {$_POST['email']}, please check in spam folder in case of not found in inbox.";
-          } else {
+          } catch (ErrorException $e) {
             $_SESSION['msg'][] = "Failure: Email was not sent!";
           }
         } else {
