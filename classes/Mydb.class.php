@@ -1,9 +1,10 @@
 <?php if(defined("direct_access") != 1){echo "Silenece is awesome"; return;} 
 class Mydb extends Dbobjects
 {
+    public $conn;
     public function __construct($table)
     {
-        $this->conn = $this->conn;
+        $this->conn = $this->connect();
         $this->tableName = $table;
     }
     public function allData($ord = '',$limit = 5)

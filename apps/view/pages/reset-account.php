@@ -1,8 +1,9 @@
 <?php
-$db = new Mydb('pk_user');
-$user = $db->filterData(['email'=>$_GET['email'], 'remember_token'=>$_GET['token']]);
+$db = new Dbobjects;
+$db->tableName = 'pk_user';
+$user = $db->filter(['email'=>$_GET['email'], 'remember_token'=>$_GET['token']]);
 if (count($user)>0) {
-    $user = $db->getData(['email'=>$_GET['email'], 'remember_token'=>$_GET['token']]);
+    $user = $db->get(['email'=>$_GET['email'], 'remember_token'=>$_GET['token']]);
 }
 else{
     $home = home;
@@ -13,7 +14,10 @@ if (isset($_POST['cnf_password']) && isset($_POST['new_password']) && !empty($_P
 
     // $map = matchData($_POST['cnf_password'],$_POST['new_password'],1);
     if ($_POST['cnf_password']==$_POST['new_password']) {
-        $db->updateData(['password'=>md5($_POST['new_password']),'remember_token'=>'']);
+        $arr['password'] = md5($_POST['new_password']);
+        $arr['remember_token'] = '';
+        $db->insertData = $arr;
+        $db->update();
         $GLOBALS['msg_signin'][] = "Password changed successfully!";
     }
     else{
@@ -21,9 +25,8 @@ if (isset($_POST['cnf_password']) && isset($_POST['new_password']) && !empty($_P
     }
 }
 ?>
-<?php import("apps/view/inc/nav.php"); ?>
-<section style="min-height: 100vh; background-image: url(/<?php echo media_root; ?>/nav-bg.jpeg); 
-background-position: center;">
+<?php //import("apps/view/inc/nav.php"); ?>
+<section style="min-height: 100vh; background-image: url(/<?php echo media_root; ?>/nav-bg.jpeg); background-position: center;">
     <div class="container">
         <div class="row" style="padding-top: 220px;">
             <div class="col-md-4"></div>
