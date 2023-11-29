@@ -84,7 +84,7 @@ class Order_ctrl
                         $commission = false;
                         $arr['point_used'] = $total_amt;
                         $arr['discount_by_bpt'] = $total_amt;
-                    } else if ($total_amt >= $point && $point > 0) {
+                    } else if ($total_amt >= $point && $point >= 0) {
                         $commission = false;
                         $arr['point_used'] = $point;
                         $arr['discount_by_bpt'] = $point;
@@ -159,12 +159,13 @@ class Order_ctrl
                     }
                     // } else {
                     if (USER['id'] != 1) {
-                        $trnArr = null;
+                        // $trnArr = null;
                         $refuser = $db->showOne("SELECT * FROM pk_user WHERE pk_user.id = (SELECT ref FROM pk_user WHERE pk_user.id = '{$trnArr['transactedBy']}')");
                         $cmsn = 0;
                         $refuser = $refuser ? obj($refuser) : null;
                         // $membercnt = $level->count_direct_partners($db, $myid = 1);
                         if ($refuser) {
+                            // add bonus
                             $partial_amt = round(($total_amt - $redeempt), 2);
                             $direct_bonus = round((($partial_amt / $total_amt) * $total_db), 2);
                             if ($direct_bonus > 0) {
@@ -192,7 +193,7 @@ class Order_ctrl
                 $con->commit();
             } catch (PDOException $th) {
                 $_SESSION['msg'][] = $th;
-                echo $th;
+                // echo $th;
                 $pay = false;
                 $con->rollback();
             }
