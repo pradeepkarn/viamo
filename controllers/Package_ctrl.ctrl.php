@@ -74,7 +74,7 @@ class Package_ctrl
                 $arr['name'] = $req->name;
                 $arr['qty'] = 1;
                 $arr['mrp'] = isset($req->mrp) ? $req->mrp : 0;
-                $arr['net_price'] = isset($req->net_price) ? $req->net_price : 0; 
+                $arr['net_price'] = isset($req->net_price) ? $req->net_price : 0;
                 $arr['cust_price'] = isset($req->cust_price) ? $req->cust_price : 0;
                 $arr['pv'] = $req->pv;
                 if (isset($req->rv)) {
@@ -220,7 +220,7 @@ class Package_ctrl
                 $arr['name'] = $req->name;
                 $arr['qty'] = 1;
                 $arr['mrp'] = isset($req->mrp) ? $req->mrp : 0;
-                $arr['net_price'] = isset($req->net_price) ? $req->net_price : 0; 
+                $arr['net_price'] = isset($req->net_price) ? $req->net_price : 0;
                 $arr['cust_price'] = isset($req->cust_price) ? $req->cust_price : 0;
                 $arr['pv'] = $req->pv;
                 if (isset($req->rv)) {
@@ -228,7 +228,11 @@ class Package_ctrl
                 }
                 $arr['price'] = $req->cust_price;
                 $arr['details'] = $req->details;
-                $arr['direct_bonus'] = round((($arr['net_price'] * $req->direct_bonus_percentage) / 100), 2);
+                // $arr['direct_bonus'] = round((($arr['net_price'] * $req->direct_bonus_percentage) / 100), 2);
+                // if (isset($req->direct_bonus_percentage)) {
+                //     $arr['direct_bonus_percentage'] = $req->direct_bonus_percentage;
+                // }
+                $arr['direct_bonus'] = round((($arr['mrp'] * $req->direct_bonus_percentage) / 100), 2);
                 if (isset($req->direct_bonus_percentage)) {
                     $arr['direct_bonus_percentage'] = $req->direct_bonus_percentage;
                 }

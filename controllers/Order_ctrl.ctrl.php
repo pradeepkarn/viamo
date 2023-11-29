@@ -51,11 +51,11 @@ class Order_ctrl
                 $con->rollback();
                 return false;
             }
-            if (!($total_gm == $req->total_gm && $shipping_cost == $req->shipping_cost)) {
-                $_SESSION['msg'][] = 'Shiping cost mismatched, try again';
-                $con->rollback();
-                return false;
-            }
+            // if (!($total_gm == $req->total_gm && $shipping_cost == $req->shipping_cost)) {
+            //     $_SESSION['msg'][] = "Shiping cost mismatched, try again $shipping_cost = $req->shipping_cost";
+            //     $con->rollback();
+            //     return false;
+            // }
 
 
             try {
@@ -65,7 +65,7 @@ class Order_ctrl
                 $total_db = $dbobj->show($sql)[0]['total_db'];
 
                 $arr['amount'] = $total_amt;
-                $arr['shipping_cost'] = $shipping_cost;
+                $arr['shipping_cost'] = $req->shipping_cost;
                 $arr['total_gm'] = $total_gm;
                 $arr['pv'] = $total_pv;
                 $arr['rv'] = $total_rv;
