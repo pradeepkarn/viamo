@@ -2,7 +2,7 @@
 
 use PHPMailer\PHPMailer\PHPMailer;
 
-class Order_ctrl
+class Order_ctrl_copy
 {
     public function place()
     {
@@ -32,6 +32,7 @@ class Order_ctrl
                 $_SESSION['msg'][] = 'Your cart is empty!';
                 return;
             }
+
             $total_gm = 0;
             $cart_list = (object) ($dbobj)->show("select * from customer_order where status = 'cart' and user_id = '{$_SESSION['user_id']}'");
             foreach ($cart_list as $cv) :
@@ -111,7 +112,7 @@ class Order_ctrl
             $arr['mobile'] = $addrs->mobile;
             $arr['address'] = $addrs->address_name;
             $arr['city'] = $addrs->city;
-            $arr['state'] = isset($addrs->state) ? $addrs->state : null;
+            $arr['state'] = isset($addrs->state)?$addrs->state:null;
             $arr['country'] = $addrs->country;
             $arr['zipcode'] = $addrs->zipcode;
             $arr['isd_code'] = $addrs->isd_code;
@@ -144,36 +145,31 @@ class Order_ctrl
                     $db = $dbobj;
                     $trnArr['transactedTo'] = USER['id'];
                     $trnArr['transactedBy'] = USER['id'];
-                    // if ($commission == false) {
-                    if ($redeempt > 0) {
-                        $trnArr['transactedTo'] = USER['id'];
-                        $trnArr['transactedBy'] = USER['id'];
-                        $trnArr['purchase_amt'] = round($total_amt, 2);
-                        $trnArr['amount'] =  $redeempt;
-                        $trnArr['real_amt'] =  $redeempt;
-                        $trnArr['trnNum'] = $ordernum;
-                        $trnArr['status'] = 1; // 1: Active, 2: cancelled  
-                        $trnArr['trnGroup'] = 5; // 1:pv commissions, 2: direct bonus
-                        $trnArr['trnType'] = 2; // 1: Credit, 2: debit
-                        $level->save_trn_data($db, $trnArr);
-                    }
-                    // } else {
-                    if (USER['id'] != 1) {
-                        $trnArr = null;
-                        $refuser = $db->showOne("SELECT * FROM pk_user WHERE pk_user.id = (SELECT ref FROM pk_user WHERE pk_user.id = '{$trnArr['transactedBy']}')");
-                        $cmsn = 0;
-                        $refuser = $refuser ? obj($refuser) : null;
-                        // $membercnt = $level->count_direct_partners($db, $myid = 1);
-                        if ($refuser) {
-                            $partial_amt = round(($total_amt - $redeempt), 2);
-                            $direct_bonus = round((($partial_amt / $total_amt) * $total_db), 2);
-                            if ($direct_bonus > 0) {
+                    if ($commission == false) {
+                        if ($redeempt > 0) {
+                            $trnArr['transactedTo'] = USER['id'];
+                            $trnArr['transactedBy'] = USER['id'];
+                            $trnArr['purchase_amt'] = round($total_amt, 2);
+                            $trnArr['amount'] =  $redeempt;
+                            $trnArr['real_amt'] =  $redeempt;
+                            $trnArr['trnNum'] = $ordernum;
+                            $trnArr['status'] = 1; // 1: Active, 2: cancelled  
+                            $trnArr['trnGroup'] = 5; // 1:pv commissions, 2: direct bonus
+                            $trnArr['trnType'] = 2; // 1: Credit, 2: debit
+                            $level->save_trn_data($db, $trnArr);
+                        }
+                    } else {
+                        if (USER['id'] != 1) {
+                            $trnArr = null;
+                            $refuser = $db->showOne("SELECT * FROM pk_user WHERE pk_user.id = (SELECT ref FROM pk_user WHERE pk_user.id = '{$trnArr['transactedBy']}')");
+                            $cmsn = 0;
+                            $refuser = $refuser ? obj($refuser) : null;
+                            // $membercnt = $level->count_direct_partners($db, $myid = 1);
+                            if ($refuser) {
                                 $trnArr['transactedTo'] = USER['ref'];
                                 $trnArr['transactedBy'] = USER['id'];
-                                $trnArr['purchase_amt'] = round($partial_amt, 2);
-                                // $trnArr['purchase_amt'] = round($total_amt, 2);
-                                $cmsn = round($direct_bonus, 2);
-                                // $cmsn = round($total_db, 2);
+                                $trnArr['purchase_amt'] = round($total_amt, 2);
+                                $cmsn = round($total_db, 2);
                                 $trnArr['amount'] =  $cmsn;
                                 $trnArr['trnNum'] = $ordernum;
                                 $trnArr['status'] = 1; // 1: Active, 2: cancelled  
@@ -183,7 +179,6 @@ class Order_ctrl
                             }
                         }
                     }
-                    // }
                     $arr = null;
                     $level->update_level_by_direct_partners_count($db, $myid = USER['ref']);
                     $level->update_level_by_purchase($db, $myid = USER['ref']);
@@ -250,26 +245,20 @@ class Order_ctrl
             $trnArr = null;
             $trnArr['transactedTo'] = $ref['id'];
             $trnArr['transactedBy'] = $pmt['user_id'];
-            // $trnArr['purchase_amt'] = round($total_amt, 2);
+            $trnArr['purchase_amt'] = round($total_amt, 2);
             $refuser = $ref;
             $refuser = $refuser ? obj($refuser) : null;
             $cmsn = 0;
             // $membercnt = $level->count_direct_partners($db, $myid = 1);
             if ($refuser) {
-                // if ($pmt['point_used'] == 0) {
-                $partial_amt = round(($total_amt - $pmt['point_used']), 2);
-                $direct_bonus = round((($partial_amt / $total_amt) * $total_db), 2);
-                if ($direct_bonus > 0) {
-                    $trnArr['purchase_amt'] = round($partial_amt, 2);
-                    $cmsn = $direct_bonus;
-                    // $cmsn = round($total_db, 2);
+                if ($pmt['point_used'] == 0) {
+                    $cmsn = round($total_db, 2);
                     $trnArr['amount'] =  $cmsn;
                     $trnArr['trnNum'] = $ordernum;
                     $trnArr['status'] = 1; // 1: Active, 2: cancelled  
                     $trnArr['trnGroup'] = 2; // 1:pv commissions, 2: direct bonus
                     $trnArr['trnType'] = 1; // 1: Credit, 2: debit
                     $level->save_trn_data($db, $trnArr);
-                    // }
                 }
             }
             $level->update_level_by_direct_partners_count($db, $myid = $ref['ref']);
