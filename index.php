@@ -743,7 +743,7 @@ switch ($path) {
     }
     // v1
     if ($url[0] == "payment") {
-      if (!is_superuser()) {
+      if (!authenticate()) {
         header("Location: /$home/");
         exit;
       }

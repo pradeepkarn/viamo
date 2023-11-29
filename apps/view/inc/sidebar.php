@@ -103,7 +103,7 @@
                     ?>
                     <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
                         <?php
-                        if (is_superuser()) {
+                        if (authenticate()) {
                         ?>
                             <nav class="sb-sidenav-menu-nested nav">
 
@@ -130,7 +130,7 @@
                         }
                         ?>
                     </div>
-                    <?php if (is_superuser()) : ?>
+                    <?php if (authenticate()) : ?>
                         <div class="sb-sidenav-menu-heading">Addons</div>
                         <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages4" aria-expanded="false" aria-controls="collapsePages4">
                             <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
@@ -213,7 +213,7 @@
                         </nav>
                     </div>
                     <?php
-                    if (is_superuser()) {
+                    if (authenticate()) {
                     ?>
                         <a class="nav-link" href="/<?php echo home; ?>/my-commissions">
                             <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
@@ -240,7 +240,7 @@
                     <div class="collapse" id="collapsePages2" aria-labelledby="headingFour" data-bs-parent="#sidenavAccordion">
                         <nav class="sb-sidenav-menu-nested nav">
                             <?php
-                            if (is_superuser()) {
+                            if (authenticate()) {
                             ?>
                                 <a class="nav-link" href="/<?php echo home; ?>/payment">Payment</a>
                             <?php
