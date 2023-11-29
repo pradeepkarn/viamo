@@ -621,7 +621,7 @@ switch ($path) {
     }
     // v1
     if ($url[0] == "products") {
-      if (!is_superuser()) {
+      if (!authenticate()) {
         header("Location: /$home/");
         exit;
       }
