@@ -1644,7 +1644,7 @@ switch ($path) {
       $reply = $ordCtrl->place();
       if ($reply) {
         echo js_alert(msg_ssn(return: true));
-        // echo go_to('orders');
+        echo go_to('orders');
         return;
       } else {
         echo js_alert(msg_ssn(return: true));
