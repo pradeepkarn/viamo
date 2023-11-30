@@ -67,7 +67,7 @@ import("apps/view/inc/navbar.php");
                                                 <th><?php echo $username; ?></th>
                                                 <th><?php echo $value['status']; ?></th>
                                                 <th>
-                                                    <table class="table table-bordered">
+                                                    <table class="cost-details table table-bordered">
 
                                                         <tr class="text-end">
                                                             <td>Amount(+) = </td>
