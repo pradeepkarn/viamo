@@ -24,7 +24,7 @@ import("apps/view/inc/navbar.php");
                                         <!-- <th>Direct Bonus</th> -->
                                         <th>Email</th>
                                         <th>status</th>
-                                        <th>In total</th>
+                                        <th>Total</th>
                                         <th>Payment method</th>
                                         <th>Info</th>
                                         <th>Invoice No.</th>
@@ -40,13 +40,11 @@ import("apps/view/inc/navbar.php");
                                         $userObj = new Model('payment');
 
                                         $arr = null;
-                                   
-                                            $arr['user_id'] = $_SESSION['user_id'];
-                                            $order = $userObj->filter_index($assoc_arr = $arr, $ord = 'DESC', $limit = 9999999, $change_order_by_col = "id");
-                                    
-                                       
+
+                                        $arr['user_id'] = $_SESSION['user_id'];
+                                        $order = $userObj->filter_index($assoc_arr = $arr, $ord = 'DESC', $limit = 9999999, $change_order_by_col = "id");
                                     }
-                                    
+
 
                                     foreach ($order as $value) {
                                         // (new Cart_ctrl)->update_invoice($payment_id=$value['id']);
@@ -55,13 +53,39 @@ import("apps/view/inc/navbar.php");
                                         <tr>
                                             <th><?php echo $value['id']; ?></th>
                                             <th><?php echo $value['pv']; ?></th>
-                                            <!-- <th><?php // echo $value['direct_bonus']; ?></th> -->
+                                            <!-- <th><?php // echo $value['direct_bonus']; 
+                                                        ?></th> -->
                                             <th><?php echo $email; ?></th>
                                             <th><?php echo $value['status']; ?></th>
-                                            <th><?php echo $value['amount']; ?></th>
+                                            <th>
+                                                <table class="table table-bordered">
+
+                                                    <tr class="text-end">
+                                                        <td>Amount(+) = </td>
+                                                        <td><?php echo ($value['amount']); ?></td>
+                                                    </tr>
+                                                    <tr class="text-end">
+                                                        <td>Discount(-) = </td>
+                                                        <td> <?php echo $value['point_used']; ?></td>
+                                                    </tr>
+                                                    <tr class="text-end">
+                                                        <td>Net(+) = </td>
+                                                        <td><?php echo $net = ($value['amount'] - $value['point_used']); ?></td>
+                                                    </tr>
+                                                    <tr class="text-end">
+                                                        <td>Shipping(+) = </td>
+                                                        <td><?php echo $value['shipping_cost']; ?></td>
+                                                    </tr>
+                                                    <tr class="text-end">
+                                                        <td>Card(-) = </td>
+                                                        <td><?php echo round(($net + $value['shipping_cost']), 2); ?></td>
+                                                    </tr>
+                                                </table>
+
+                                            </th>
                                             <th><?php echo $value['payment_method']; ?></th>
                                             <th><?php echo $value['info']; ?></th>
-                                            <th><?php echo $value['invoice']?$value['invoice']:'Not created'; ?></th>
+                                            <th><?php echo $value['invoice'] ? $value['invoice'] : 'Not created'; ?></th>
                                             <th><?php echo $value['created_at']; ?></th>
                                             <th>
                                                 <?php

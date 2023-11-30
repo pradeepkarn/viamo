@@ -194,7 +194,7 @@ try {
                                         </tbody>
                                     
                                             <tr>
-                                                <td colspan="7" class="text-end border-bottom-0"><strong>Total WOT:</strong></td>
+                                                <td colspan="7" class="text-end border-bottom-0"><strong>Total WOT(+):</strong></td>
                                                 <td colspan="1" class="text-end border-bottom-0"><?php echo $total_amt_wot; ?></td>
                                             </tr>
 
@@ -211,7 +211,7 @@ try {
                                                 <th colspan="6" rowspan="6"></th>
                                                 <th class="text-end">
                                                     <?php if ($max_tax > 0) { ?>
-                                                        Tax (<?php echo $incntr->max_tax; ?>)% =
+                                                        Tax (<?php echo $incntr->max_tax; ?>)%(+) =
                                                     <?php } ?>
                                                 </th>
                                                 <th class="text-end">
@@ -223,7 +223,7 @@ try {
                                             <tr>
                                                 <th class="text-end">
                                                     <?php if ($min_tax > 0) { ?>
-                                                        Tax (<?php echo $incntr->min_tax; ?>)% =
+                                                        Tax (<?php echo $incntr->min_tax; ?>)%(+) =
                                                     <?php } ?>
                                                 </th>
                                                 <th class="text-end">
@@ -236,23 +236,23 @@ try {
 
 
                                             <tr>
-                                                <th class="text-end">Discount =</th>
+                                                <th class="text-end">Discount(-) =</th>
                                                 <th class="text-end"><?php echo $discount; ?></th>
                                             </tr>
                                             <tr>
 
-                                                <th class="text-end">Total =</th>
-                                                <th class="text-end"><?php echo $total_amt; ?></th>
+                                                <th class="text-end">Net(+) =</th>
+                                                <th class="text-end"><?php echo $net = $total_amt-$discount; ?></th>
                                             </tr>
                                             <tr>
 
-                                                <th class="text-end">Shipping cost =</th>
+                                                <th class="text-end">Shipping cost(+) =</th>
                                                 <th class="text-end"><?php echo $context->payment['shipping_cost']; ?></th>
                                             </tr>
                                             <tr>
 
-                                                <th class="text-end">Final =</th>
-                                                <th class="text-end">&#8364; <?php echo $context->payment['shipping_cost']+$total_amt; ?></th>
+                                                <th class="text-end">Cash/Card(-) =</th>
+                                                <th class="text-end">&#8364; <?php echo $context->payment['shipping_cost']+$net; ?></th>
                                             </tr>
                                         </tfoot>
 

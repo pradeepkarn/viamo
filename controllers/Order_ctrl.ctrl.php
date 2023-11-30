@@ -45,19 +45,17 @@ class Order_ctrl
                     $total_gm += $gm;
                 }
             endforeach;
-            $shipping_cost = calculate_shipping_cost(db: $dbobj, gram: $total_gm, ccode: USER['country_code']);
+            $shipping_cost = calculate_shipping_cost(db: $dbobj, gram: $total_gm, ccode: $addrs->country_code);
             if (!isset($req->total_gm) || !isset($req->shipping_cost)) {
                 $_SESSION['msg'][] = 'Shiping not defined';
                 $con->rollback();
                 return false;
             }
-            // if (!($total_gm == $req->total_gm && $shipping_cost == $req->shipping_cost)) {
-            //     $_SESSION['msg'][] = "Shiping cost mismatched, try again $shipping_cost = $req->shipping_cost";
-            //     $con->rollback();
-            //     return false;
-            // }
-
-
+            if (!($total_gm == $req->total_gm && $shipping_cost == $req->shipping_cost)) {
+                $_SESSION['msg'][] = "Shiping cost mismatched, try again $shipping_cost = $req->shipping_cost";
+                $con->rollback();
+                return false;
+            }
             try {
                 $total_amt = $dbobj->show($sql)[0]['total_amt'];
                 $total_pv = $dbobj->show($sql)[0]['total_pv'];

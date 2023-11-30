@@ -66,7 +66,31 @@ import("apps/view/inc/navbar.php");
                                                 <th><?php echo $email; ?></th>
                                                 <th><?php echo $username; ?></th>
                                                 <th><?php echo $value['status']; ?></th>
-                                                <th><?php echo $value['amount']; ?></th>
+                                                <th>
+                                                    <table class="table table-bordered">
+
+                                                        <tr class="text-end">
+                                                            <td>Amount(+) = </td>
+                                                            <td><?php echo ($value['amount']); ?></td>
+                                                        </tr>
+                                                        <tr class="text-end">
+                                                            <td>Discount(-) = </td>
+                                                            <td> <?php echo $value['point_used']; ?></td>
+                                                        </tr>
+                                                        <tr class="text-end">
+                                                            <td>Net(+) = </td>
+                                                            <td><?php echo $net = ($value['amount'] - $value['point_used']); ?></td>
+                                                        </tr>
+                                                        <tr class="text-end">
+                                                            <td>Shipping(+) = </td>
+                                                            <td><?php echo $value['shipping_cost']; ?></td>
+                                                        </tr>
+                                                        <tr class="text-end">
+                                                            <td>Card(-) = </td>
+                                                            <td><?php echo round(($net + $value['shipping_cost']), 2); ?></td>
+                                                        </tr>
+                                                    </table>
+                                                </th>
                                                 <th><?php echo $value['payment_method']; ?></th>
                                                 <th>
 
