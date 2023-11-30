@@ -28,10 +28,10 @@
                 display: none;
             }
         }
-        table.cost-details td{
+        /* table.cost-details td{
             width: 100%;
             font-size: 12px;
-        }
+        } */
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.0/css/select2.min.css" />
 

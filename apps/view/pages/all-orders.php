@@ -70,23 +70,23 @@ import("apps/view/inc/navbar.php");
                                                     <table class="cost-details table table-bordered">
 
                                                         <tr class="text-end">
-                                                            <td>Amount(+) = </td>
+                                                            <td>Amount(+) </td>
                                                             <td><?php echo ($value['amount']); ?></td>
                                                         </tr>
                                                         <tr class="text-end">
-                                                            <td>Discount(-) = </td>
+                                                            <td>Discount(-) </td>
                                                             <td> <?php echo $value['point_used']; ?></td>
                                                         </tr>
                                                         <tr class="text-end">
-                                                            <td>Net(+) = </td>
+                                                            <td>Net(+) </td>
                                                             <td><?php echo $net = ($value['amount'] - $value['point_used']); ?></td>
                                                         </tr>
                                                         <tr class="text-end">
-                                                            <td>Shipping(+) = </td>
+                                                            <td>Shipping(+) </td>
                                                             <td><?php echo $value['shipping_cost']; ?></td>
                                                         </tr>
                                                         <tr class="text-end">
-                                                            <td>Card(-) = </td>
+                                                            <td>Card(-) </td>
                                                             <td><?php echo round(($net + $value['shipping_cost']), 2); ?></td>
                                                         </tr>
                                                     </table>
