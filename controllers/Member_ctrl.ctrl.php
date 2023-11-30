@@ -618,7 +618,7 @@ class Member_ctrl
         select * from transactions 
         where transacted_to='$myid' 
         AND trn_group='$trn_group'
-        AND trn_type='$trn_type' ORDER BY id LIMIT $page_limit
+        AND trn_type='$trn_type' ORDER BY id DESC LIMIT $page_limit
         ";
         $commissions = $db->show($sql);
         return (object) array(

@@ -53,7 +53,7 @@ $tp = isset($context['data']->total_cmsn) ? $context['data']->total_cmsn : 1;
                 </div>
                 <div class="row">
                     <div class="col-md-4">
-                        <form method="get" action="/<?php echo home; ?>/my-commissions/">
+                        <form method="get" action="/<?php echo home; ?>/my-realtime-bonus/">
                             <div class="d-flex">
                                 <input value="<?php echo isset($_GET['q']) ? $_GET['q'] : null; ?>" type="search" name="q" placeholder="Search from server" class="form-control">
                                 <button type="submit">Search</button>
@@ -66,7 +66,7 @@ $tp = isset($context['data']->total_cmsn) ? $context['data']->total_cmsn : 1;
                     $pg = isset($_GET['page']) ? $_GET['page'] : 1;
                     $tp = $tp; // Total pages
                     $current_page = $cp; // Assuming first page is the current page
-                    $link = "/my-commissions/"; // Set your link here
+                    $link = "/my-realtime-bonus/"; // Set your link here
 
                     // Calculate start and end page numbers to display
                     $start_page = max(1, $current_page - 2);
@@ -108,8 +108,8 @@ $tp = isset($context['data']->total_cmsn) ? $context['data']->total_cmsn : 1;
                                 <thead>
                                     <tr>
                                         <th>ID</th>
-                                        <th>Transacted TO</th>
-                                        <th>Transacted By</th>
+                                        <th>Sponser</th>
+                                        <th>Buyer</th>
                                         <!-- <th>Member Level</th> -->
                                         
                                         <!-- <th>Ring</th> -->
