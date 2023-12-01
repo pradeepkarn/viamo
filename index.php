@@ -297,6 +297,7 @@ switch ($path) {
       import("apps/view/pages/all-commissions.php", $context);
       return;
     }
+    
     if ($url[0] == "my-realtime-bonus") {
       if (authenticate() == false) {
         header("location:/$home/login");
