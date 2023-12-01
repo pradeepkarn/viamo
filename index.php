@@ -1110,7 +1110,7 @@ switch ($path) {
       // echo go_to("index");
       if (login()) {
         msg_ssn();
-        // echo go_to("");
+        echo go_to("");
         return;
       } else {
         msg_ssn();
