@@ -161,7 +161,7 @@ switch ($path) {
       return;
     }
     // if ($url[0] == 'pv-calculate') {
-      
+
     // }
     if ($url[0] == "pool-calculate") {
       // return;
@@ -297,7 +297,7 @@ switch ($path) {
       import("apps/view/pages/all-commissions.php", $context);
       return;
     }
-    
+
     if ($url[0] == "my-realtime-bonus") {
       if (authenticate() == false) {
         header("location:/$home/login");
@@ -310,7 +310,7 @@ switch ($path) {
         $req->my_id = USER['id'];
         $level = new Member_ctrl;
         $db = new Dbobjects;
-        $context['data'] = $level->my_realtime_bonus_list_extended($db,$myid=$req->my_id, $req, $data_limit = 5);
+        $context['data'] = $level->my_realtime_bonus_list_extended($db, $myid = $req->my_id, $req, $data_limit = 5);
         // $context['data'] = getMyCommissions($req, $data_limit = 5);
       }
       import("apps/view/pages/my-realtime-bonus.php", $context);
@@ -328,7 +328,7 @@ switch ($path) {
         $req->my_id = USER['id'];
         $level = new Member_ctrl;
         $db = new Dbobjects;
-        $context['data'] = $level->withdrawal_request_list_extended($db,$myid=$req->my_id, $req, $data_limit = 5);
+        $context['data'] = $level->withdrawal_request_list_extended($db, $myid = $req->my_id, $req, $data_limit = 5);
         // $context['data'] = getMyCommissions($req, $data_limit = 5);
       }
       import("apps/view/pages/my-commissions.php", $context);
@@ -471,7 +471,7 @@ switch ($path) {
         $id = $_POST['id'];
         $myobj->pk($id);
         $myobj->insertData['company'] = $_POST['company'];
-        $myobj->insertData['name'] = $_POST['first_name']." ".$_POST['last_name'];
+        $myobj->insertData['name'] = $_POST['first_name'] . " " . $_POST['last_name'];
         $myobj->insertData['first_name'] = $_POST['first_name'];
         $myobj->insertData['last_name'] = $_POST['last_name'];
         $myobj->insertData['state'] = isset($_POST['state']) ? ($_POST['state']) : null;
@@ -823,7 +823,7 @@ switch ($path) {
     if ($url[0] == "req-redeem") {
       $wthdrwctrl = new Withdrawal_ctrl;
       $wthdrwctrl->redeem_request();
-      echo js_alert(msg_ssn(return:true));
+      echo js_alert(msg_ssn(return: true));
       return;
     }
     if ($url[0] == "money-withdraw") {
@@ -837,7 +837,7 @@ switch ($path) {
       }
       $usr = new User_ctrl;
       $im_act = $usr->am_i_active($_POST['user'])['active'];
-      if ($im_act!=true) {
+      if ($im_act != true) {
         $_SESSION['msg'][] = "Your account is deactive, please purchase any product to activate the account";
         exit;
       }
@@ -872,14 +872,14 @@ switch ($path) {
       $cmsn_gt = $udata->cmsn_gt;
       $total_paid = $udata->total_paid;
       $total_unpaid = $udata->total_unpaid;
-   
+
       $lifetime_m = $cmsn_gt;
 
 
       // $shr = my_all_share($userid = $_POST['user']);
       # find total life time amt
       $dbmny = new Dbobjects;
-  
+
       // $old_lifetime_pv = old_data($key_name="commission",$_POST['user']);
       // $pvctrl = new Pv_ctrl;
       // $pv_sum = $pvctrl->my_lifetime_commission_sum($_POST['user']);
@@ -892,7 +892,7 @@ switch ($path) {
       // # find total paid amt
       $sql = "select SUM(amt) as total_amt from credits where user_id = {$_POST['user']} and status = 'paid' and remark='requested'";
       $cmsn_requested = $dbmny->showOne($sql)['total_amt'];
-      $cmsn_requested = $cmsn_requested?$cmsn_requested:0;
+      $cmsn_requested = $cmsn_requested ? $cmsn_requested : 0;
       // $total_paid = $cmsn[0]['total_amt'] ? $cmsn[0]['total_amt'] : 0;
       $amntwd = abs($_POST['money_out']);
       if ($amntwd < 10) {
@@ -900,7 +900,7 @@ switch ($path) {
         echo js_alert(msg_ssn(return: true));
         return false;
       }
-      if (($lifetime_m - ($total_paid+$cmsn_requested)) >= $amntwd) {
+      if (($lifetime_m - ($total_paid + $cmsn_requested)) >= $amntwd) {
         // js_alert($lifetime_m);
         $wdobj = new Model('credits');
         $wd_arr['user_id'] = $_POST['user'];
@@ -981,7 +981,7 @@ switch ($path) {
           // $headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
           // $headers .= 'From: ' . email . "\r\n";
           // $headers .= 'Content-type: text/html; charset=utf-8' . "\r\n";
-          
+
 
           $mail = php_mailer(new PHPMailer());
           $mail->isHTML(true);
@@ -992,7 +992,7 @@ switch ($path) {
             $_SESSION['msg'][] = "Invalid email, mail not sent to customer: $to";
           }
           $mail->addAddress($to, $to);
-          
+
           if (!email_has_valid_dns($to)) {
             $_SESSION['msg'][] = "Invalid email, mail not sent to customer: $to";
           }
@@ -1048,7 +1048,7 @@ switch ($path) {
       }
       exit;
     }
-    if ($url[0]=="upload-kyc-ajax") {
+    if ($url[0] == "upload-kyc-ajax") {
       $uctrl = new User_ctrl;
       $uctrl->upload_kyc();
       return;
@@ -1265,11 +1265,11 @@ switch ($path) {
       $dataObj = new stdClass;
       $rpl = $ord->delet_order_and_cart($id = $_POST['dlt_id']);
       if ($rpl) {
-        echo js_alert(msg_ssn(return:true));
+        echo js_alert(msg_ssn(return: true));
         echo RELOAD;
         exit;
       } else {
-        echo js_alert(msg_ssn(return:true));
+        echo js_alert(msg_ssn(return: true));
         exit;
       }
       return;
@@ -1281,7 +1281,7 @@ switch ($path) {
       }
       $wthdrl = new Withdrawal_ctrl;
       $repl = $wthdrl->admin_confirm_request();
-      echo js_alert(msg_ssn(return:true));
+      echo js_alert(msg_ssn(return: true));
       if ($repl) {
         echo RELOAD;
       }
@@ -1306,7 +1306,7 @@ switch ($path) {
       }
       $wthdrl = new Withdrawal_ctrl;
       $repl = $wthdrl->admin_cancel_request();
-      echo js_alert(msg_ssn(return:true));
+      echo js_alert(msg_ssn(return: true));
       if ($repl) {
         echo RELOAD;
       }
@@ -1741,6 +1741,37 @@ switch ($path) {
     }
     if ($url[0] == "news") {
       import("apps/view/pages/news.php");
+      return;
+    }
+    // VOUCHERS #################################################################
+    if ($url[0] == "voucher-create") {
+      if (authenticate() == false) {
+        header("location:/$home/login");
+        return;
+      }
+      if (isset($_POST['action'])) {
+        if ($_POST['action'] == 'create-voucher') {
+          $vctrl = new Voucher_ctrl;
+          $reply = $vctrl->create();
+          if ($reply == true) {
+            echo js_alert(msg_ssn(return: true));
+            echo RELOAD;
+          } else {
+            echo js_alert(msg_ssn(return: true));
+          }
+        }
+        return;
+      }
+
+      import("apps/view/pages/vouchers/create.php");
+      return;
+    }
+    if ($url[0] == "list-all-vouchers") {
+      if (authenticate() == false) {
+        header("location:/$home/login");
+        return;
+      }
+      import("apps/view/pages/vouchers/list.php");
       return;
     } else {
       import("apps/view/pages/404.php");
