@@ -25,6 +25,7 @@ class Order_ctrl
             }
             $level = new Member_ctrl;
             $dbobj = new Dbobjects;
+            $vctrl = new Voucher_ctrl;
             $con = $dbobj->dbpdo();
             $con->beginTransaction();
             $sql = "select SUM(price*qty) as total_amt, SUM(pv*qty) as total_pv, SUM(rv*qty) as total_rv, SUM(direct_bonus*qty) as total_db from customer_order where status = 'cart' and payment_id='0' and user_id = {$_SESSION['user_id']}";
@@ -58,6 +59,27 @@ class Order_ctrl
             }
             try {
                 $total_amt = $dbobj->show($sql)[0]['total_amt'];
+
+                $vdamt = 0;
+                if (isset($_SESSION['voucher_code'])) {
+                    if ($_SESSION['voucher_code'] != "") {
+                        $vchr = $vctrl->get_voucher($code = $_SESSION['voucher_code'], $amt = $total_amt);
+                        if ($vchr) {
+                            $vdamt = $vchr->discount;
+                        }
+                        if ($total_amt > $vdamt && $vdamt > 0) {
+                            $total_amt  = $total_amt - $vdamt;
+                        } else {
+                            msg_set("Total Amount must be greater than voucher value", 'vchr');
+                            $vdamt = 0;
+                        }
+                    }
+                }
+                if (!($vdamt == $req->vdamt)) {
+                    $_SESSION['msg'][] = "Check voucher amount";
+                    $con->rollback();
+                    return false;
+                }
                 $total_pv = $dbobj->show($sql)[0]['total_pv'];
                 $total_rv = $dbobj->show($sql)[0]['total_rv'];
                 $total_db = $dbobj->show($sql)[0]['total_db'];

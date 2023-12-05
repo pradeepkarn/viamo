@@ -1744,14 +1744,14 @@ switch ($path) {
       return;
     }
     // VOUCHERS #################################################################
-    if ($url[0] == "voucher-create") {
+    if ($url[0] == "vouchers") {
       if (authenticate() == false) {
         header("location:/$home/login");
         return;
       }
+      $vctrl = new Voucher_ctrl;
       if (isset($_POST['action'])) {
         if ($_POST['action'] == 'create-voucher') {
-          $vctrl = new Voucher_ctrl;
           $reply = $vctrl->create();
           if ($reply == true) {
             echo js_alert(msg_ssn(return: true));
@@ -1762,16 +1762,39 @@ switch ($path) {
         }
         return;
       }
-
-      import("apps/view/pages/vouchers/create.php");
+      $context['my_vouchers']=$vctrl->list($myid=USER['id']);
+      import("apps/view/pages/vouchers/create.php",$context);
       return;
     }
-    if ($url[0] == "list-all-vouchers") {
+    if ($url[0] == "edit-voucher") {
       if (authenticate() == false) {
         header("location:/$home/login");
         return;
       }
-      import("apps/view/pages/vouchers/list.php");
+      $vctrl = new Voucher_ctrl;
+      if (isset($_POST['action'])) {
+        if ($_POST['action'] == 'update-voucher') {
+          $reply = $vctrl->update($myid=USER['id'],$vid=intval($_POST['id']));
+          if ($reply == true) {
+            echo js_alert(msg_ssn(return: true));
+            echo RELOAD;
+          } else {
+            echo js_alert(msg_ssn(return: true));
+          }
+        }
+        return;
+      }
+      if (isset($_GET['id'])) {
+        $context['voucher_details']=$vctrl->details($myid=USER['id'],$vid=intval($_GET['id']));
+        if ($context['voucher_details']) {
+          import("apps/view/pages/vouchers/edit.php",$context);
+          return;
+        }else{
+          header("location:/$home/create-voucher");
+          return;
+        }
+      }
+      import("apps/view/pages/404.php");
       return;
     } else {
       import("apps/view/pages/404.php");

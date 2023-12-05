@@ -4,19 +4,8 @@ if (!authenticate()) {
 }
 import("apps/view/inc/header.php");
 import("apps/view/inc/navbar.php");
-$vctrl = new Voucher_ctrl;
 if (isset($_POST['point_action'])) {
   $_SESSION['use_point'] = isset($_POST['use_point']) ? true : false;
-}
-if (isset($_POST['voucher_action'], $_POST['voucher_code'])) {
-  $code = sanitize_remove_tags($_POST['voucher_code']);
-  $vchr = $vctrl->check_voucher($code = $code);
-  if ($vchr) {
-    $_SESSION['voucher_code'] = $code;
-  } else {
-    $_SESSION['voucher_code'] = null;
-    msg_set("Invalid voucher code",'vchr');
-  }
 }
 $db = new Dbobjects;
 $level = new Member_ctrl;
@@ -76,7 +65,7 @@ $addrs = get_my_primary_address($userid = USER['id']);
               // myprint($phpobj->items);
               foreach ($phpobj->items as $pkey => $prd) {
                 $prod = (object) (new Dbobjects)->showOne("select id,qty,unit from item where id = '$prd->item'");
-                $gm += calculate_gram($prod, $cv->qty * $prd->qty);
+                $gm += calculate_gram($prod, $cv->qty*$prd->qty);
                 $total_gm += $gm;
               }
 
@@ -137,7 +126,7 @@ $addrs = get_my_primary_address($userid = USER['id']);
 
             <tbody>
               <tr class="text-end">
-                <td colspan="1"></td>
+                <td colspan="2"></td>
                 <td colspan=""><?php echo $total_pv; ?></td>
 
                 <td class="text-right" colspan="4"></td>
@@ -146,66 +135,27 @@ $addrs = get_my_primary_address($userid = USER['id']);
               </tr>
 
               <tr class="text-end">
-                <td colspan="4"></td>
-                <th colspan="2">
-                  <form method="post" id="discount_on_point" action="">
-                    <div class="d-flex gap-2 align-items-center">
-                      <div>
-                        <input value="<?php echo isset($_SESSION['voucher_code']) ? $_SESSION['voucher_code'] : null; ?>" placeholder="voucher code" name="voucher_code" id="voucher_code" type="text" class="form-control">
-                        <input name="voucher_action" type="hidden">
-                      </div>
-                      <div>
-                        <button class="btn btn-primary btn-sm" type="submit">Redeem</button>
-                      </div>
-                    </div>
-                    <div><?php msg_ssn('vchr'); ?></div>
-                  </form>
-                </th>
-                <th>Discount (-) =</th>
-                <th>
-                  <?php
-                  $vdamt = 0;
-                  if (isset($_SESSION['voucher_code'])) {
-                    if ($_SESSION['voucher_code'] != "") {
-                      $vchr = $vctrl->get_voucher($code = $_SESSION['voucher_code'], $amt = $total_amt);
-                      if ($vchr) {
-                        $vdamt = $vchr->discount;
-                      }
-                      if ($total_amt > $vdamt && $vdamt > 0) {
-                        $total_amt  = $total_amt - $vdamt;
-                      } else {
-                        msg_set("Total Amount must be greater than voucher value",'vchr');
-                        $vdamt = 0;
-                      }
-                    }
-                  }
-                  echo $vdamt;
-                  ?>
-                </th>
-              </tr>
-
-              <tr class="text-end">
-                <td colspan="5"></td>
+                <td colspan="6"></td>
                 <th>
                   <form method="post" id="discount_on_point" action="">
                     <?php echo $point; ?> Point <input <?php if (isset($_SESSION['use_point'])) {
-                                                          echo $_SESSION['use_point'] ? "checked" : null;
-                                                        } ?> name="use_point" onclick="toggleCheckboxes()" id="checkbox1" type="checkbox">
+                                      echo $_SESSION['use_point'] ? "checked" : null;
+                                    } ?> name="use_point" onclick="toggleCheckboxes()" id="checkbox1" type="checkbox">
                     <input name="point_action" type="hidden">
                     <button class="btn btn-primary btn-sm" type="submit">Redeem</button>
                   </form>
                 </th>
-                <th>Discount (-) =</th>
+                <th>Discount =</th>
                 <th>
                   <?php
                   // $point = 0;
                   // myprint($cv);
                   $redeem_point = 0;
                   if (isset($_SESSION['use_point'])) {
-                    if ($_SESSION['use_point'] === true) {
+                    if ($_SESSION['use_point']===true) {
                       if ($total_amt <= $point) {
-                        $redeem_point = $total_amt;
                         $total_amt = 0;
+                        $redeem_point = $total_amt;
                       } else if ($total_amt > $point && $point > 0) {
                         $total_amt  = $total_amt - $point;
                         $redeem_point = $point;
@@ -215,18 +165,17 @@ $addrs = get_my_primary_address($userid = USER['id']);
                   echo $redeem_point; ?>
                 </th>
               </tr>
-            
               <tr class="text-end">
-                <td colspan="6"></td>
+                <td colspan="7"></td>
                 <th>
-                  Net amount =
+                  Discounted amount =
                 </th>
                 <th>
                   <?php echo $total_amt; ?>
                 </th>
               </tr>
               <tr class="text-end">
-                <td colspan="4"></td>
+                <td colspan="5"></td>
                 <td colspan="">Weight = </td>
                 <td colspan=""><?php echo $total_gm; ?> gm</td>
                 <td colspan="1">Shipping Cost =</td>
@@ -236,7 +185,7 @@ $addrs = get_my_primary_address($userid = USER['id']);
                 </td>
               </tr>
               <tr class="text-end">
-                <td colspan="6"></td>
+                <td colspan="7"></td>
                 <th>Final Amount = </th>
                 <th><?php echo $total_amt + $shpcost; ?></th>
               </tr>
@@ -319,7 +268,6 @@ $addrs = get_my_primary_address($userid = USER['id']);
                                           echo $_SESSION['use_point'] ? "checked" : null;
                                         } ?> id="checkbox2" name="redeem_point" type="checkbox">
           <input type="hidden" name="point" value="<?php echo $redeem_point; ?>">
-          <input type="hidden" name="vdamt" value="<?php echo $vdamt; ?>">
           <input type="hidden" name="total_amount" value="<?php echo $total_amt; ?>">
           <input type="hidden" name="total_gm" value="<?php echo $total_gm; ?>">
           <input type="hidden" name="shipping_cost" value="<?php echo $shpcost; ?>">

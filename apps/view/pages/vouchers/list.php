@@ -8,8 +8,6 @@ $pl = $plobj->filter_index(['created_by' => USER['id']],'ASC');
     <?php import("apps/view/inc/sidebar.php"); ?>
     <div id="layoutSidenav_content">
 
-
-
         <main>
             <div class="container-fluid px-4">
                 <ol class="breadcrumb mt-3 mb-4">
@@ -20,7 +18,7 @@ $pl = $plobj->filter_index(['created_by' => USER['id']],'ASC');
                     <div class="row mb-4">
                     <div class="col-md-4 my-3">
                             <div class="d-grid">
-                            <a class="btn btn-dark" href="/<?php echo home; ?>/voucher-create">Add Voucher</a>
+                            <a class="btn btn-dark" href="/<?php echo home; ?>/create-voucher">Add Voucher</a>
                             </div>
                         </div>
                         <div class="col-md-12">
