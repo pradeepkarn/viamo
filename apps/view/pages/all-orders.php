@@ -74,12 +74,16 @@ import("apps/view/inc/navbar.php");
                                                             <td><?php echo ($value['amount']); ?></td>
                                                         </tr>
                                                         <tr class="text-end">
+                                                            <td>V. Disc.(-) </td>
+                                                            <td> <?php echo $value['voucher_amt']; ?></td>
+                                                        </tr>
+                                                        <tr class="text-end">
                                                             <td>Discount(-) </td>
-                                                            <td> <?php echo $value['point_used']; ?></td>
+                                                            <td> <?php echo $value['discount_by_bpt']; ?></td>
                                                         </tr>
                                                         <tr class="text-end">
                                                             <td>Net(+) </td>
-                                                            <td><?php echo $net = ($value['amount'] - $value['point_used']); ?></td>
+                                                            <td><?php echo $net = ($value['amount']-$value['voucher_amt'])- ($value['discount_by_bpt']); ?></td>
                                                         </tr>
                                                         <tr class="text-end">
                                                             <td>Shipping(+) </td>

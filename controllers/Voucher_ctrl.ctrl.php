@@ -35,6 +35,10 @@ class Voucher_ctrl
                         $arr['valid_from'] = date('Y-m-d');
                         $arr['valid_upto'] = isset($_POST['valid_upto']) ? $_POST['valid_upto'] : null;
                     }
+                    if ($_POST['value']>20) {
+                        msg_set("Value must not be greater than");
+                        return false;
+                    }
                     $arr['value'] = floatval($_POST['value']);
                     $arr['voucher_group'] = $_POST['voucher_group'];
                     try {
@@ -87,6 +91,10 @@ class Voucher_ctrl
                         $arr['always_valid'] = false;
                         $arr['valid_from'] = date('Y-m-d');
                         $arr['valid_upto'] = isset($_POST['valid_upto']) ? $_POST['valid_upto'] : null;
+                    }
+                    if ($_POST['value']>20) {
+                        msg_set("Value must not be greater than 20");
+                        return false;
                     }
                     $arr['value'] = floatval($_POST['value']);
                     $arr['voucher_group'] = $_POST['voucher_group'];

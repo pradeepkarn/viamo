@@ -123,6 +123,7 @@ try {
                                             $cntr = $cntry->filter_index(['code' => $delivery_cntry_code]);
                                             $min_tax = 0;
                                             $max_tax = 0;
+                                            $vdamt = $context->payment['voucher_amt'];
                                             $discount = round($context->payment['discount_by_bpt'],2);
                                             foreach ($context->cart as $itm) {
                                                 $cv = obj($itm);
@@ -208,7 +209,7 @@ try {
                                             ?>
 
                                             <tr>
-                                                <th colspan="6" rowspan="6"></th>
+                                                <th colspan="6" rowspan="7"></th>
                                                 <th class="text-end">
                                                     <?php if ($max_tax > 0) { ?>
                                                         Tax (<?php echo $incntr->max_tax; ?>)%(+) =
@@ -236,13 +237,17 @@ try {
 
 
                                             <tr>
+                                                <th class="text-end">Voucher(-) =</th>
+                                                <th class="text-end"><?php echo $vdamt; ?></th>
+                                            </tr>
+                                            <tr>
                                                 <th class="text-end">Discount(-) =</th>
                                                 <th class="text-end"><?php echo $discount; ?></th>
                                             </tr>
                                             <tr>
 
                                                 <th class="text-end">Net(+) =</th>
-                                                <th class="text-end"><?php echo $net = $total_amt-$discount; ?></th>
+                                                <th class="text-end"><?php echo $net = ($total_amt-$vdamt)-$discount; ?></th>
                                             </tr>
                                             <tr>
 

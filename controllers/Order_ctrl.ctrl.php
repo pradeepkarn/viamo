@@ -59,31 +59,37 @@ class Order_ctrl
             }
             try {
                 $total_amt = $dbobj->show($sql)[0]['total_amt'];
-
-                $vdamt = 0;
-                if (isset($_SESSION['voucher_code'])) {
-                    if ($_SESSION['voucher_code'] != "") {
-                        $vchr = $vctrl->get_voucher($code = $_SESSION['voucher_code'], $amt = $total_amt);
-                        if ($vchr) {
-                            $vdamt = $vchr->discount;
-                        }
-                        if ($total_amt > $vdamt && $vdamt > 0) {
-                            $total_amt  = $total_amt - $vdamt;
-                        } else {
-                            msg_set("Total Amount must be greater than voucher value", 'vchr');
-                            $vdamt = 0;
-                        }
-                    }
-                }
-                if (!($vdamt == $req->vdamt)) {
-                    $_SESSION['msg'][] = "Check voucher amount";
-                    $con->rollback();
-                    return false;
-                }
                 $total_pv = $dbobj->show($sql)[0]['total_pv'];
                 $total_rv = $dbobj->show($sql)[0]['total_rv'];
                 $total_db = $dbobj->show($sql)[0]['total_db'];
 
+
+
+
+                $vdamt = 0;
+                $vchrjson = null;
+                if (isset($_SESSION['voucher_code'])) {
+                    if ($_SESSION['voucher_code'] != "") {
+                        $vchr = $vctrl->get_voucher($code = $_SESSION['voucher_code'], $amt = $total_amt);
+                        $vchrjson = json_encode($vchr);
+                        if ($vchr) {
+                            $vdamt = $vchr->discount;
+                            $bonus_percentagge = round(((($total_db / $total_amt) * 100) - $vchr->value), 2);
+                            if ($bonus_percentagge<=0) {
+                                $bonus_percentagge = 0;
+                            }
+                            $total_db = round((($total_amt) * ($bonus_percentagge / 100)), 2);
+                            // $_SESSION['msg'][] = "bns perc $bonus_percentagge % db $total_db";
+                        }
+                    }
+                }
+
+                if (!(floatval($vdamt) == floatval($req->vdamt))) {
+                    $_SESSION['msg'][] = "Check voucher amount";
+                    $con->rollback();
+                    return false;
+                }
+                // return;
                 $arr['amount'] = $total_amt;
                 $arr['shipping_cost'] = $req->shipping_cost;
                 $arr['total_gm'] = $total_gm;
@@ -91,6 +97,8 @@ class Order_ctrl
                 $arr['rv'] = $total_rv;
                 $arr['direct_bonus'] = $total_db;
                 $arr['point_used'] = 0;
+                $arr['voucher_amt'] = $vdamt;
+                $arr['voucher_jsn'] = $vchrjson;
                 $arr['discount_by_point'] = 0;
                 $point = $level->net_balance_minus_requested_balance($db = $dbobj, $myid = USER['id']);
                 $commission = true;
