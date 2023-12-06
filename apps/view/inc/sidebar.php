@@ -122,13 +122,6 @@
                                 <?php
                                 }
                                 ?>
-                                <?php
-                                if (authenticate()) {
-                                ?>
-                                    <a class="nav-link" href="/<?php echo home; ?>/downline">Downline Status</a>
-                                <?php
-                                }
-                                ?>
 
                             </nav>
                         <?php
