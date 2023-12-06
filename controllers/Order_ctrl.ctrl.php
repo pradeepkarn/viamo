@@ -75,7 +75,7 @@ class Order_ctrl
                         if ($vchr) {
                             $vdamt = $vchr->discount;
                             $bonus_percentagge = round(((($total_db / $total_amt) * 100) - $vchr->value), 2);
-                            if ($bonus_percentagge<=0) {
+                            if ($bonus_percentagge <= 0) {
                                 $bonus_percentagge = 0;
                             }
                             $total_db = round((($total_amt) * ($bonus_percentagge / 100)), 2);
@@ -344,5 +344,36 @@ class Order_ctrl
             $conn->rollBack();
             return false;
         }
+    }
+    function init_payment($db, $uid, $pmt)
+    {
+        // $db = new Dbobjects;
+        $db->tableName = "payment";
+        $db->get(['unique_id' => $uid]);
+        $db->insertData['pmt_id'] = $pmt->id;
+        $db->insertData['payment_method'] = 'mollie';
+        return $db->update();
+    }
+    function get_order_by_pmt_id($db, $pmtid)
+    {
+        // $db = new Dbobjects;
+        $db->tableName = "payment";
+        return $db->get(['pmt_id' => $pmtid]);
+    }
+    function get_order_by_unique_id($db, $uid)
+    {
+        // $db = new Dbobjects;
+        $db->tableName = "payment";
+        return $db->get(['unique_id' => $uid]);
+    }
+    function update_payment_data(object $db, string $status, object $pmt)
+    {
+        // $db = new Dbobjects;
+        $db->tableName = "payment";
+        $db->get(['pmt_id' => $pmt->id]);
+        $db->insertData['pmt_data'] = json_encode($pmt);
+        $db->insertData['payment_method'] = 'mollie';
+        $db->insertData['status'] = $status;
+        return $db->update();
     }
 }
