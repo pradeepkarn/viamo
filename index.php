@@ -1762,8 +1762,8 @@ switch ($path) {
         }
         return;
       }
-      $context['my_vouchers']=$vctrl->list($myid=USER['id']);
-      import("apps/view/pages/vouchers/create.php",$context);
+      $context['my_vouchers'] = $vctrl->list($myid = USER['id']);
+      import("apps/view/pages/vouchers/create.php", $context);
       return;
     }
     if ($url[0] == "edit-voucher") {
@@ -1774,7 +1774,7 @@ switch ($path) {
       $vctrl = new Voucher_ctrl;
       if (isset($_POST['action'])) {
         if ($_POST['action'] == 'update-voucher') {
-          $reply = $vctrl->update($myid=USER['id'],$vid=intval($_POST['id']));
+          $reply = $vctrl->update($myid = USER['id'], $vid = intval($_POST['id']));
           if ($reply == true) {
             echo js_alert(msg_ssn(return: true));
             echo RELOAD;
@@ -1785,16 +1785,27 @@ switch ($path) {
         return;
       }
       if (isset($_GET['id'])) {
-        $context['voucher_details']=$vctrl->details($myid=USER['id'],$vid=intval($_GET['id']));
+        $context['voucher_details'] = $vctrl->details($myid = USER['id'], $vid = intval($_GET['id']));
         if ($context['voucher_details']) {
-          import("apps/view/pages/vouchers/edit.php",$context);
+          import("apps/view/pages/vouchers/edit.php", $context);
           return;
-        }else{
+        } else {
           header("location:/$home/create-voucher");
           return;
         }
       }
       import("apps/view/pages/404.php");
+      return;
+    }
+    if ($url[0] == "pay-test") {
+      $pay = new Payment;
+      $unique_id = uniqid();
+      $pay->create($unique_id);
+      return;
+    }
+    if ($url[0] == "webhook") {
+      $pay = new Payment;
+      $pay->webhook();
       return;
     } else {
       import("apps/view/pages/404.php");
