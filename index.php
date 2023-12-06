@@ -1645,7 +1645,7 @@ switch ($path) {
       $reply = $ordCtrl->place();
       if ($reply) {
         echo js_alert(msg_ssn(return: true));
-        echo go_to('orders');
+        echo go_to("create-payment/?orderid=$reply->orderid");
         return;
       } else {
         echo js_alert(msg_ssn(return: true));
@@ -1797,15 +1797,24 @@ switch ($path) {
       import("apps/view/pages/404.php");
       return;
     }
-    // if ($url[0] == "pay-test") {
-    //   $obj = new stdClass;
-    //   $obj->uid = "656f192a49bc0";
-    //   $obj->amt="100.00";
-    //   $obj->description="descriptions";
-    //   $pay = new Payment;
-    //   $pay->create($obj);
-    //   return;
-    // }
+    if ($url[0] == "create-payment") {
+      // create mollie payment object
+      if (isset($_GET['orderid'])) {
+        $pmtCls = new Payment;
+        $amt = $pmtCls->get_pay_amount($db, $uid);
+        // $paybleAmt = ($total_amt - ($vdamt + $point)) + $req->shipping_cost;
+        $paybleAmt = $amt;
+        $pmtCls->db = new Dbobjects;
+        $pmobj = new stdClass;
+        $pmobj->uid = $_GET['orderid'];
+        $paybleAmt = number_format($paybleAmt, 2, '.', '');
+        $pmobj->amt = "$paybleAmt";
+        $pmobj->description = "$ordernum";
+        $pmtCls->create($pmobj);
+      }
+      // end payment object
+      return;
+    }
     if ($url[0] == "webhook") {
       $pay = new Payment;
       $pay->db = new Dbobjects;

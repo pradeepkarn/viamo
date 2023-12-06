@@ -95,6 +95,16 @@ class Payment
         $db->insertData['payment_method'] = 'mollie';
         return $db->update();
     }
+    function get_pay_amount($db, $uid)
+    {
+        // $db = new Dbobjects;
+        $db->tableName = "payment";
+        $pmt = $db->get(['unique_id' => $uid]);
+        if ($pmt) {
+            return $pmt['amount']-$pmt['voucher_amt']-$pmt['discount_by_bpt']+$pmt['shipping_cost'];
+        }
+        return 0;
+    }
     function update_payment_data(object $db, string $status, object $pmt)
     {
         // $db = new Dbobjects;
