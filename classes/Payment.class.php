@@ -25,6 +25,7 @@ class Payment
         header("Location: " . $payment->getCheckoutUrl(), true, 303);
     }
 
+    
     function webhook()
     {
         try {
