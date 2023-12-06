@@ -1801,6 +1801,7 @@ switch ($path) {
       // create mollie payment object
       if (isset($_GET['orderid'])) {
         $pmtCls = new Payment;
+        $db = new Dbobjects;
         $amt = $pmtCls->get_pay_amount($db, $uid);
         // $paybleAmt = ($total_amt - ($vdamt + $point)) + $req->shipping_cost;
         $paybleAmt = $amt;
