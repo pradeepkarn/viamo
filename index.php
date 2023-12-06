@@ -1799,6 +1799,7 @@ switch ($path) {
     }
     if ($url[0] == "pay-test") {
       $pay = new Payment;
+      
       $unique_id = uniqid();
       $pay->create($unique_id);
       return;
