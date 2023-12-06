@@ -165,84 +165,85 @@ class Order_ctrl
                 $pay = $dbobj->create();
                 // return;
                 // if (intval($pay) && $arr['status'] == 'paid') {
-                if (intval($pay)) {
+                    if (intval($pay)) {
 
 
-                    // create mollie payment object
-                    $pmtCls = new Payment;
-                    $paybleAmt = ($total_amt - ($vdamt + $point)) + $req->shipping_cost;
-                    $pmtCls->db = $dbobj;
+                        // create mollie payment object
+                        $pmtCls = new Payment;
+                        $paybleAmt = ($total_amt - ($vdamt + $point)) + $req->shipping_cost;
+                        $pmtCls->db = $dbobj;
 
-                    $pmobj = new stdClass;
-                    $pmobj->uid = $ordernum;
-                    $paybleAmt = number_format($paybleAmt, 2, '.', '');
-                    $pmobj->amt = "$paybleAmt";
-                    $pmobj->description = "$ordernum";
+                        $pmobj = new stdClass;
+                        $pmobj->uid = $ordernum;
+                        $paybleAmt = number_format($paybleAmt, 2, '.', '');
+                        $pmobj->amt = "$paybleAmt";
+                        $pmobj->description = "$ordernum";
 
-                    $pmtCls->create($pmobj);
-                    // end payment object
+                        $pmtCls->create($pmobj);
+                        // end payment object
 
 
-                    $invid = generate_invoice_id($dbobj);
-                    update_inv_if_not($pay, $invid, $dbobj);
-                    // $pvctrl = new Pv_ctrl;
-                    // $pvctrl->db = $dbobj;
-                    // $pvctrl->save_commissions($purchaser_id = $_SESSION['user_id'], $order_id = $pay, $pv = $total_pv, $rv = $total_rv, $total_db);
-                    ################# Direct bonus #####################
-                    $level = new Member_ctrl;
-                    $db = $dbobj;
-                    $trnArr['transactedTo'] = USER['id'];
-                    $trnArr['transactedBy'] = USER['id'];
-                    // if ($commission == false) {
-                    if ($redeempt > 0) {
+                        $invid = generate_invoice_id($dbobj);
+                        update_inv_if_not($pay, $invid, $dbobj);
+                        // $pvctrl = new Pv_ctrl;
+                        // $pvctrl->db = $dbobj;
+                        // $pvctrl->save_commissions($purchaser_id = $_SESSION['user_id'], $order_id = $pay, $pv = $total_pv, $rv = $total_rv, $total_db);
+                        ################# Direct bonus #####################
+                        $level = new Member_ctrl;
+                        $db = $dbobj;
                         $trnArr['transactedTo'] = USER['id'];
                         $trnArr['transactedBy'] = USER['id'];
-                        $trnArr['purchase_amt'] = round($total_amt, 2);
-                        $trnArr['amount'] =  $redeempt;
-                        $trnArr['real_amt'] =  $redeempt;
-                        $trnArr['trnNum'] = $ordernum;
-                        $trnArr['status'] = 1; // 1: Active, 2: cancelled  
-                        $trnArr['trnGroup'] = 5; // 1:pv commissions, 2: direct bonus
-                        $trnArr['trnType'] = 2; // 1: Credit, 2: debit
-                        $level->save_trn_data($db, $trnArr);
-                    }
-                    // } else {
-                    if (USER['id'] != 1) {
-                        // $trnArr = null;
-                        $refuser = $db->showOne("SELECT * FROM pk_user WHERE pk_user.id = (SELECT ref FROM pk_user WHERE pk_user.id = '{$trnArr['transactedBy']}')");
-                        $cmsn = 0;
-                        $refuser = $refuser ? obj($refuser) : null;
-                        // $membercnt = $level->count_direct_partners($db, $myid = 1);
-                        if ($refuser) {
-                            // add bonus
-                            $partial_amt = round(($total_amt - $redeempt), 2);
-                            $direct_bonus = round((($partial_amt / $total_amt) * $total_db), 2);
-                            if ($direct_bonus > 0) {
-                                $trnArr['transactedTo'] = USER['ref'];
-                                $trnArr['transactedBy'] = USER['id'];
-                                $trnArr['purchase_amt'] = round($partial_amt, 2);
-                                // $trnArr['purchase_amt'] = round($total_amt, 2);
-                                $cmsn = round($direct_bonus, 2);
-                                // $cmsn = round($total_db, 2);
-                                $trnArr['amount'] =  $cmsn;
-                                $trnArr['trnNum'] = $ordernum;
-                                $trnArr['status'] = 1; // 1: Active, 2: cancelled  
-                                $trnArr['trnGroup'] = 2; // 1:pv commissions, 2: direct bonus
-                                $trnArr['trnType'] = 1; // 1: Credit, 2: debit
-                                $level->save_trn_data($db, $trnArr);
+                        // if ($commission == false) {
+                        if ($redeempt > 0) {
+                            $trnArr['transactedTo'] = USER['id'];
+                            $trnArr['transactedBy'] = USER['id'];
+                            $trnArr['purchase_amt'] = round($total_amt, 2);
+                            $trnArr['amount'] =  $redeempt;
+                            $trnArr['real_amt'] =  $redeempt;
+                            $trnArr['trnNum'] = $ordernum;
+                            $trnArr['status'] = 1; // 1: Active, 2: cancelled  
+                            $trnArr['trnGroup'] = 5; // 1:pv commissions, 2: direct bonus
+                            $trnArr['trnType'] = 2; // 1: Credit, 2: debit
+                            $level->save_trn_data($db, $trnArr);
+                        }
+                        // } else {
+                        if (USER['id'] != 1) {
+                            // $trnArr = null;
+                            $refuser = $db->showOne("SELECT * FROM pk_user WHERE pk_user.id = (SELECT ref FROM pk_user WHERE pk_user.id = '{$trnArr['transactedBy']}')");
+                            $cmsn = 0;
+                            $refuser = $refuser ? obj($refuser) : null;
+                            // $membercnt = $level->count_direct_partners($db, $myid = 1);
+                            if ($refuser) {
+                                // add bonus
+                                $partial_amt = round(($total_amt - $redeempt), 2);
+                                $direct_bonus = round((($partial_amt / $total_amt) * $total_db), 2);
+                                if ($direct_bonus > 0) {
+                                    $trnArr['transactedTo'] = USER['ref'];
+                                    $trnArr['transactedBy'] = USER['id'];
+                                    $trnArr['purchase_amt'] = round($partial_amt, 2);
+                                    // $trnArr['purchase_amt'] = round($total_amt, 2);
+                                    $cmsn = round($direct_bonus, 2);
+                                    // $cmsn = round($total_db, 2);
+                                    $trnArr['amount'] =  $cmsn;
+                                    $trnArr['trnNum'] = $ordernum;
+                                    $trnArr['status'] = 1; // 1: Active, 2: cancelled  
+                                    $trnArr['trnGroup'] = 2; // 1:pv commissions, 2: direct bonus
+                                    $trnArr['trnType'] = 1; // 1: Credit, 2: debit
+                                    $level->save_trn_data($db, $trnArr);
+                                }
                             }
                         }
+                        // }
+                        $arr = null;
+                        $level->update_level_by_direct_partners_count($db, $myid = USER['ref']);
+                        $level->update_level_by_purchase($db, $myid = USER['ref']);
                     }
-                    // }
-                    $arr = null;
-                    $level->update_level_by_direct_partners_count($db, $myid = USER['ref']);
-                    $level->update_level_by_purchase($db, $myid = USER['ref']);
-                }
+                // }
                 #################### Direct Bonus end #######################
                 $con->commit();
             } catch (PDOException $th) {
                 $_SESSION['msg'][] = $th;
-                // echo $th;
+                echo $th;
                 $pay = false;
                 $con->rollback();
             }
@@ -366,7 +367,7 @@ class Order_ctrl
             return false;
         }
     }
-    
+
     // function get_order_by_pmt_id($db, $pmtid)
     // {
     //     // $db = new Dbobjects;
@@ -379,5 +380,5 @@ class Order_ctrl
     //     $db->tableName = "payment";
     //     return $db->get(['unique_id' => $uid]);
     // }
-    
+
 }
