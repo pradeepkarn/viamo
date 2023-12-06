@@ -169,17 +169,17 @@ class Order_ctrl
 
 
                         // create mollie payment object
-                        $pmtCls = new Payment;
-                        $paybleAmt = ($total_amt - ($vdamt + $point)) + $req->shipping_cost;
-                        $pmtCls->db = $dbobj;
+                        // $pmtCls = new Payment;
+                        // $paybleAmt = ($total_amt - ($vdamt + $point)) + $req->shipping_cost;
+                        // $pmtCls->db = $dbobj;
 
-                        $pmobj = new stdClass;
-                        $pmobj->uid = $ordernum;
-                        $paybleAmt = number_format($paybleAmt, 2, '.', '');
-                        $pmobj->amt = "$paybleAmt";
-                        $pmobj->description = "$ordernum";
+                        // $pmobj = new stdClass;
+                        // $pmobj->uid = $ordernum;
+                        // $paybleAmt = number_format($paybleAmt, 2, '.', '');
+                        // $pmobj->amt = "$paybleAmt";
+                        // $pmobj->description = "$ordernum";
 
-                        $pmtCls->create($pmobj);
+                        // $pmtCls->create($pmobj);
                         // end payment object
 
 
