@@ -6,7 +6,7 @@ class Payment
     function __construct()
     {
         $this->mollie = new \Mollie\Api\MollieApiClient();
-        $this->mollie->setApiKey("test_nRGudNxPEEMrWmPaRnTdVqKB6M4BjR");
+        $this->mollie->setApiKey("test_dmz36hTtt4vWt9j7vruuKHKJhGUhgS");
     }
     function create($unique_id)
     {
@@ -25,7 +25,7 @@ class Payment
         header("Location: " . $payment->getCheckoutUrl(), true, 303);
     }
 
-    
+
     function webhook()
     {
         try {
