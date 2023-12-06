@@ -8,3 +8,4 @@ config.php
 csvdata
 /*.log
 /vendor
+/composer.lock
