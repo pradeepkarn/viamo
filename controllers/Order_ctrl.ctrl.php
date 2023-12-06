@@ -166,6 +166,8 @@ class Order_ctrl
                 // return;
                 // if (intval($pay) && $arr['status'] == 'paid') {
                 if (intval($pay)) {
+
+
                     // create mollie payment object
                     $pmtCls = new Payment;
                     $paybleAmt = ($total_amt - ($vdamt + $point)) + $req->shipping_cost;
@@ -173,6 +175,7 @@ class Order_ctrl
 
                     $pmobj = new stdClass;
                     $pmobj->uid = $ordernum;
+                    $paybleAmt = number_format($paybleAmt, 2, '.', '');
                     $pmobj->amt = "$paybleAmt";
                     $pmobj->description = "$ordernum";
 
@@ -363,36 +366,18 @@ class Order_ctrl
             return false;
         }
     }
-    function init_payment($db, $uid, $pmt)
-    {
-        // $db = new Dbobjects;
-        $db->tableName = "payment";
-        $db->get(['unique_id' => $uid]);
-        $db->insertData['pmt_id'] = $pmt->id;
-        $db->insertData['payment_method'] = 'mollie';
-        return $db->update();
-    }
-    function get_order_by_pmt_id($db, $pmtid)
-    {
-        // $db = new Dbobjects;
-        $db->tableName = "payment";
-        return $db->get(['pmt_id' => $pmtid]);
-    }
-    function get_order_by_unique_id($db, $uid)
-    {
-        // $db = new Dbobjects;
-        $db->tableName = "payment";
-        return $db->get(['unique_id' => $uid]);
-    }
-    function update_payment_data(object $db, string $status, object $pmt)
-    {
-        // $db = new Dbobjects;
-        $db->tableName = "payment";
-        $db->get(['pmt_id' => $pmt->id]);
-        $db->insertData['pmt_data'] = json_encode($pmt);
-        $db->insertData['payment_method'] = 'mollie';
-        $db->insertData['status'] = $status;
-        $db->insertData['updated_at'] = date('Y-m-d H:i:s');;
-        return $db->update();
-    }
+    
+    // function get_order_by_pmt_id($db, $pmtid)
+    // {
+    //     // $db = new Dbobjects;
+    //     $db->tableName = "payment";
+    //     return $db->get(['pmt_id' => $pmtid]);
+    // }
+    // function get_order_by_unique_id($db, $uid)
+    // {
+    //     // $db = new Dbobjects;
+    //     $db->tableName = "payment";
+    //     return $db->get(['unique_id' => $uid]);
+    // }
+    
 }
