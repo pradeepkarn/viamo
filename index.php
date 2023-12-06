@@ -436,7 +436,7 @@ switch ($path) {
     if ($url[0] == "orders") {
       if (!authenticate()) {
         header("Location: /$home/");
-        exit;
+        return;
       }
       import("apps/view/pages/orders.php");
       return;
