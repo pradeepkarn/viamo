@@ -1803,11 +1803,11 @@ switch ($path) {
         $ordernum = $_GET['orderid'];
         $pmtCls = new Payment;
         $db = new Dbobjects;
-        $amt = $pmtCls->get_pay_amount($db, $uid);
+        $amt = $pmtCls->get_pay_amount($db=$db, $uid=$ordernum);
         // $paybleAmt = ($total_amt - ($vdamt + $point)) + $req->shipping_cost;
         $paybleAmt = $amt;
         $pmtCls->db = new Dbobjects;
-        
+
         $pmobj = new stdClass;
         $pmobj->uid = $ordernum;
         $paybleAmt = number_format($paybleAmt, 2, '.', '');
