@@ -258,7 +258,8 @@ class Order_ctrl
                 ]));
 
                 return (object) array(
-                    'orderid'=>$ordernum
+                    'orderid'=>$ordernum,
+                    'payment_method'=>sanitize_remove_tags($_POST['payment_mode'])
                 );
             } else {
                 $_SESSION['msg'][] = 'Order not placed';

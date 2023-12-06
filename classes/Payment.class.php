@@ -101,7 +101,11 @@ class Payment
         $db->tableName = "payment";
         $pmt = $db->get(['unique_id' => $uid]);
         if ($pmt) {
-            return $pmt['amount']-$pmt['voucher_amt']-$pmt['discount_by_bpt']+$pmt['shipping_cost'];
+            $net_amount =  $pmt['amount']-$pmt['voucher_amt']-$pmt['discount_by_bpt']+$pmt['shipping_cost'];
+            return (object) array(
+                'obj'=>$pmt,
+                'amt'=>$net_amount
+            );
         }
         return 0;
     }

@@ -1645,7 +1645,11 @@ switch ($path) {
       $reply = $ordCtrl->place();
       if ($reply) {
         echo js_alert(msg_ssn(return: true));
-        echo go_to("create-payment/?orderid=$reply->orderid");
+        if ($reply->payment_method=='mollie') {
+          echo go_to("create-payment/?orderid=$reply->orderid");
+        }else{
+          echo go_to("/orders");
+        }
         return;
       } else {
         echo js_alert(msg_ssn(return: true));
@@ -1803,9 +1807,8 @@ switch ($path) {
         $ordernum = $_GET['orderid'];
         $pmtCls = new Payment;
         $db = new Dbobjects;
-        $amt = $pmtCls->get_pay_amount($db=$db, $uid=$ordernum);
-        // $paybleAmt = ($total_amt - ($vdamt + $point)) + $req->shipping_cost;
-        $paybleAmt = $amt;
+        $dbpmt = $pmtCls->get_pay_amount($db=$db, $uid=$ordernum);
+        $paybleAmt = $dbpmt->amt;
         $pmtCls->db = new Dbobjects;
 
         $pmobj = new stdClass;
