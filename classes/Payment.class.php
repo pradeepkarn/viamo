@@ -17,7 +17,7 @@ class Payment
         $payment = $this->mollie->payments->create([
             "amount" => [
                 "currency" => "EUR",
-                "value" => "20.00"
+                "value" => "54.00"
             ],
             "description" => "My first API payment",
             "redirectUrl" => BASE_URI . "/orders",
