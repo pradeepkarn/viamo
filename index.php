@@ -1807,11 +1807,13 @@ switch ($path) {
         // $paybleAmt = ($total_amt - ($vdamt + $point)) + $req->shipping_cost;
         $paybleAmt = $amt;
         $pmtCls->db = new Dbobjects;
+        
         $pmobj = new stdClass;
-        $pmobj->uid = $_GET['orderid'];
+        $pmobj->uid = $ordernum;
         $paybleAmt = number_format($paybleAmt, 2, '.', '');
         $pmobj->amt = "$paybleAmt";
         $pmobj->description = "$ordernum";
+
         $pmtCls->create($pmobj);
       }
       // end payment object
