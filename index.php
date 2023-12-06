@@ -1800,6 +1800,7 @@ switch ($path) {
     if ($url[0] == "create-payment") {
       // create mollie payment object
       if (isset($_GET['orderid'])) {
+        $ordernum = $_GET['orderid'];
         $pmtCls = new Payment;
         $db = new Dbobjects;
         $amt = $pmtCls->get_pay_amount($db, $uid);
