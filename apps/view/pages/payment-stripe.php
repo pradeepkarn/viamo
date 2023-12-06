@@ -267,7 +267,7 @@ $addrs = get_my_primary_address($userid = USER['id']);
               $my_username = $invite != false ? $invite['username'] : null;
               $my_adderess = $invite != false ? $invite['address'] : null;
               $addrs = get_my_primary_address($userid);
-              $no_mollie_country = ['KE', 'GH', 'UG', 'TZ', 'NG'];
+              $no_stripe_country = ['KE', 'GH', 'UG', 'TZ', 'NG'];
             }
             ?>
             <p class="del_add">
@@ -283,16 +283,16 @@ $addrs = get_my_primary_address($userid = USER['id']);
           <div class="row mb-3">
             <div class="col-2">
               <div class="nav_tabs1">
-                <button <?php echo in_array($addrs->country_code, $no_mollie_country) ? "disabled" : null; ?> id="mollieBtn" type="button" class="btn tablinks2 <?php echo in_array($addrs->country_code, $no_mollie_country) ? "hide" : null; ?>" onclick="openPayment(event, 'mollie')"><img style="height: 20px; width:auto;" src="/<?php echo home; ?>/media/img/mollie.png" width="100px" alt="" srcset=""> mollie</button>
+                <button <?php echo in_array($addrs->country_code, $no_stripe_country) ? "disabled" : null; ?> id="stripeBtn" type="button" class="btn tablinks2 <?php echo in_array($addrs->country_code, $no_stripe_country) ? "hide" : null; ?>" onclick="openPayment(event, 'stripes')"><i class="fab fa-stripe-s"></i> stripes</button>
                 <button id="btBtn" type="button" class="btn tablinks2" onclick="openPayment(event, 'transfer')"><i class="fa-sharp fa-light fa-money-check"></i> Bank transfer (Prepay)</button>
               </div>
             </div>
 
             <div class="col-5">
-              <div id="mollie" class="tabcontent2 <?php echo in_array($addrs->country_code, $no_mollie_country) ? "hide" : null; ?>">
-                <input <?php echo in_array($addrs->country_code, $no_mollie_country) ? "disabled" : null; ?> id="mollieRadio" type="radio" name="payment_mode" value="mollie">
-                <img style="height: 50px; width:auto;" src="/<?php echo home; ?>/media/img/mollie.png" width="100px" alt="" srcset="">
-                <p class="mollie_cl mt-2">Online payment system<br> credit cards, Sofort / Klarna (payment via invoice), EPS, and much more.</p>
+              <div id="stripes" class="tabcontent2 <?php echo in_array($addrs->country_code, $no_stripe_country) ? "hide" : null; ?>">
+                <input <?php echo in_array($addrs->country_code, $no_stripe_country) ? "disabled" : null; ?> id="stripeRadio" type="radio" name="payment_mode" value="Stripe">
+                <img src="/<?php echo home; ?>/media/img/stripe.png" width="100px" alt="" srcset="">
+                <p class="stripes_cl mt-2">Online payment system<br> credit cards, Sofort / Klarna (payment via invoice), EPS, and much more.</p>
               </div>
               <div id="transfer" class="tabcontent2">
                 <input id="btRadio" type="radio" checked name="payment_mode" value="Bank_transfer">
@@ -301,13 +301,13 @@ $addrs = get_my_primary_address($userid = USER['id']);
                 echo count($banklist['banks']) ? "{$banklist['banks'][0]}" : null;
                 ?>
 
-                <!-- <p class="mollie_cl">Please transfer the total amount to the following account:</p>
-                <p class="mollie_cl">Account holder: Swiss Pharma Trade AG</p>
-                <p class="mollie_cl">Raiffeisenbank St. Gallen<br>
+                <!-- <p class="stripes_cl">Please transfer the total amount to the following account:</p>
+                <p class="stripes_cl">Account holder: Swiss Pharma Trade AG</p>
+                <p class="stripes_cl">Raiffeisenbank St. Gallen<br>
                   IBAN: CH98 8080 8001 4782 5195 6<br>
                   BIC: RAIFCH22XXX</p>
-                <p class="mollie_cl">Please transfer the total amount of your order to our account:</p>
-                <p class="mollie_cl">Account owner: Swiss Pharma Trade AG<br>
+                <p class="stripes_cl">Please transfer the total amount of your order to our account:</p>
+                <p class="stripes_cl">Account owner: Swiss Pharma Trade AG<br>
                   Raiffeisenbank St. Gallen<br>
                   IBAN: CH98 8080 8001 4782 5195 6<br>
                   BIC: RAIFCH22XXX</p> -->
@@ -372,14 +372,14 @@ $addrs = get_my_primary_address($userid = USER['id']);
 
 
 
-  var mollieBtn = document.getElementById('mollieBtn');
+  var stripeBtn = document.getElementById('stripeBtn');
   var btRadio = document.getElementById('btRadio');
 
   var btBtn = document.getElementById('btBtn');
-  var mollieRadio = document.getElementById('mollieRadio');
+  var stripesRadio = document.getElementById('stripeRadio');
 
-  mollieBtn.addEventListener('click', () => {
-    mollieRadio.checked = true;
+  stripeBtn.addEventListener('click', () => {
+    stripesRadio.checked = true;
   })
   btBtn.addEventListener('click', () => {
     btRadio.checked = true;

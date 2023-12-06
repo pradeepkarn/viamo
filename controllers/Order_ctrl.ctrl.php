@@ -148,8 +148,11 @@ class Order_ctrl
 
             $arr['unique_id'] = uniqid();
 
-            $arr['status'] = $_POST['payment_mode'] == 'Bank_transfer' ? "pending" : 'paid';
-            $arr['updated_at'] = $_POST['payment_mode'] == 'Bank_transfer' ? null : date('Y-m-d H:i:s');
+            // $arr['status'] = $_POST['payment_mode'] == 'Bank_transfer' ? "pending" : 'paid';
+            $arr['status'] = 'init';
+
+            // $arr['updated_at'] = $_POST['payment_mode'] == 'Bank_transfer' ? null : date('Y-m-d H:i:s');
+            $arr['updated_at'] = date('Y-m-d H:i:s');
 
             try {
                 $redeempt = 0;
@@ -161,7 +164,22 @@ class Order_ctrl
                 $ordernum = $arr['unique_id'];
                 $pay = $dbobj->create();
                 // return;
-                if (intval($pay) && $arr['status'] == 'paid') {
+                // if (intval($pay) && $arr['status'] == 'paid') {
+                if (intval($pay)) {
+                    // create mollie payment object
+                    $pmtCls = new Payment;
+                    $paybleAmt = ($total_amt - ($vdamt + $point)) + $req->shipping_cost;
+                    $pmtCls->db = $dbobj;
+
+                    $pmobj = new stdClass;
+                    $pmobj->uid = $ordernum;
+                    $pmobj->amt = "$paybleAmt";
+                    $pmobj->description = "$ordernum";
+
+                    $pmtCls->create($pmobj);
+                    // end payment object
+
+
                     $invid = generate_invoice_id($dbobj);
                     update_inv_if_not($pay, $invid, $dbobj);
                     // $pvctrl = new Pv_ctrl;
@@ -374,6 +392,7 @@ class Order_ctrl
         $db->insertData['pmt_data'] = json_encode($pmt);
         $db->insertData['payment_method'] = 'mollie';
         $db->insertData['status'] = $status;
+        $db->insertData['updated_at'] = date('Y-m-d H:i:s');;
         return $db->update();
     }
 }

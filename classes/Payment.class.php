@@ -10,32 +10,29 @@ class Payment
         $this->mollie = new \Mollie\Api\MollieApiClient();
         $this->mollie->setApiKey("test_nRGudNxPEEMrWmPaRnTdVqKB6M4BjR");
         $this->ordctrl = new Order_ctrl;
-        $this->db = new Dbobjects;
     }
-    function create($unique_id)
+    function create(object $obj)
     {
         $payment = $this->mollie->payments->create([
             "amount" => [
                 "currency" => "EUR",
-                "value" => "54.00"
+                "value" => "$obj->amt"
             ],
-            "description" => "My first API payment",
+            "description" => "$obj->description",
             "redirectUrl" => BASE_URI . "/orders",
             "webhookUrl"  => BASE_URI . "/webhook",
             "metadata" => [
-                "order_id" => $unique_id,
+                "order_id" => $obj->uid,
             ],
         ]);
         // save payment id in related order
-        $this->ordctrl->init_payment($db = $this->db, $uid = $unique_id, $pmt = $payment);
+        $this->ordctrl->init_payment($db = $this->db, $uid = $obj->uid, $pmt = $payment);
         header("Location: " . $payment->getCheckoutUrl(), true, 303);
     }
     function webhook()
     {
         try {
-
             $payment = $this->mollie->payments->get($_POST["id"]);
-            $order = $this->ordctrl->get_order_by_pmt_id($this->db, $payment->id);
             $orderId = $payment->metadata->order_id;
 
             database_write($orderId, $payment->status);

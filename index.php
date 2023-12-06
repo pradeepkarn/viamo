@@ -1797,14 +1797,18 @@ switch ($path) {
       import("apps/view/pages/404.php");
       return;
     }
-    if ($url[0] == "pay-test") {
-      $pay = new Payment;
-      $unique_id = "656f192a49bc0";
-      $pay->create($unique_id);
-      return;
-    }
+    // if ($url[0] == "pay-test") {
+    //   $obj = new stdClass;
+    //   $obj->uid = "656f192a49bc0";
+    //   $obj->amt="100.00";
+    //   $obj->description="descriptions";
+    //   $pay = new Payment;
+    //   $pay->create($obj);
+    //   return;
+    // }
     if ($url[0] == "webhook") {
       $pay = new Payment;
+      $pay->db = new Dbobjects;
       $pay->webhook();
       return;
     } else {
