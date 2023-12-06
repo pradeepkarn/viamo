@@ -1645,9 +1645,9 @@ switch ($path) {
       $reply = $ordCtrl->place();
       if ($reply) {
         echo js_alert(msg_ssn(return: true));
-        if ($reply->payment_method=='mollie') {
-          echo go_to("create-payment/?orderid=$reply->orderid");
-        }else{
+        if ($reply->payment_method == 'mollie') {
+          echo go_to("/create-payment/?orderid=$reply->orderid");
+        } else {
           echo go_to("/orders");
         }
         return;
@@ -1807,17 +1807,23 @@ switch ($path) {
         $ordernum = $_GET['orderid'];
         $pmtCls = new Payment;
         $db = new Dbobjects;
-        $dbpmt = $pmtCls->get_pay_amount($db=$db, $uid=$ordernum);
-        $paybleAmt = $dbpmt->amt;
-        $pmtCls->db = new Dbobjects;
+        $dbpmt = $pmtCls->get_pay_amount($db = $db, $uid = $ordernum);
+        if ($dbpmt) {
+          if (floatval($dbpmt->amt)<=0) {
+            header("location:/$home/orders");
+            return;
+          }
+          $paybleAmt = floatval($dbpmt->amt);
+          $pmtCls->db = new Dbobjects;
 
-        $pmobj = new stdClass;
-        $pmobj->uid = $ordernum;
-        $paybleAmt = number_format($paybleAmt, 2, '.', '');
-        $pmobj->amt = "$paybleAmt";
-        $pmobj->description = "$ordernum";
+          $pmobj = new stdClass;
+          $pmobj->uid = $ordernum;
+          $paybleAmt = number_format($paybleAmt, 2, '.', '');
+          $pmobj->amt = "$paybleAmt";
+          $pmobj->description = "$ordernum";
 
-        $pmtCls->create($pmobj);
+          $pmtCls->create($pmobj);
+        }
       }
       // end payment object
       return;
