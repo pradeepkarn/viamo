@@ -113,11 +113,19 @@ class Payment
     {
         // $db = new Dbobjects;
         $db->tableName = "payment";
-        $db->get(['pmt_id' => $pmt->id]);
+        $pmt = $db->get(['pmt_id' => $pmt->id]);
         $db->insertData['pmt_data'] = json_encode($pmt);
         $db->insertData['payment_method'] = 'mollie';
         $db->insertData['status'] = $status;
-        $db->insertData['updated_at'] = date('Y-m-d H:i:s');;
+        $db->insertData['updated_at'] = date('Y-m-d H:i:s');
+        if (strtolower($status)=='paid') {
+            $ord_ctrl = new Order_ctrl;
+            $level = new Member_ctrl;
+            $ref = $db->showOne("SELECT * FROM pk_user WHERE pk_user.id = (SELECT ref FROM pk_user WHERE pk_user.id = '{$pmt['user_id']}')");
+            $buyer['id'] = $pmt['user_id'];
+            $buyer['ref'] = $ref['id'];
+            $ord_ctrl->send_direct_bonus($db, $buyer, $ordernum=$pmt['unique_id'], $total_amt=$pmt['amount'], $total_db=$pmt['direct_bonus'], $redeempt=$pmt['discount_by_bpt'], $level);
+        }
         return $db->update();
     }
 }

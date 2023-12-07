@@ -149,7 +149,7 @@ class Order_ctrl
             $arr['unique_id'] = uniqid();
 
             $arr['status'] = $_POST['payment_mode'] == 'init';
-            
+
             $arr['updated_at'] = $_POST['payment_mode'] == 'Bank_transfer' ? null : date('Y-m-d H:i:s');
 
             try {
@@ -184,42 +184,9 @@ class Order_ctrl
                 if (intval($pay) && $arr['status'] == 'paid') {
                     $invid = generate_invoice_id($dbobj);
                     update_inv_if_not($pay, $invid, $dbobj);
-                    // $pvctrl = new Pv_ctrl;
-                    // $pvctrl->db = $dbobj;
-                    // $pvctrl->save_commissions($purchaser_id = $_SESSION['user_id'], $order_id = $pay, $pv = $total_pv, $rv = $total_rv, $total_db);
-                    ################# Direct bonus #####################
-                    
-                    // } else {
-                    if (USER['id'] != 1) {
-                        // $trnArr = null;
-                        $refuser = $db->showOne("SELECT * FROM pk_user WHERE pk_user.id = (SELECT ref FROM pk_user WHERE pk_user.id = '{$trnArr['transactedBy']}')");
-                        $cmsn = 0;
-                        $refuser = $refuser ? obj($refuser) : null;
-                        // $membercnt = $level->count_direct_partners($db, $myid = 1);
-                        if ($refuser) {
-                            // add bonus
-                            $partial_amt = round(($total_amt - $redeempt), 2);
-                            $direct_bonus = round((($partial_amt / $total_amt) * $total_db), 2);
-                            if ($direct_bonus > 0) {
-                                $trnArr['transactedTo'] = USER['ref'];
-                                $trnArr['transactedBy'] = USER['id'];
-                                $trnArr['purchase_amt'] = round($partial_amt, 2);
-                                // $trnArr['purchase_amt'] = round($total_amt, 2);
-                                $cmsn = round($direct_bonus, 2);
-                                // $cmsn = round($total_db, 2);
-                                $trnArr['amount'] =  $cmsn;
-                                $trnArr['trnNum'] = $ordernum;
-                                $trnArr['status'] = 1; // 1: Active, 2: cancelled  
-                                $trnArr['trnGroup'] = 2; // 1:pv commissions, 2: direct bonus
-                                $trnArr['trnType'] = 1; // 1: Credit, 2: debit
-                                $level->save_trn_data($db, $trnArr);
-                            }
-                        }
-                    }
-                    // }
+                    // credit commission on paid update member as well
+                    $this->send_direct_bonus($db, $buyer = USER, $ordernum, $total_amt, $total_db, $redeempt, $level);
                     $arr = null;
-                    $level->update_level_by_direct_partners_count($db, $myid = USER['ref']);
-                    $level->update_level_by_purchase($db, $myid = USER['ref']);
                 }
                 #################### Direct Bonus end #######################
                 $con->commit();
@@ -258,8 +225,8 @@ class Order_ctrl
                 ]));
 
                 return (object) array(
-                    'orderid'=>$ordernum,
-                    'payment_method'=>sanitize_remove_tags($_POST['payment_mode'])
+                    'orderid' => $ordernum,
+                    'payment_method' => sanitize_remove_tags($_POST['payment_mode'])
                 );
             } else {
                 $_SESSION['msg'][] = 'Order not placed';
@@ -290,26 +257,29 @@ class Order_ctrl
             $refuser = $ref;
             $refuser = $refuser ? obj($refuser) : null;
             $cmsn = 0;
+            $buyer['id'] = $pmt['user_id'];
+            $buyer['ref'] = $ref['id'];
             // $membercnt = $level->count_direct_partners($db, $myid = 1);
             if ($refuser) {
-                // if ($pmt['point_used'] == 0) {
-                $partial_amt = round(($total_amt - $pmt['point_used']), 2);
-                $direct_bonus = round((($partial_amt / $total_amt) * $total_db), 2);
-                if ($direct_bonus > 0) {
-                    $trnArr['purchase_amt'] = round($partial_amt, 2);
-                    $cmsn = $direct_bonus;
-                    // $cmsn = round($total_db, 2);
-                    $trnArr['amount'] =  $cmsn;
-                    $trnArr['trnNum'] = $ordernum;
-                    $trnArr['status'] = 1; // 1: Active, 2: cancelled  
-                    $trnArr['trnGroup'] = 2; // 1:pv commissions, 2: direct bonus
-                    $trnArr['trnType'] = 1; // 1: Credit, 2: debit
-                    $level->save_trn_data($db, $trnArr);
-                    // }
-                }
+                $this->send_direct_bonus($db, $buyer, $ordernum, $total_amt, $total_db, $redeempt=$pmt['discount_by_bpt'], $level);
+               
+                // $partial_amt = round(($total_amt - $pmt['point_used']), 2);
+                // $direct_bonus = round((($partial_amt / $total_amt) * $total_db), 2);
+                // if ($direct_bonus > 0) {
+                //     $trnArr['purchase_amt'] = round($partial_amt, 2);
+                //     $cmsn = $direct_bonus;
+                //     // $cmsn = round($total_db, 2);
+                //     $trnArr['amount'] =  $cmsn;
+                //     $trnArr['trnNum'] = $ordernum;
+                //     $trnArr['status'] = 1; // 1: Active, 2: cancelled  
+                //     $trnArr['trnGroup'] = 2; // 1:pv commissions, 2: direct bonus
+                //     $trnArr['trnType'] = 1; // 1: Credit, 2: debit
+                //     $level->save_trn_data($db, $trnArr);
+
+                // }
             }
-            $level->update_level_by_direct_partners_count($db, $myid = $ref['ref']);
-            $level->update_level_by_purchase($db, $myid = $ref['ref']);
+            // $level->update_level_by_direct_partners_count($db, $myid = $ref['ref']);
+            // $level->update_level_by_purchase($db, $myid = $ref['ref']);
             return true;
         }
         return false;
@@ -373,7 +343,7 @@ class Order_ctrl
         $db->tableName = "payment";
         return $db->get(['unique_id' => $uid]);
     }
-    
+
     function update_payment_data(object $db, string $status, object $pmt)
     {
         // $db = new Dbobjects;
@@ -384,4 +354,53 @@ class Order_ctrl
         $db->insertData['status'] = $status;
         return $db->update();
     }
+    function send_direct_bonus($db, array $buyer, $ordernum, $total_amt, $total_db, $redeempt, $level)
+    {
+        ################# Direct bonus #####################
+        if ($buyer['id'] != 1) {
+            $trnArr['transactedBy'] = $buyer['id'];
+            // $trnArr = null;
+            $refuser = $db->showOne("SELECT * FROM pk_user WHERE pk_user.id = (SELECT ref FROM pk_user WHERE pk_user.id = '{$trnArr['transactedBy']}')");
+            $cmsn = 0;
+            $refuser = $refuser ? obj($refuser) : null;
+            if ($refuser) {
+                // add bonus
+                $partial_amt = round(($total_amt - $redeempt), 2);
+                $direct_bonus = round((($partial_amt / $total_amt) * $total_db), 2);
+                if ($direct_bonus > 0) {
+                    $trnArr['transactedTo'] = $buyer['ref'];
+                    $trnArr['transactedBy'] = $buyer['id'];
+                    $trnArr['purchase_amt'] = round($partial_amt, 2);
+                    $cmsn = round($direct_bonus, 2);
+                    $trnArr['amount'] =  $cmsn;
+                    $trnArr['trnNum'] = $ordernum;
+                    $trnArr['status'] = 1; // 1: Active, 2: cancelled  
+                    $trnArr['trnGroup'] = 2; // 1:pv commissions, 2: direct bonus
+                    $trnArr['trnType'] = 1; // 1: Credit, 2: debit
+                    $level->save_trn_data($db, $trnArr);
+                }
+            }
+        }
+        $level->update_level_by_direct_partners_count($db, $myid = USER['ref']);
+        $level->update_level_by_purchase($db, $myid = USER['ref']);
+        #################### Direct Bonus end #######################
+    }
+
+    // function change_total_bonus_on_voucher($vctrl, $vcode, $total_amt, $total_db)
+    // {
+
+    //     if ($vcode != "") {
+    //         $vchr = $vctrl->get_voucher($code = $vcode, $amt = $total_amt);
+    //         $vchrjson = json_encode($vchr);
+    //         if ($vchr) {
+    //             $vdamt = $vchr->discount;
+    //             $bonus_percentagge = round(((($total_db / $total_amt) * 100) - $vchr->value), 2);
+    //             if ($bonus_percentagge <= 0) {
+    //                 $bonus_percentagge = 0;
+    //             }
+    //             $total_db = round((($total_amt) * ($bonus_percentagge / 100)), 2);
+    //         }
+    //     }
+    //     return $total_db;
+    // }
 }
