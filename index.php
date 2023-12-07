@@ -1644,7 +1644,6 @@ switch ($path) {
       $ordCtrl = new Order_ctrl;
       $reply = $ordCtrl->place();
       if ($reply) {
-        echo js_alert(msg_ssn(return: true));
         if ($reply->payment_method == 'mollie') {
           echo go_to("/create-payment/?orderid=$reply->orderid");
         } else {

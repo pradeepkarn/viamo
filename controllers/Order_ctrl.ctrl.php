@@ -207,7 +207,7 @@ class Order_ctrl
                 $dbobj->insertData['updated_at'] = date('Y-m-d H:i:s');
                 // execute payment data
                 $dbobj->update();
-                $_SESSION['msg'][] = 'Order placed';
+                // $_SESSION['msg'][] = 'Order placed';
                 $my_email = null;
 
                 if (isset($_SESSION['user_id'])) {
@@ -230,6 +230,7 @@ class Order_ctrl
                 );
             } else {
                 $_SESSION['msg'][] = 'Order not placed';
+                echo js_alert(msg_ssn(return: true));
                 return false;
             }
         }
