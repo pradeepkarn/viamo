@@ -50,8 +50,8 @@ SCRPT;
           <div class="row">
             <div class="col bst_news">
               <marquee class="marque_news mt-2" behavior="scroll" scrollamount="8" direction="left">
-              Herzlich Willkommen in der VIAMO-Community. Hier ist die Aufzeichnung des Webinares zum Start der PRE-Launch-Phase: 
-              <a href="https://youtu.be/RPIdb7dM9Ag">https://youtu.be/RPIdb7dM9Ag</a>
+                Herzlich Willkommen in der VIAMO-Community. Hier ist die Aufzeichnung des Webinares zum Start der PRE-Launch-Phase:
+                <a href="https://youtu.be/RPIdb7dM9Ag">https://youtu.be/RPIdb7dM9Ag</a>
               </marquee>
               <iframe width="100%" height="315" src="https://www.youtube.com/embed/RPIdb7dM9Ag" frameborder="0" allowfullscreen></iframe>
             </div>
@@ -61,9 +61,9 @@ SCRPT;
         <section>
           <div class="container px-4">
             <div class="row justify-content-center">
-              <?php foreach ($mypartners as $key => $mbr) { 
+              <?php foreach ($mypartners as $key => $mbr) {
                 $mbr = obj($mbr);
-                ?>
+              ?>
                 <div class="col-4 mb-2">
                   <div class="card text-center">
                     <div class="card-body">
@@ -92,12 +92,8 @@ SCRPT;
 
 
                     <div class="form-group row">
-                      <div class="col-md-6 col-12">
-                        <label class="control-label">
-                          <font style="vertical-align: inherit;">
-                            <font style="vertical-align: inherit;">To partner</font>
-                          </font>
-                        </label>
+                      <div class="col-md-12 col-12">
+                       
 
                         <?php
                         $my_username = null;
@@ -127,13 +123,35 @@ SCRPT;
 
                         ?>
 
-
-                        <div class="input-group copyarea">
-                          <input type="text" class="form-control" value="<?php echo BASE_URI; ?>/signup/?sponserid=<?php echo $my_username; ?>" readonly="">
-                          <div class="input-group-append">
-                            <span onclick="copyToClipboard('#p1')" class="input-group-text1 pointer"><i class="far fa-copy"></i></span>
+                        <div class="row">
+                          <div class="col-md">
+                          <label class="control-label">
+                          <font style="vertical-align: inherit;">
+                            <font style="vertical-align: inherit;">To partner</font>
+                          </font>
+                        </label>
+                            <div class="input-group copyarea">
+                              <input type="text" id="p1" class="form-control" value="<?php echo BASE_URI; ?>/signup/?sponserid=<?php echo $my_username; ?>" readonly="">
+                              <div class="input-group-append">
+                                <span onclick="copyToClipboard('#p1')" class="input-group-text1 pointer"><i class="far fa-copy"></i></span>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md">
+                          <label class="control-label">
+                          <font style="vertical-align: inherit;">
+                            <font style="vertical-align: inherit;">To Viamo World</font>
+                          </font>
+                        </label>
+                            <div class="input-group copyarea">
+                              <input id="vworld" type="text" class="form-control" value="https://viamo.world/shop/" readonly="">
+                              <div class="input-group-append">
+                                <span onclick="copyToClipboard('#vworld')" class="input-group-text1 pointer"><i class="far fa-copy"></i></span>
+                              </div>
+                            </div>
                           </div>
                         </div>
+
 
 
                       </div>

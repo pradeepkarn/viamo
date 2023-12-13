@@ -7,7 +7,8 @@ class Payment
     function __construct()
     {
         $this->mollie = new \Mollie\Api\MollieApiClient();
-        $this->mollie->setApiKey("test_nRGudNxPEEMrWmPaRnTdVqKB6M4BjR");
+        
+        $this->mollie->setApiKey(MOLLIE_LIVE_KEY);
     }
     function create(object $obj)
     {

@@ -367,11 +367,6 @@ $addrs = get_my_primary_address($userid = USER['id']);
   }
 
 
-
-
-
-
-
   var mollieBtn = document.getElementById('mollieBtn');
   var btRadio = document.getElementById('btRadio');
 
