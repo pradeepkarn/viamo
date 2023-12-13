@@ -290,12 +290,12 @@ $addrs = get_my_primary_address($userid = USER['id']);
 
             <div class="col-5">
               <div id="mollie" class="tabcontent2 <?php echo in_array($addrs->country_code, $no_mollie_country) ? "hide" : null; ?>">
-                <input <?php echo in_array($addrs->country_code, $no_mollie_country) ? "disabled" : null; ?> id="mollieRadio" type="radio" name="payment_mode" value="mollie">
+                <input checked <?php echo in_array($addrs->country_code, $no_mollie_country) ? "disabled" : null; ?> id="mollieRadio" type="radio" name="payment_mode" value="mollie">
                 <img style="height: 50px; width:auto;" src="/<?php echo home; ?>/media/img/mollie.png" width="100px" alt="" srcset="">
                 <p class="mollie_cl mt-2">Online payment system<br> credit cards, Sofort / Klarna (payment via invoice), EPS, and much more.</p>
               </div>
               <div id="transfer" class="tabcontent2">
-                <input id="btRadio" type="radio" checked name="payment_mode" value="Bank_transfer">
+                <input id="btRadio" type="radio" name="payment_mode" value="Bank_transfer">
                 <?php
                 $banklist = get_banks_by_country();
                 echo count($banklist['banks']) ? "{$banklist['banks'][0]}" : null;
