@@ -26,7 +26,7 @@ $message = <<<MSG
     <p>Bitte bei Zahlungsreferenz "<strong>Order Nr. $context->order_id</strong>" angeben</p>
    
     <p>$link_gr</p> 
-    <p>Powervolle Grüße dein</p>
+    <p>Powervolle Gruesse dein</p>
     <p>$sitename - World of Energy</p>
     <p>Backoffice-Team</p>
 
