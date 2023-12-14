@@ -27,10 +27,10 @@
             <label for="email">Email</label>
             <input type="email" name="email" class="form-control" id="username" placeholder="Enter your Email" required>
         </div>
-        <div class="col-md-6 my-2">
+        <!-- <div class="col-md-6 my-2">
             <label for="username">Username</label>
             <input type="text" name="username" class="form-control" id="username" placeholder="Enter your username" required>
-        </div>
+        </div> -->
         <div class="col-md-3 my-2">
             <label for="username">Password</label>
             <input type="password" name="password" class="form-control" id="password" placeholder="Enter your password" required>
