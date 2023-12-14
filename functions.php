@@ -24,6 +24,31 @@ function login()
     }
   }
 }
+function force_login($post)
+{
+  if (isset($post['username']) && isset($post['password'])) {
+    $account = new Account();
+    $user = $account->login($post['username'], $post['password']);
+    if ($user != false) {
+      $cookie_name = "remember_token";
+      $cookie_value = bin2hex(random_bytes(32)) . "_uid_" . $user['id'];
+      setcookie($cookie_name, $cookie_value, time() + (86400 * 30 * 12), "/"); // 86400 = 1 day
+      $db = new Model('pk_user');
+      $db->show($_SESSION['user_id']);
+      $arr = null;
+      $arr['remember_token'] = $cookie_value;
+      $db->update($_SESSION['user_id'], $arr);
+      $arr = null;
+      // $GLOBALS['msg_signin'][] = "Login Success";
+      $_SESSION['msg'][] = "Login Success";
+      return $user;
+    } else {
+      // $GLOBALS['msg_signin'][] = "Invalid credentials";
+      $_SESSION['msg'][] = "Invalid credentials";
+      return false;
+    }
+  }
+}
 function register()
 {
   if (isset($_POST['email']) && isset($_POST['password']) && isset($_POST['cnfpassword'])) {
@@ -895,6 +920,7 @@ function usersignup()
       }
     } else {
       $arr['username'] = generate_username_by_email($email, $try = 500);
+      $username = $arr['username'];
     }
 
 
@@ -924,6 +950,7 @@ function usersignup()
     }
     if (intval($userid)) {
       $_SESSION['msg'][] = "User created successfully";
+      force_login(['username'=>$username,'password'=>$password]);
       return $userid;
     } else {
       $_SESSION['msg'][] = "User not created";
@@ -946,7 +973,7 @@ function createAddess($userid, $post)
   $arr['name'] = $post['first_name'] . " " . $post['last_name'];
   $arr['isd_code'] = $post['country_code'];
   $arr['mobile'] = $post['mobile'];
-  $arr['locality'] = $post['address'];
+  $arr['locality'] = isset($post['address'])?$post['address']:"...";
   $arr['city'] = $post['city'];
   $arr['state'] = $post['state'];
   if (isset($post['street'])) {
@@ -2314,4 +2341,15 @@ function database_write($orderId, $status)
     $database = dirname(__FILE__) . "/data/orders/order-{$orderId}.txt";
 
     file_put_contents($database, $status);
+}
+
+// Function to get the user's IP address
+function getUserIP() {
+    if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+        return $_SERVER['HTTP_CLIENT_IP'];
+    } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+        return $_SERVER['HTTP_X_FORWARDED_FOR'];
+    } else {
+        return $_SERVER['REMOTE_ADDR'];
+    }
 }

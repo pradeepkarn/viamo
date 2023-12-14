@@ -10,7 +10,11 @@ $url = explode("/", $_SERVER["QUERY_STRING"]);
 $path = $_SERVER["QUERY_STRING"];
 ini_set('display_errors', 1);
 define('direct_access', '1');
-
+// unset($_SESSION['guest_id']);
+if (!isset($_SESSION['guest_id'])) {
+  $_SESSION['guest_id'] = random_int(100, 999) . time();
+  $_SESSION['guest_ccode'] = "CH";
+}
 function get_my_primary_address($userid)
 {
   if (!isset($_SESSION['user_id'])) {
@@ -1808,7 +1812,7 @@ switch ($path) {
         $db = new Dbobjects;
         $dbpmt = $pmtCls->get_pay_amount($db = $db, $uid = $ordernum);
         if ($dbpmt) {
-          if (floatval($dbpmt->amt)<=0) {
+          if (floatval($dbpmt->amt) <= 0) {
             header("location:/$home/orders");
             return;
           }
@@ -1825,6 +1829,14 @@ switch ($path) {
         }
       }
       // end payment object
+      return;
+    }
+    if ($url[0] == 'public') {
+      if (authenticate()) {
+        header("Location:/" . home);
+        return;
+      }
+      import("apps/view/pages/public/routes.php");
       return;
     }
     if ($url[0] == "webhook") {

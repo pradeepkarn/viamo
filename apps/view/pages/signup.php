@@ -119,7 +119,7 @@ if (isset($_GET['sponserid']) && strval($_GET['sponserid'])) {
                         <input class="form-control valid" type="text" required="" placeholder="Last name" name="last_name" data-validation-required-message="Das ist ein Pflichtfeld" value="" aria-required="true" aria-invalid="false">
                     </div>
                 </div>
-                <div class="form-group row mb-4">
+                <!-- <div class="form-group row mb-4">
                     <div class="col-lg-4">
                         <select name="gender" class="form-control" required="" data-validation-required-message="Das ist ein Pflichtfeld" aria-required="true">
                             <option value="f">Feminine</option>
@@ -130,7 +130,7 @@ if (isset($_GET['sponserid']) && strval($_GET['sponserid'])) {
                     <div class="col-lg-4">
                         <input type="date" class="form-control" placeholder="Date of Birth YYYY-MM-DD" id="birthday" name="birthday" required="" data-validation-required-message="Das ist ein Pflichtfeld" aria-required="true">
                     </div>
-                </div>
+                </div> -->
                 <div class="form-group row mb-4 hide">
                     <div class="col-lg-12">
                         <input class="form-control valid" type="text" required="" placeholder="Address 1" name="address" data-validation-required-message="Das ist ein Pflichtfeld" value="Address line1" aria-required="true" aria-invalid="false">
@@ -154,7 +154,7 @@ if (isset($_GET['sponserid']) && strval($_GET['sponserid'])) {
                                 if (count($items) != 0) {
                                     foreach ($items as $item) {
                                 ?>
-                                        <option selected value="<?= $item['id']; ?>"><?= $item['name']; ?></option>
+                                        <option <?php echo $item['id']=='15'?"selected":null; ?> value="<?= $item['id']; ?>"><?= $item['name']; ?></option>
                                 <?php
                                     }
                                 }
@@ -195,7 +195,7 @@ if (isset($_GET['sponserid']) && strval($_GET['sponserid'])) {
                                     foreach ($items as $item) {
                                 ?>
 
-                                        <option <?php echo $item['dial_code']=='+41'?"selected":null; ?> value="<?php echo $item['dial_code']; ?>"><?php echo $item['dial_code']; ?></option>
+                                        <option <?php echo $item['dial_code']=='+43'?"selected":null; ?> value="<?php echo $item['dial_code']; ?>"><?php echo $item['dial_code']; ?></option>
                                 <?php
                                     }
                                 }

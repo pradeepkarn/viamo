@@ -144,7 +144,7 @@ SCRPT;
                           </font>
                         </label>
                             <div class="input-group copyarea">
-                              <input id="vworld" type="text" class="form-control" value="https://viamo.world/shop/" readonly="">
+                              <input id="vworld" type="text" class="form-control" value="<?php echo BASE_URI; ?>/public/shop/?sponserid=<?php echo $my_username; ?>" readonly="">
                               <div class="input-group-append">
                                 <span onclick="copyToClipboard('#vworld')" class="input-group-text1 pointer"><i class="far fa-copy"></i></span>
                               </div>
