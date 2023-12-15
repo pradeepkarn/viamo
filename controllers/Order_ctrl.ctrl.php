@@ -100,7 +100,7 @@ class Order_ctrl
                 $arr['point_used'] = 0;
                 $arr['voucher_amt'] = $vdamt;
                 $arr['voucher_jsn'] = $vchrjson;
-                $arr['discount_by_point'] = 0;
+                $arr['discount_by_bpt'] = 0;
                 $point = $level->net_balance_minus_requested_balance($db = $dbobj, $myid = USER['id']);
                 $commission = true;
                 if (isset($req->redeem_point)) {
@@ -162,7 +162,7 @@ class Order_ctrl
                 // echo $dbobj->create_sql();
                 $ordernum = $arr['unique_id'];
                 $pay = $dbobj->create();
-                $net_amt = round(($arr['amount']+$arr['shipping_cost']-$arr['discount_by_bpt']-$arr['voucher_amt']),2);
+                $net_amt = round(($arr['amount'] + $arr['shipping_cost'] - $arr['discount_by_bpt'] - $arr['voucher_amt']), 2);
                 // return;
                 if (intval($pay)) {
                     $level = new Member_ctrl;
@@ -267,8 +267,8 @@ class Order_ctrl
             $buyer['ref'] = $ref['id'];
             // $membercnt = $level->count_direct_partners($db, $myid = 1);
             if ($refuser) {
-                $this->send_direct_bonus($db, $buyer, $ordernum, $total_amt, $total_db, $redeempt=$pmt['discount_by_bpt'], $level);
-               
+                $this->send_direct_bonus($db, $buyer, $ordernum, $total_amt, $total_db, $redeempt = $pmt['discount_by_bpt'], $level);
+
                 // $partial_amt = round(($total_amt - $pmt['point_used']), 2);
                 // $direct_bonus = round((($partial_amt / $total_amt) * $total_db), 2);
                 // if ($direct_bonus > 0) {
@@ -387,8 +387,11 @@ class Order_ctrl
                 }
             }
         }
-        $level->update_level_by_direct_partners_count($db, $myid = USER['ref']);
-        $level->update_level_by_purchase($db, $myid = USER['ref']);
+        if (isset(USER['ref'])) {
+            $level->update_level_by_direct_partners_count($db, $myid = USER['ref']);
+            $level->update_level_by_purchase($db, $myid = USER['ref']);
+        }
+
         #################### Direct Bonus end #######################
     }
 
