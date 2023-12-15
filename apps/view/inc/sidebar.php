@@ -218,10 +218,10 @@
                             <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                             Finance
                         </a>
-                        <a class="nav-link" href="/<?php echo home; ?>/tickets">
+                        <!-- <a class="nav-link" href="/<?php // echo home; ?>/tickets">
                             <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                             Support Tickets
-                        </a>
+                        </a> -->
                         <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages2" aria-expanded="false" aria-controls="collapsePages2">
                             <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
                             Ideas

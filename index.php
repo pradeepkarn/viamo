@@ -599,15 +599,18 @@ switch ($path) {
       // myprint($_POST);
       // return;
       $itemProduct = new Model('address');
+      $laname = isset($_POST['ad_last_name'])?$_POST['ad_last_name']:null;
       $arr['user_id'] = $_SESSION['user_id'];
-      $arr['name'] = $_POST['ad_name'];
-      $arr['address_name'] = $_POST['address'];
+      $arr['name'] = $_POST['ad_name']." ".$laname;
+      $arr['first_name'] = $_POST['ad_name'];
+      $arr['last_name'] = $laname;
+      $arr['address_name'] = isset($_POST['address'])?$_POST['address']:null;
       $arr['isd_code'] = $_POST['country_code'];
       $arr['mobile'] = $_POST['mobile'];
       $arr['city'] = $_POST['city'];
       $arr['street'] = isset($_POST['street']) ? ($_POST['street']) : null;
       $arr['company'] = $_POST['company'];
-      $arr['state'] = $_POST['state'];
+      $arr['state'] = isset($_POST['state'])?$_POST['state']:null;
       // $arr['country'] = $_POST['country'];
       if (isset($_POST['country'])) {
         $arr['country_code'] = $_POST['country'];

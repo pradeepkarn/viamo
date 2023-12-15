@@ -2353,3 +2353,13 @@ function getUserIP() {
         return $_SERVER['REMOTE_ADDR'];
     }
 }
+
+function priceWOT($priceWithTax, $taxRate) {
+  // Ensure tax rate is a percentage
+  $taxRate = $taxRate / 100;
+
+  // Calculate price without tax
+  $priceWithoutTax = $priceWithTax / (1 + $taxRate);
+
+  return round($priceWithoutTax,2);
+}

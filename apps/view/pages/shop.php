@@ -166,13 +166,47 @@ if (!$prmadrs) {
                             <form class="material-form" id="address_form" action="/<?php echo home; ?>/new-address-ajax" method="POST">
                                 <div class="row">
                                     <div class="col">
+                                        <label for="">Company</label>
+                                        <input type="text" class="form-control my-2 valid" placeholder="" name="company">
+                                    </div>
+                                    <!-- <div class="col">
+                                        <label for="">Address Name</label>
+                                        <input type="text" class="form-control my-2 valid" placeholder="" name="address">
+                                    </div> -->
+                                </div>
+                                <div class="row">
+                                    <div class="col">
                                         <label for="">Name</label>
                                         <input type="text" class="form-control my-2 valid" placeholder="" name="ad_name">
                                     </div>
                                     <div class="col">
-                                        <label for="">Address Name</label>
-                                        <input type="text" class="form-control my-2 valid" placeholder="" name="address">
+                                        <label for="">Surname</label>
+                                        <input type="text" class="form-control my-2 valid" placeholder="" name="ad_last_name">
                                     </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <label for="">Street(Optional)</label>
+                                        <input type="text" class="form-control my-2 valid" name="street">
+                                    </div>
+                                    <div class="col">
+                                        <label for="">Street Number</label>
+                                        <input type="text" class="form-control my-2 valid" name="street_num">
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col">
+                                        <label for="">Zipcode</label>
+                                        <input type="text" class="form-control my-2 valid" placeholder="" name="zipcode">
+                                    </div>
+                                    <div class="col">
+                                        <label for="">City</label>
+                                        <input type="text" class="form-control my-2 valid" placeholder="" name="city">
+                                    </div>
+                                    <!-- <div class="col">
+                                        <label for="">State(optional)</label>
+                                        <input type="text" class="form-control my-2 valid" placeholder="" name="state">
+                                    </div> -->
                                 </div>
                                 <div class="row">
                                     <div class="col">
@@ -187,7 +221,7 @@ if (!$prmadrs) {
                                                     foreach ($items as $item) {
                                                 ?>
 
-                                                        <option selected value="<?= $item['dial_code']; ?>"><?= $item['dial_code']; ?></option>
+                                                        <option <?php echo $item['dial_code']=="+43"?"selected":null; ?>  value="<?= $item['dial_code']; ?>"><?= $item['dial_code']; ?></option>
                                                 <?php
                                                     }
                                                 }
@@ -201,30 +235,8 @@ if (!$prmadrs) {
                                         <input type="number" class="form-control my-2 valid" placeholder="" name="mobile">
                                     </div>
                                 </div>
-                                <div class="row mt-2">
-                                    <div class="col">
-                                        <label for="">City</label>
-                                        <input type="text" class="form-control my-2 valid" placeholder="" name="city">
-                                    </div>
-                                    <div class="col">
-                                        <label for="">State</label>
-                                        <input type="text" class="form-control my-2 valid" placeholder="" name="state">
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col">
-                                        <label for="">Street(Optional)</label>
-                                        <input type="text" class="form-control my-2 valid" placeholder="Street" name="street">
-                                    </div>
-                                    <div class="col">
-                                        <label for="">Street(Optional)</label>
-                                        <input type="text" class="form-control my-2 valid" placeholder="Street Number" name="street_num">
-                                    </div>
-                                    <div class="col">
-                                        <label for="">Company</label>
-                                        <input type="text" class="form-control my-2 valid" placeholder="" name="company">
-                                    </div>
-                                </div>
+
+
                                 <div class="row">
                                     <div class="col">
                                         <label for="">Country</label>
@@ -238,7 +250,7 @@ if (!$prmadrs) {
                                                     foreach ($items as $item) {
                                                 ?>
 
-                                                        <option value="<?= $item['code']; ?>"><?= $item['name']; ?></option>
+                                                        <option <?php echo $item['code']=="AT"?"selected":null; ?> value="<?= $item['code']; ?>"><?= $item['name']; ?></option>
                                                 <?php
                                                     }
                                                 }
@@ -248,10 +260,7 @@ if (!$prmadrs) {
                                         <?php pkAjax("#cntrysrch", "/country-search-ajax-profile", "#cntrysrch", "#res-cntr", 'keyup'); ?>
 
                                     </div>
-                                    <div class="col">
-                                        <label for="">Zipcode</label>
-                                        <input type="text" class="form-control my-2 valid" placeholder="" name="zipcode">
-                                    </div>
+
                                 </div>
 
                             </form>
