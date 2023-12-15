@@ -162,6 +162,7 @@ class Order_ctrl
                 // echo $dbobj->create_sql();
                 $ordernum = $arr['unique_id'];
                 $pay = $dbobj->create();
+                $net_amt = round(($arr['amount']+$arr['shipping_cost']-$arr['discount_by_bpt']-$arr['voucher_amt']),2);
                 // return;
                 if (intval($pay)) {
                     $level = new Member_ctrl;
@@ -187,7 +188,7 @@ class Order_ctrl
                     update_inv_if_not($pay, $invid, $dbobj);
                     // credit commission on paid update member as well
                     $this->send_direct_bonus($db, $buyer = USER, $ordernum, $total_amt, $total_db, $redeempt, $level);
-                    $net_amt = round(($arr['amount']+$arr['shipping_cost']-$arr['discount_by_bpt']-$arr['voucher_amt']),2);
+                    // $net_amt = round(($arr['amount']+$arr['shipping_cost']-$arr['discount_by_bpt']-$arr['voucher_amt']),2);
                     $arr = null;
                 }
                 #################### Direct Bonus end #######################
