@@ -55,55 +55,38 @@ $delv_info = $invData->delv_info;
                     <img id="logo" src="/<?php echo STATIC_URL; ?>/assets/img/img7.jpg" width="150px" title="Koice" alt="Koice" />
                 </div>
             </div>
-            <div class="row mt-1">
+            <div class="row my-2">
                 <div class="col-md-12 text-center">
                     <?php echo $invoice_address; ?>
                 </div>
             </div>
+            <hr>
             <div class="row mt-1">
-                <div class="col-3">
+                <div class="col-4">
                     <p style="font-size: 20px; font-weight:450; width:200px;">
-                        Ship to: <br>
+                        <b>Ship to:</b> <br>
                         <?php echo $shpadrs->company; ?> <br>
                         <?php echo $shpadrs->first_name; ?>
                         <?php echo $shpadrs->last_name; ?> <br>
-                        <?php echo $shpadrs->street ." ". $shpadrs->street_num; ?> <br>
+                        <?php echo $shpadrs->street . " " . $shpadrs->street_num; ?> <br>
                         <?php echo $shpadrs->zipcode; ?> <br>
                         <?php echo $shpadrs->city; ?> <br>
                         <?php echo $shpadrs->country; ?>
                     </p>
 
                 </div>
-                <div class="col-3">
+                <div class="col-4 text-end">
+                    <b>Ship from:</b>
+                    <?php echo $invoice_address; ?>
 
-                    <p style="font-size: 20px; font-weight:450; width:200px;">
-                        Ship from: <br>
-                        <?php echo $invoice_address; ?> <br>
-                       
-                    </p>
                 </div>
-                <!-- <div class="col-3">
-
-                    <p style="font-size: 20px; font-weight:470;"> Rechnungsnummer:</p>
-                    <p style="font-size: 20px; font-weight:470; margin-top:-15px;"> Rechnungsdatum:</p>
-                    <p style="font-size: 20px; font-weight:470; margin-top:-15px;"> Bestellnummer:</p>
-                    <p style="font-size: 20px; font-weight:470; margin-top:-15px;">Ihre UID-Nummer:</p>
-                    <p style="font-size: 20px; font-weight:470; margin-top:-15px;"> EORI Nummer:</p>
-                    <p style="font-size: 20px; font-weight:470; margin-top:-15px;"> Bezahlart:</p>
-
-                </div> -->
-                <div class="col-6 text-end">
+                <div class="col-4 text-end">
                     <p style="font-size: 20px; font-weight:470;">
                         INV-<?php echo $invid; ?> <br>
                         DATE-<?php echo date('Y-m-d H:i:s'); ?> <br>
                         ORD-<?php echo $pmtid; ?>
                     </p>
-                    <?php echo $bank; ?> <br>
-                    <!-- <p style="font-size: 20px; font-weight:470;">
-                        ATEOS1000108119
-                        Bank transfer
-                        (Prepay)
-                    </p> -->
+
                 </div>
 
             </div>
@@ -150,8 +133,8 @@ $delv_info = $invData->delv_info;
             <div class="row">
                 <div class="col-md-12">
                     <div class="text-center">
-                        <?php 
-                        echo $user->mobile."<br>";
+                        <?php
+                        echo $user->mobile . "<br>";
                         echo $user->email;
                         ?>
                     </div>
@@ -171,56 +154,40 @@ $delv_info = $invData->delv_info;
                     <img id="logo" src="/<?php echo STATIC_URL; ?>/assets/img/img7.jpg" width="150px" title="Koice" alt="Koice" />
                 </div>
             </div>
-            <div class="row mt-1">
+            <div class="row my-2">
                 <div class="col-md-12 text-center">
                     <?php echo $invoice_address; ?>
                 </div>
             </div>
+            <hr>
             <div class="row mt-1">
-                <div class="col-3">
+                <div class="col-4">
                     <p style="font-size: 20px; font-weight:450; width:200px;">
-                        Ship to: <br>
+                        <b>Ship to:</b> <br>
                         <?php echo $shpadrs->company; ?> <br>
                         <?php echo $shpadrs->first_name; ?>
                         <?php echo $shpadrs->last_name; ?> <br>
-                        <?php echo $shpadrs->street ." ". $shpadrs->street_num; ?> <br>
+                        <?php echo $shpadrs->street . " " . $shpadrs->street_num; ?> <br>
                         <?php echo $shpadrs->zipcode; ?> <br>
                         <?php echo $shpadrs->city; ?> <br>
                         <?php echo $shpadrs->country; ?>
-                        
+
                     </p>
 
                 </div>
-                <div class="col-3">
+                <div class="col-4 text-end">
+                    <b>Ship from:</b>
+                    <?php echo $invoice_address; ?>
 
-                    <p style="font-size: 20px; font-weight:450; width:200px;">
-                        Ship from: <br>
-                        <?php echo $invoice_address; ?> <br>
-                    </p>
                 </div>
 
-                <!-- <div class="col-3">
-
-                    <p style="font-size: 20px; font-weight:470;"> Rechnungsnummer:</p>
-                    <p style="font-size: 20px; font-weight:470; margin-top:-15px;"> Rechnungsdatum:</p>
-                    <p style="font-size: 20px; font-weight:470; margin-top:-15px;"> Bestellnummer:</p>
-                    <p style="font-size: 20px; font-weight:470; margin-top:-15px;">Ihre UID-Nummer:</p>
-                    <p style="font-size: 20px; font-weight:470; margin-top:-15px;"> EORI Nummer:</p>
-                    <p style="font-size: 20px; font-weight:470; margin-top:-15px;"> Bezahlart:</p>
-
-                </div> -->
-                <div class="col-6 text-end">
+                <div class="col-4 text-end">
                     <p style="font-size: 20px; font-weight:470;">
                         INV-<?php echo $invid; ?> <br>
                         DATE-<?php echo date('Y-m-d H:i:s'); ?> <br>
                         ORD-<?php echo $pmtid; ?>
                     </p>
-                    <?php echo $bank; ?> <br>
-                    <!-- <p style="font-size: 20px; font-weight:470;">
-                        ATEOS1000108119
-                        Bank transfer
-                        (Prepay)
-                    </p> -->
+                    
                 </div>
 
 
@@ -270,8 +237,8 @@ $delv_info = $invData->delv_info;
             <div class="row">
                 <div class="col-md-12">
                     <div class="text-center">
-                        <?php 
-                        echo $user->mobile."<br>";
+                        <?php
+                        echo $user->mobile . "<br>";
                         echo $user->email;
                         ?>
                     </div>
@@ -285,7 +252,7 @@ $delv_info = $invData->delv_info;
                     ?>
                 </div>
             </div>
-            
+
             <div class="row">
                 <div class="col-md-12 text-center">
                     <?php echo $invoice_address; ?>
