@@ -13,10 +13,7 @@
                         <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                         Dashboard
                     </a>
-                    <a class="nav-link" href="/<?php echo home; ?>/vouchers">
-                        <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                        Vouchers
-                    </a>
+
                     <a class="nav-link" href="/<?php echo home; ?>/my-realtime-bonus">
                         <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                         My Direct Bonus Points
@@ -24,6 +21,10 @@
                     <?php
                     if (is_superuser()) {
                     ?>
+                        <a class="nav-link" href="/<?php echo home; ?>/vouchers">
+                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                            Vouchers
+                        </a>
                         <a class="nav-link desktop-hide" href="/<?php echo home; ?>/news">
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                             News

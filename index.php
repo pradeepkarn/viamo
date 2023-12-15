@@ -1752,7 +1752,7 @@ switch ($path) {
     }
     // VOUCHERS #################################################################
     if ($url[0] == "vouchers") {
-      if (authenticate() == false) {
+      if (!is_superuser()) {
         header("location:/$home/login");
         return;
       }
@@ -1774,7 +1774,7 @@ switch ($path) {
       return;
     }
     if ($url[0] == "edit-voucher") {
-      if (authenticate() == false) {
+      if (!is_superuser()) {
         header("location:/$home/login");
         return;
       }
