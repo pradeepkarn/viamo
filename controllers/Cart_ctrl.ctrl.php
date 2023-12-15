@@ -17,13 +17,13 @@ class Cart_ctrl
             if (count($oldMngr) > 0) {
                 foreach ($oldMngr as $check) {
                     $prd = getData('item', $check['item_id']);
-                    if ($prd['product_id'] == '8' && ($pv->product_id == 8 || $pv->product_id == 9 || $pv->product_id == 10)) {
+                    if ($prd['product_id'] == '8000000000' && ($pv->product_id == 8000000000 || $pv->product_id == 9000000000 || $pv->product_id == 10000000000)) {
                         echo js_alert('You can not downgrade from gold/reactivate same position');
                         return false;
-                    } else if ($prd['product_id'] == '9' && ($pv->product_id == 9 || $pv->product_id == 10)) {
+                    } else if ($prd['product_id'] == '9000000000' && ($pv->product_id == 9000000000 || $pv->product_id == 10000000000)) {
                         echo js_alert('You can not downgrade from silver/reactivate same position');
                         return false;
-                    } else if ($prd['product_id'] == '10' && $pv->product_id == 10) {
+                    } else if ($prd['product_id'] == '10000000000' && $pv->product_id == 10000000000) {
                         echo js_alert('You can not reactivate same position');
                         return false;
                     }

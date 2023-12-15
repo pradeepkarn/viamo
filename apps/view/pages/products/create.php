@@ -54,7 +54,7 @@ import("apps/view/inc/navbar.php");
 
                                     </div>
                                     <div class="form-group row mb-4">
-                                        <label for="">Suppliment</label>
+                                        <label for="">High Tax</label>
                                         <div class="row my-3">
                                             <div class="col-lg-6">
                                                 <label for="">Yes</label>

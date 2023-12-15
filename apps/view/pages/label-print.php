@@ -64,12 +64,13 @@ $delv_info = $invData->delv_info;
                 <div class="col-3">
                     <p style="font-size: 20px; font-weight:450; width:200px;">
                         Ship to: <br>
-                        <?php echo $user->first_name; ?> <br>
-                        <?php echo $user->last_name; ?> <br>
-                        <?php echo $user->city; ?> <br>
-                        <?php echo $user->state; ?> <br>
-                        <?php echo $user->country; ?> <br>
-                        <?php echo $user->zipcode; ?>
+                        <?php echo $shpadrs->company; ?> <br>
+                        <?php echo $shpadrs->first_name; ?>
+                        <?php echo $shpadrs->last_name; ?> <br>
+                        <?php echo $shpadrs->street ." ". $shpadrs->street_num; ?> <br>
+                        <?php echo $shpadrs->zipcode; ?> <br>
+                        <?php echo $shpadrs->city; ?> <br>
+                        <?php echo $shpadrs->country; ?>
                     </p>
 
                 </div>
@@ -146,6 +147,17 @@ $delv_info = $invData->delv_info;
                 </table>
             </div>
 
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="text-center">
+                        <?php 
+                        echo $user->mobile."<br>";
+                        echo $user->email;
+                        ?>
+                    </div>
+                    <hr>
+                </div>
+            </div>
             <div class="row mt-5">
                 <div class="col-md-12 text-center">
                     <?php echo $invoice_address; ?>
@@ -168,12 +180,14 @@ $delv_info = $invData->delv_info;
                 <div class="col-3">
                     <p style="font-size: 20px; font-weight:450; width:200px;">
                         Ship to: <br>
-                        <?php echo $user->first_name; ?> <br>
-                        <?php echo $user->last_name; ?> <br>
-                        <?php echo $user->city; ?> <br>
-                        <?php echo $user->state; ?> <br>
-                        <?php echo $user->country; ?> <br>
-                        <?php echo $user->zipcode; ?>
+                        <?php echo $shpadrs->company; ?> <br>
+                        <?php echo $shpadrs->first_name; ?>
+                        <?php echo $shpadrs->last_name; ?> <br>
+                        <?php echo $shpadrs->street ." ". $shpadrs->street_num; ?> <br>
+                        <?php echo $shpadrs->zipcode; ?> <br>
+                        <?php echo $shpadrs->city; ?> <br>
+                        <?php echo $shpadrs->country; ?>
+                        
                     </p>
 
                 </div>
@@ -253,7 +267,17 @@ $delv_info = $invData->delv_info;
                 </table>
             </div>
 
-
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="text-center">
+                        <?php 
+                        echo $user->mobile."<br>";
+                        echo $user->email;
+                        ?>
+                    </div>
+                    <hr>
+                </div>
+            </div>
             <div class="row mt-3">
                 <div class="col-md-12 text-center">
                     <?php
@@ -261,6 +285,7 @@ $delv_info = $invData->delv_info;
                     ?>
                 </div>
             </div>
+            
             <div class="row">
                 <div class="col-md-12 text-center">
                     <?php echo $invoice_address; ?>

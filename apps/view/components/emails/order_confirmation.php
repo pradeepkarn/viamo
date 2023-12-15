@@ -3,6 +3,8 @@
 use PHPMailer\PHPMailer\PHPMailer;
 $sitename = SITE_NAME;
 $context->order_amt = round($context->order_amt,2);
+$context->net_amt = round($context->net_amt,2);
+$context->shipping_cost = round($context->shipping_cost,2);
 $baseuri = BASE_URI;
 $link_en = "<a href='$baseuri/login'>Login to your VIAMO-World-Backoffice.</a>";
 $link_gr = "<a href='$baseuri/login'>Hier in das VIAMO-World-Backoffice einloggen.</a>";
@@ -20,7 +22,7 @@ $message = <<<MSG
   <div style="max-width: 100%; margin: 0 auto; font-family: Arial, sans-serif; line-height: 1.6; font-size:12px">
     <h2>Vielen Dank fuer die Bestellung!</h2>
     <p>Deine Bestellung mit der Nummer <strong>$context->order_id</strong> wurde erfolgreich verbucht.</p>
-    <p>Gesamtsumme der betraegt <strong>Euro $context->order_amt</strong></p>
+    <p>Gesamtsumme der betraegt <strong>Euro $context->net_amt</strong></p>
     <p>Bitte ueberweise die Gesamtsumme auf das folgende Konto:</p>
     $context->bank_account
     <p>Bitte bei Zahlungsreferenz "<strong>Order Nr. $context->order_id</strong>" angeben</p>
@@ -34,7 +36,7 @@ $message = <<<MSG
   
     <h2>Thank you for your order!</h2>
     <p>Your order with the number <strong>$context->order_id</strong> has been successfully processed.</p>
-    <p>Total amount of the order is: <strong>Euro $context->order_amt</strong></p>
+    <p>Total amount of the order is: <strong>Euro $context->net_amt</strong></p>
     <p>Please transfer the total amount to the following bank account:</p>
     $context->bank_account
     <p>Please use "<strong>Order Nr. $context->order_id</strong>" as payment reference.</p>

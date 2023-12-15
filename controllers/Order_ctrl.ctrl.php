@@ -7,6 +7,7 @@ class Order_ctrl
     public function place()
     {
         $req = (object) ($_POST);
+        $net_amt = 0;
         if ($req) {
             $arr = null;
             // $placeOrder = new Model('payment');
@@ -186,6 +187,7 @@ class Order_ctrl
                     update_inv_if_not($pay, $invid, $dbobj);
                     // credit commission on paid update member as well
                     $this->send_direct_bonus($db, $buyer = USER, $ordernum, $total_amt, $total_db, $redeempt, $level);
+                    $net_amt = round(($arr['amount']+$arr['shipping_cost']-$arr['discount_by_bpt']-$arr['voucher_amt']),2);
                     $arr = null;
                 }
                 #################### Direct Bonus end #######################
@@ -221,6 +223,8 @@ class Order_ctrl
                     'email' => $my_email,
                     'order_id' => $pay,
                     'order_amt' => $total_amt,
+                    'net_amt' => $net_amt,
+                    'shipping_cost' => $req->shipping_cost,
                     'bank_account' => $bank
                 ]));
 

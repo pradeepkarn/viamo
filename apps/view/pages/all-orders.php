@@ -47,7 +47,6 @@ import("apps/view/inc/navbar.php");
                                             $order = $userObj->index($ord = 'DESC', $limit = 9999999, $change_order_by_col = "id");
                                         }
 
-
                                         foreach ($order as $value) {
                                             // (new Cart_ctrl)->update_invoice($payment_id=$value['id'],false);
                                             $usrs = getData('pk_user', $value['user_id']);
@@ -71,27 +70,27 @@ import("apps/view/inc/navbar.php");
 
                                                         <tr class="text-end">
                                                             <td>Amount(+) </td>
-                                                            <td><?php echo ($value['amount']); ?></td>
+                                                            <td><?php echo number_format($value['amount'],2,'.',''); ?></td>
                                                         </tr>
                                                         <tr class="text-end">
                                                             <td>V. Disc.(-) </td>
-                                                            <td> <?php echo $value['voucher_amt']; ?></td>
+                                                            <td> <?php echo number_format($value['voucher_amt'],2,'.',''); ?></td>
                                                         </tr>
                                                         <tr class="text-end">
                                                             <td>Discount(-) </td>
-                                                            <td> <?php echo $value['discount_by_bpt']; ?></td>
+                                                            <td> <?php echo number_format($value['discount_by_bpt'],2,'.',''); ?></td>
                                                         </tr>
                                                         <tr class="text-end">
                                                             <td>Net(+) </td>
-                                                            <td><?php echo $net = ($value['amount']-$value['voucher_amt'])- ($value['discount_by_bpt']); ?></td>
+                                                            <td><?php echo $net = number_format(($value['amount']-$value['voucher_amt'])- ($value['discount_by_bpt']),2,'.',''); ?></td>
                                                         </tr>
                                                         <tr class="text-end">
                                                             <td>Shipping(+) </td>
-                                                            <td><?php echo $value['shipping_cost']; ?></td>
+                                                            <td><?php echo number_format($value['shipping_cost'],2,'.',''); ?></td>
                                                         </tr>
                                                         <tr class="text-end">
                                                             <td>Card(-) </td>
-                                                            <td><?php echo round(($net + $value['shipping_cost']), 2); ?></td>
+                                                            <td><?php echo number_format(round(($net + $value['shipping_cost']), 2),2,'.',''); ?></td>
                                                         </tr>
                                                     </table>
                                                 </th>

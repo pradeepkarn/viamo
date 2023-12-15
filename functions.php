@@ -2159,7 +2159,9 @@ function new_order_email($obj)
         "email" => $obj->email,
         "order_id" => $obj->order_id,
         "bank_account" => nl2br($obj->bank_account),
-        "order_amt" => $obj->order_amt
+        "order_amt" => $obj->order_amt,
+        "net_amt" => $obj->net_amt,
+        "shipping_cost" => $obj->shipping_cost
       )
     );
   }

@@ -1129,13 +1129,13 @@ switch ($path) {
       $cart = new Cart_ctrl;
       $cart->add_or_remove($action = 'add');
       echo RELOAD;
-      exit;
+      return;
     }
     if ($url[0] == 'remove-from-cart-ajax') {
       $cart = new Cart_ctrl;
       $cart->add_or_remove($action = 'remove');
       echo RELOAD;
-      exit;
+      return;
     }
     if ($url[0] == "send-add-item-ajax") {
       if (authenticate() == false) {
