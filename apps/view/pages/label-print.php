@@ -61,27 +61,25 @@ $delv_info = $invData->delv_info;
                 </div>
             </div>
             <hr>
-            <div class="row mt-1">
-                <div class="col-4">
-                    <p style="font-size: 20px; font-weight:450; width:200px;">
-                        <b>Ship to:</b> <br>
-                        <?php echo $shpadrs->company; ?> <br>
-                        <?php echo $shpadrs->first_name; ?>
-                        <?php echo $shpadrs->last_name; ?> <br>
-                        <?php echo $shpadrs->street . " " . $shpadrs->street_num; ?> <br>
-                        <?php echo $shpadrs->zipcode; ?> <br>
-                        <?php echo $shpadrs->city; ?> <br>
-                        <?php echo $shpadrs->country; ?>
-                    </p>
+            <div class="row">
+                <div class="col-6">
+                    <b>Ship to:</b> <br>
+                    <?php echo $shpadrs->company; ?> <br>
+                    <?php echo $shpadrs->first_name; ?>
+                    <?php echo $shpadrs->last_name; ?> <br>
+                    <?php echo $shpadrs->street . " " . $shpadrs->street_num; ?>
+                    <?php echo $shpadrs->zipcode; ?>
+                    <?php echo $shpadrs->city; ?> <br>
+                    <?php echo $shpadrs->country; ?>
 
                 </div>
-                <div class="col-4 text-end">
+                <div class="col-3 text-end">
                     <b>Ship from:</b>
                     <?php echo $invoice_address; ?>
 
                 </div>
-                <div class="col-4 text-end">
-                    <p style="font-size: 20px; font-weight:470;">
+                <div class="col-3 text-end">
+                    <p>
                         INV-<?php echo $invid; ?> <br>
                         DATE-<?php echo date('Y-m-d H:i:s'); ?> <br>
                         ORD-<?php echo $pmtid; ?>
@@ -160,34 +158,30 @@ $delv_info = $invData->delv_info;
                 </div>
             </div>
             <hr>
-            <div class="row mt-1">
-                <div class="col-4">
-                    <p style="font-size: 20px; font-weight:450; width:200px;">
-                        <b>Ship to:</b> <br>
-                        <?php echo $shpadrs->company; ?> <br>
-                        <?php echo $shpadrs->first_name; ?>
-                        <?php echo $shpadrs->last_name; ?> <br>
-                        <?php echo $shpadrs->street . " " . $shpadrs->street_num; ?> <br>
-                        <?php echo $shpadrs->zipcode; ?> <br>
-                        <?php echo $shpadrs->city; ?> <br>
-                        <?php echo $shpadrs->country; ?>
-
-                    </p>
-
+            <div class="row">
+                <div class="col-6">
+                    <b>Ship to : </b> <br>
+                    <?php echo $shpadrs->company; ?> <br>
+                    <?php echo $shpadrs->first_name; ?>
+                    <?php echo $shpadrs->last_name; ?> <br>
+                    <?php echo $shpadrs->street . " " . $shpadrs->street_num; ?>
+                    <?php echo $shpadrs->zipcode; ?>
+                    <?php echo $shpadrs->city; ?> <br>
+                    <?php echo $shpadrs->country; ?>
                 </div>
-                <div class="col-4 text-end">
+                <div class="col-3 text-end">
                     <b>Ship from:</b>
                     <?php echo $invoice_address; ?>
 
                 </div>
 
-                <div class="col-4 text-end">
-                    <p style="font-size: 20px; font-weight:470;">
+                <div class="col-3 text-end">
+                    <p>
                         INV-<?php echo $invid; ?> <br>
                         DATE-<?php echo date('Y-m-d H:i:s'); ?> <br>
                         ORD-<?php echo $pmtid; ?>
                     </p>
-                    
+
                 </div>
 
 

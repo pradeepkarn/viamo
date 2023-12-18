@@ -769,6 +769,10 @@ function usersignup()
     $arr['email'] = $email;
     $arr['password'] = md5($password);
     //name
+    if (!isset($_POST['first_name'])) {
+      $_SESSION['msg'][] = "first name is required";
+      return;
+    }
     if (isset($_POST['name'])) {
       if (strlen(sanitize_remove_tags($_POST['name'])) < 2) {
         $_SESSION['msg'][] = "Invalid name";
@@ -950,7 +954,7 @@ function usersignup()
     }
     if (intval($userid)) {
       $_SESSION['msg'][] = "User created successfully";
-      force_login(['username'=>$username,'password'=>$password]);
+      force_login(['username' => $username, 'password' => $password]);
       return $userid;
     } else {
       $_SESSION['msg'][] = "User not created";
@@ -973,7 +977,7 @@ function createAddess($userid, $post)
   $arr['name'] = $post['first_name'] . " " . $post['last_name'];
   $arr['isd_code'] = $post['country_code'];
   $arr['mobile'] = $post['mobile'];
-  $arr['locality'] = isset($post['address'])?$post['address']:"...";
+  $arr['locality'] = isset($post['address']) ? $post['address'] : "...";
   $arr['city'] = $post['city'];
   $arr['state'] = $post['state'];
   if (isset($post['street'])) {
@@ -1724,11 +1728,11 @@ function updateUserDetails($data)
   if (isset($data['ref'])) {
     if ($data['ref'] == $data['userid']) {
       $_SESSION['msg'][] = 'You can not sponser yourself';
-    }else{
+    } else {
       $arr['ref'] = intval($data['ref']);
     }
   }
-  if (isset($data['company_name'],$data['first_name'],$data['last_name'])) {
+  if (isset($data['company_name'], $data['first_name'], $data['last_name'])) {
     $arr['company_name'] = $data['company_name'];
     $arr['first_name'] = $data['first_name'];
     $arr['last_name'] = $data['last_name'];
@@ -2329,39 +2333,41 @@ function getTextFromCode($code, $arr)
 
 function database_read($orderId)
 {
-    $orderId = intval($orderId);
-    $database = dirname(__FILE__) . "/data/orders/order-{$orderId}.txt";
+  $orderId = intval($orderId);
+  $database = dirname(__FILE__) . "/data/orders/order-{$orderId}.txt";
 
-    $status = @file_get_contents($database);
+  $status = @file_get_contents($database);
 
-    return $status ? $status : "unknown order";
+  return $status ? $status : "unknown order";
 }
 
 function database_write($orderId, $status)
 {
-    $orderId = intval($orderId);
-    $database = dirname(__FILE__) . "/data/orders/order-{$orderId}.txt";
+  $orderId = intval($orderId);
+  $database = dirname(__FILE__) . "/data/orders/order-{$orderId}.txt";
 
-    file_put_contents($database, $status);
+  file_put_contents($database, $status);
 }
 
 // Function to get the user's IP address
-function getUserIP() {
-    if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
-        return $_SERVER['HTTP_CLIENT_IP'];
-    } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-        return $_SERVER['HTTP_X_FORWARDED_FOR'];
-    } else {
-        return $_SERVER['REMOTE_ADDR'];
-    }
+function getUserIP()
+{
+  if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+    return $_SERVER['HTTP_CLIENT_IP'];
+  } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+    return $_SERVER['HTTP_X_FORWARDED_FOR'];
+  } else {
+    return $_SERVER['REMOTE_ADDR'];
+  }
 }
 
-function priceWOT($priceWithTax, $taxRate) {
+function priceWOT($priceWithTax, $taxRate)
+{
   // Ensure tax rate is a percentage
   $taxRate = $taxRate / 100;
 
   // Calculate price without tax
   $priceWithoutTax = $priceWithTax / (1 + $taxRate);
 
-  return round($priceWithoutTax,2);
+  return round($priceWithoutTax, 2);
 }

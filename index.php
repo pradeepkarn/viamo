@@ -599,18 +599,18 @@ switch ($path) {
       // myprint($_POST);
       // return;
       $itemProduct = new Model('address');
-      $laname = isset($_POST['ad_last_name'])?$_POST['ad_last_name']:null;
+      $laname = isset($_POST['ad_last_name']) ? $_POST['ad_last_name'] : null;
       $arr['user_id'] = $_SESSION['user_id'];
-      $arr['name'] = $_POST['ad_name']." ".$laname;
+      $arr['name'] = $_POST['ad_name'] . " " . $laname;
       $arr['first_name'] = $_POST['ad_name'];
       $arr['last_name'] = $laname;
-      $arr['address_name'] = isset($_POST['address'])?$_POST['address']:null;
+      $arr['address_name'] = isset($_POST['address']) ? $_POST['address'] : null;
       $arr['isd_code'] = $_POST['country_code'];
       $arr['mobile'] = $_POST['mobile'];
       $arr['city'] = $_POST['city'];
       $arr['street'] = isset($_POST['street']) ? ($_POST['street']) : null;
       $arr['company'] = $_POST['company'];
-      $arr['state'] = isset($_POST['state'])?$_POST['state']:null;
+      $arr['state'] = isset($_POST['state']) ? $_POST['state'] : null;
       // $arr['country'] = $_POST['country'];
       if (isset($_POST['country'])) {
         $arr['country_code'] = $_POST['country'];
@@ -753,7 +753,12 @@ switch ($path) {
     if ($url[0] == "payment") {
       if (!authenticate()) {
         header("Location: /$home/");
-        exit;
+        return;
+      }
+      $count = isset(USER['id']) ? cart_items(USER['id']) : 0;
+      if ($count <= 0) {
+        header("Location:/$home/shop");
+        return;
       }
       import("apps/view/pages/payment.php");
       return;

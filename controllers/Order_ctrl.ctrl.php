@@ -125,7 +125,6 @@ class Order_ctrl
             if (
                 $addrs->name == '' ||
                 $addrs->mobile == '' ||
-                $addrs->address_name == '' ||
                 $addrs->city == '' ||
                 $addrs->country == '' ||
                 $addrs->zipcode == '' ||

@@ -8,7 +8,7 @@ class Payment
     {
         $this->mollie = new \Mollie\Api\MollieApiClient();
         
-        $this->mollie->setApiKey(MOLLIE_TEST_KEY);
+        $this->mollie->setApiKey(MOLLIE_LIVE_KEY);
     }
     function create(object $obj)
     {
