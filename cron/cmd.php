@@ -7,11 +7,10 @@ require_once(__DIR__ . "/../config.php");
 require_once(__DIR__ . "/../includes/class-autoload.inc.php");
 require_once 'vendor/autoload.php';
 import('functions.php');
+import('/tcpdf/tcpdf.php');
 
-
-
-
-
+$lbp = new Label_ctrl;
+$lbp->generate_pdf($orderid=9);
 
 exit;
 

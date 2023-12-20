@@ -771,12 +771,16 @@ function usersignup()
     //name
     if (!isset($_POST['first_name'])) {
       $_SESSION['msg'][] = "first name is required";
-      return;
+      return false;
+    }
+    if (empty($_POST['first_name'])) {
+      $_SESSION['msg'][] = "first name is required";
+      return false;
     }
     if (isset($_POST['name'])) {
       if (strlen(sanitize_remove_tags($_POST['name'])) < 2) {
         $_SESSION['msg'][] = "Invalid name";
-        return;
+        return false;
       }
       $arr['name'] = sanitize_remove_tags($_POST['name']);
     }
@@ -797,11 +801,11 @@ function usersignup()
     if (isset($_POST['ref'])) {
       if (filter_var($_POST['ref'], FILTER_VALIDATE_INT) == false) {
         $_SESSION['msg'][] = "Invalid refrence";
-        return;
+        return false;
       }
       if (getData("pk_user", $_POST['ref']) == false) {
         $_SESSION['msg'][] = "Invalid refrence";
-        return;
+        return false;
       }
       $arr['ref'] = sanitize_remove_tags($_POST['ref']);
     }
@@ -809,7 +813,7 @@ function usersignup()
     if (isset($_POST['city'])) {
       if (strlen(sanitize_remove_tags($_POST['city'])) < 2) {
         $_SESSION['msg'][] = "Invalid city name";
-        return;
+        return false;
       }
       $arr['city'] = sanitize_remove_tags($_POST['city']);
     }
@@ -823,7 +827,7 @@ function usersignup()
     if (isset($_POST['address'])) {
       if (strlen(sanitize_remove_tags($_POST['address'])) < 2) {
         $_SESSION['msg'][] = "Invalid Address";
-        return;
+        return false;
       }
       $arr['address'] = sanitize_remove_tags($_POST['address']);
     }
@@ -850,14 +854,14 @@ function usersignup()
     if (isset($_POST['gender'])) {
       if (strlen(sanitize_remove_tags($_POST['gender'])) < 1) {
         $_SESSION['msg'][] = "Invalid Gender";
-        return;
+        return false;
       }
       $arr['gender'] = sanitize_remove_tags($_POST['gender']);
     }
     if (isset($_POST['country'])) {
       if (!intval($_POST['country'])) {
         $_SESSION['msg'][] = "Invalid country id";
-        return;
+        return false;
       }
       $contry = getData('countries', $_POST['country']);
       $arr['country'] = $contry['name'];
@@ -866,14 +870,14 @@ function usersignup()
     if (isset($_POST['country_code'])) {
       if (strlen(sanitize_remove_tags($_POST['country_code'])) < 2) {
         $_SESSION['msg'][] = "Invalid Country Code ";
-        return;
+        return false;
       }
       $arr['isd_code'] = sanitize_remove_tags($_POST['country_code']);
     }
     //email
     if (filter_var($email, FILTER_VALIDATE_EMAIL) == false) {
       $_SESSION['msg'][] = "Invalid Email, please try with correct email";
-      return;
+      return false;
     }
     //check regtered email
     $user_by_email = (new Model('pk_user'))->exists(['email' => $email]);
@@ -885,12 +889,12 @@ function usersignup()
     if (isset($_POST['mobile'])) {
       if (filter_var($_POST['mobile'], FILTER_VALIDATE_INT) == false) {
         $_SESSION['msg'][] = "Invalid mobile";
-        return;
+        return false;
       }
       $user_by_mobile = (new Model('pk_user'))->exists(['mobile' => $_POST['mobile']]);
       if ($user_by_mobile != false) {
         $_SESSION['msg'][] = "Mobile number is already registered";
-        return;
+        return false;
       }
       $arr['mobile'] = sanitize_remove_tags($_POST['mobile']);
     }
@@ -898,12 +902,12 @@ function usersignup()
     if (isset($_POST['national_id'])) {
       if ($_POST['national_id'] == "") {
         $_SESSION['msg'][] = "Empty National Id Number";
-        return;
+        return false;
       }
       $user_by_national_id = (new Model('pk_user'))->exists(['national_id' => $_POST['national_id']]);
       if ($user_by_national_id != false) {
         $_SESSION['msg'][] = "Your National Id is already regsitered";
-        return;
+        return false;
       }
       $arr['national_id'] = sanitize_remove_tags($_POST['national_id']);
     }
@@ -960,7 +964,6 @@ function usersignup()
       $_SESSION['msg'][] = "User not created";
       return false;
     }
-
     // echo go_to("login");
     return true;
   } else {
@@ -2370,4 +2373,11 @@ function priceWOT($priceWithTax, $taxRate)
   $priceWithoutTax = $priceWithTax / (1 + $taxRate);
 
   return round($priceWithoutTax, 2);
+}
+function render_template($path, $data)
+{
+  ob_start();
+  import(var: $path, context: $data, many: true);
+  $data = ob_get_clean();
+  return $data;
 }

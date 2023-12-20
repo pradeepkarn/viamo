@@ -243,7 +243,6 @@ SCRPT;
       </div>
 
     </main>
-
     <?php import("apps/view/inc/footer-credit.php"); ?>
   </div>
 </div>

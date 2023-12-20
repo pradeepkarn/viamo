@@ -5,6 +5,7 @@ use PHPMailer\PHPMailer\PHPMailer;
 require_once(__DIR__ . "/config.php");
 import("/includes/class-autoload.inc.php");
 import('/vendor/autoload.php');
+// import('/tcpdf/tcpdf.php');
 import('/settings.php');
 $url = explode("/", $_SERVER["QUERY_STRING"]);
 $path = $_SERVER["QUERY_STRING"];
@@ -823,15 +824,28 @@ switch ($path) {
         header("location:/$home/orders");
         return;
       }
-      // $orders = getData('payment',$_GET['orderid']);
       $orddata = get_order_details($orderid = $_GET['orderid']);
-      // myprint($orddata);
       import("apps/view/pages/label-print.php", $orddata);
       return;
     }
-    // if ($url[0] == "withdraw") {
-    //   $withdraw = new Withdrawal_ctrl;
-    // }
+    if ($url[0] == "upload-pdf") {
+      if (!is_superuser()) {
+        return;
+      }
+      if ($_SERVER["REQUEST_METHOD"] === "POST") {
+        $fl = $_FILES['label'];
+        $uploadDirectory = MEDIA_ROOT . "docs/labels/";
+
+        if (move_uploaded_file($fl['tmp_name'],"{$uploadDirectory}{$fl['name']}")) {
+          echo "PDF file saved on the server.";
+        } else {
+          echo "Error saving the PDF file.";
+        }
+
+        return;
+      }
+      return;
+    }
     if ($url[0] == "req-redeem") {
       $wthdrwctrl = new Withdrawal_ctrl;
       $wthdrwctrl->redeem_request();

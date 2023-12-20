@@ -58,7 +58,7 @@ if ("{$url[0]}/{$url[1]}" == "{$namespace}/signup-ajax") {
   // myprint($_POST);
   // return;
   $userid = usersignup();
-  if (intval($userid)) {
+  if ($userid) {
     createAddess($userid = $userid, $post = $_POST);
     $user = (object)(getData('pk_user', $userid));
     if (isset($_SESSION['guest_id'])) {

@@ -135,7 +135,7 @@
         <div class="col-m-6 my-2">
             <div id="signup-res"></div>
             <?php
-            $sponserid = isset($_SESSION['sponserid']) ? $_SESSION['sponserid'] : null;
+            $sponserid = isset($_SESSION['sponserid']) ? $_SESSION['sponserid'] : "pool";
             $db = new Dbobjects;
             $ref = $db->showOne("select id from pk_user where username = '$sponserid'");
             ?>
