@@ -74,7 +74,7 @@ import("apps/view/inc/navbar.php");
                                                     </tr>
                                                     <tr class="text-end">
                                                         <td>Net(+) </td>
-                                                        <td><?php echo $net = (($value['amount']-$value['voucher_amt']) - $value['discount_by_bpt']); ?></td>
+                                                        <td><?php echo $net = (($value['amount'] - $value['voucher_amt']) - $value['discount_by_bpt']); ?></td>
                                                     </tr>
                                                     <tr class="text-end">
                                                         <td>Shipping(+) </td>
@@ -138,12 +138,14 @@ import("apps/view/inc/navbar.php");
                                             </th>
                                             <th>
                                                 <?php
-                                                if ($value['status'] == 'paid' && $value['invoice'] != '') { ?>
-                                                    <a class="btn btn-warning" target="_blank" href="http:/<?php echo home; ?>/label-print/?orderid=<?php echo $value['id']; ?>">Print</a>
-                                                <?php } else {
-                                                    echo "<i class='fas fa-arrow-left'></i> Create Invoice First";
-                                                }
-                                                ?>
+                                                $label_exist = file_exists(RPATH . "/media/docs/labels/label-{$value['invoice']}.pdf");
+                                                if ($label_exist) : ?>
+                                                    <a class="btn btn-warning my-1" target="_blank" href="http:/<?php echo MEDIA_URL; ?>/docs/labels/label-<?php echo $value['invoice']; ?>.pdf">PDF</a>
+                                                <?php endif; ?>
+                                                <?php if ($value['status'] == 'paid' && $value['invoice'] != '') : ?>
+                                                    <a class="btn btn-primary my-1" target="_blank" href="http:/<?php echo home; ?>/label-print/?orderid=<?php echo $value['id']; ?>">Web</a>
+                                                <?php endif; ?>
+
                                             </th>
                                         </tr>
                                     <?php

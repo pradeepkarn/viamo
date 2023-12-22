@@ -65,6 +65,9 @@ class Country_ctrl
                 $arr['name'] = sanitize_remove_tags($req->name);
                 $arr['min_tax'] = $req->min_tax;
                 $arr['max_tax'] = $req->max_tax;
+                if (isset($req->logistic_email)) {
+                    $arr['logistic_email'] = $req->logistic_email;
+                }
                 $itemObj = new Model('countries');
                 $item_id = $req->country_id;
                 $reply = $itemObj->update($item_id, $arr);

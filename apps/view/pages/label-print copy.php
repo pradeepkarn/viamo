@@ -20,7 +20,7 @@ $invid = $invoice;
 
         .container {
             width: 190mm;
-            height: 255mm;
+            height: 266mm;
             margin: 10mm auto;
             border: 1px solid #000;
             padding: 20px;
@@ -69,10 +69,6 @@ $invid = $invoice;
             text-align: center;
             margin-top: 10px;
         }
-
-        .footer .del-info {
-            font-size: 10px;
-        }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.js"></script>
 
@@ -99,7 +95,7 @@ $delv_info = $invData->delv_info;
 <body>
     <div id="content">
         <div class="container">
-            <img class="logo" src="/<?php echo home; ?>/static/assets/img/img7.jpg" alt="Logo">
+            <img class="logo" src="<?php echo BASE_URI; ?>/static/assets/img/img7.jpg" alt="Logo">
             <div class="address">
                 <!-- Your company address goes here -->
                 <?php echo $invoice_address; ?>
@@ -177,13 +173,104 @@ $delv_info = $invData->delv_info;
             <div class="contact-info">
                 <!-- Your contact information goes here -->
                 <?php
-                echo $user->isd_code . " " . $user->mobile . "<br>";
+                echo $user->mobile . "<br>";
                 echo $user->email;
                 ?>
             </div>
             <hr>
             <div class="footer">
                 <!-- Additional information or footer content goes here -->
+            </div>
+        </div>
+        <div class="container">
+            <img class="logo" src="<?php echo BASE_URI; ?>/static/assets/img/img7.jpg" alt="Logo">
+            <div class="address">
+                <!-- Your company address goes here -->
+                <?php echo $invoice_address; ?>
+            </div>
+            <hr>
+            <div class="from-to">
+                <div class="address-block">
+                    <b>Ship to:</b>
+                    <p>
+                        <!-- Shipping address goes here -->
+                        <?php echo $shpadrs->company != "" ? "{$shpadrs->company}<br>" : null; ?>
+                        <?php echo trim($shpadrs->first_name) != '' ? $shpadrs->first_name : $user->first_name; ?>
+                        <?php echo trim($shpadrs->last_name) != '' ? $shpadrs->last_name : $user->last_name; ?> <br>
+                        <?php echo $shpadrs->street . " " . $shpadrs->street_num; ?> <br>
+                        <?php echo $shpadrs->zipcode; ?>
+                        <?php echo $shpadrs->city; ?> <br>
+                        <?php echo $shpadrs->country; ?>
+                    </p>
+                </div>
+                <div class="address-block">
+                    <b>Ship from:</b>
+                    <!-- Your invoice address goes here -->
+                    <?php echo $invoice_address; ?>
+                </div>
+                <div class="address-block">
+                    <b> DETAILS:</b>
+                    <p>
+                        INV-<?php echo $invid; ?> <br>
+                        DATE-<?php echo date('Y-m-d H:i:s'); ?> <br>
+                        ORD-<?php echo $pmtid; ?>
+                    </p>
+                </div>
+            </div>
+            <div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Pos</th>
+                            <th>Product ID</th>
+                            <th>Product</th>
+                            <th>Quantity</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        $total_amt = 0;
+                        $total_pv = 0;
+                        $i = 1;
+
+
+                        foreach ($context->cart as $itm) {
+                            $cv = obj($itm);
+                            $pkg = obj($cv->package);
+                            $j = 1;
+                            foreach ($cv->products as $pr) {
+                                $itemname = select_col('item', $pr->item, 'name');
+                                $pid = select_col('item', $pr->item, 'product_id');
+                        ?>
+                                <tr>
+                                    <td><?php echo $j; ?></td>
+                                    <td><?php echo $pid; ?></td>
+                                    <td><?php echo $itemname; ?></td>
+                                    <td><?php echo $pr->qty * $pkg->qty; ?> unit</td>
+                                </tr>
+                            <?php $j++;
+                            } ?>
+
+                        <?php $i++;
+                        } ?>
+
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="contact-info">
+                <!-- Your contact information goes here -->
+                <?php
+                echo $user->mobile . "<br>";
+                echo $user->email;
+                ?>
+            </div>
+            <hr>
+            <div class="footer">
+                <!-- Additional information or footer content goes here -->
+                <?php
+                echo $delv_info;
+                ?>
 
                 <div class="row">
                     <div class="col-md-12 text-center">
@@ -191,49 +278,19 @@ $delv_info = $invData->delv_info;
                         Email: <a href="mailto:support@viamo.world">support@viamo.world</a>
                     </div>
                 </div>
-                <div class="del-info">
-                    <?php
-                    echo $delv_info;
-                    ?>
-
-                </div>
                 <!-- Footer -->
                 <div class="text-center my-5">
                     <p class="text-1"><strong>NOTE :</strong> This is computer generated receipt and does not require physical signature.</p>
                     <div class="btn-group btn-group-sm d-print-none">
                         <a href="javascript:window.print()" class="btn btn-light border text-black-50 shadow-none"><i class="fa fa-print"></i> Print</a>
                     </div>
-                    <button style="margin: 10px;" id="download-btn">Download PDF</button>
+                    <button style="margin: 10px;" id="download-btn">Download</button>
                 </div>
             </div>
         </div>
 
     </div>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var el = document.getElementById('content');
-
-            if (el) {
-                var opt = {
-                    margin: 1,
-                    filename: 'label-<?php echo $invoice; ?>.pdf',
-                    image: {
-                        type: 'jpeg',
-                        quality: 1
-                    },
-                    html2canvas: {
-                        scale: 2
-                    },
-                    jsPDF: {
-                        unit: 'mm',
-                        format: 'a4',
-                        orientation: 'portrait'
-                    }
-                }
-            }
-            sendFileToserver(el, opt);
-        });
-
         document.getElementById('download-btn').addEventListener('click', function() {
             var element = document.getElementById('content');
 

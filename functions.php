@@ -1037,6 +1037,16 @@ function go_to($link = "")
             RED;
   return $var;
 }
+function go_to_new_tab($link = "")
+{
+    $home = home; // Replace with your actual home variable
+    $var = <<<RED
+        <script>
+            window.open("/$home/$link", '_blank');
+        </script>
+    RED;
+    return $var;
+}
 
 function logut()
 {
@@ -1649,6 +1659,35 @@ function getPage($req, $data_limit = 5)
     'users' => $users
   );
 }
+function getOrders($req, $data_limit = 5)
+{
+  $req = obj($req);
+  $current_page = 0;
+  $data_limit = $data_limit;
+  $page_limit = "0,$data_limit";
+  $cp = 0;
+  if (isset($req->page) && intval($req->page)) {
+    $cp = $req->page;
+    $current_page = (abs($req->page) - 1) * $data_limit;
+    $page_limit = "$current_page,$data_limit";
+  }
+  $db = new Dbobjects;
+  $rc = $db->showOne("select COUNT(id) as id_count from payment");
+  $total_rows = $rc?$rc['id_count']:0;
+  $tp = $total_rows;
+  if ($tp %  $data_limit == 0) {
+    $tp = $tp / $data_limit;
+  } else {
+    $tp = floor($tp / $data_limit) + 1;
+  }
+  $rows = $db->show("select * from payment order by id desc limit $page_limit");
+  return (object) array(
+    'req' => obj($req),
+    'rows_count' => $tp,
+    'current_page' => $cp,
+    'rows' => $rows
+  );
+}
 function user_list($keywords = null, $ord = "DESC", $limit = 1, $active = 1)
 {
   $cntobj = new Model('pk_user');
@@ -1739,6 +1778,13 @@ function updateUserDetails($data)
     $arr['company_name'] = $data['company_name'];
     $arr['first_name'] = $data['first_name'];
     $arr['last_name'] = $data['last_name'];
+  }
+  if (isset($data['zipcode'], $data['city'], $data['isd_code'], $data['mobile'],$data['address'])) {
+    $arr['city'] = $data['city'];
+    $arr['zipcode'] = $data['zipcode'];
+    $arr['isd_code'] = $data['isd_code'];
+    $arr['mobile'] = $data['mobile'];
+    $arr['address'] = $data['address'];
   }
   if (isset($arr)) {
     (new Model('pk_user'))->update($data['userid'], $arr);

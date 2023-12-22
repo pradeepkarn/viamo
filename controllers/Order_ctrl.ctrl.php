@@ -242,6 +242,7 @@ class Order_ctrl
     public function confirm_order_status($id, $dataObj)
     {
         $level = new Member_ctrl;
+        $db = new Dbobjects;
         $updated_at = date('Y-m-d H:i:s');
         $pmt = getData('payment', $id);
         // $pvctrl = new Pv_ctrl;
@@ -249,42 +250,32 @@ class Order_ctrl
         // $pvctrl->save_commissions($purchaser_id = $pmt['user_id'], $order_id = $id, $pv = $pmt['pv'], $rv = $pmt['rv'], $pmt['direct_bonus']);
         $upadeted = (new Model('payment'))->update($id, ['status' => 'paid', 'info' => $dataObj->info, 'updated_at' => $updated_at]);
         if ($upadeted) {
+            // genaret invoice number
+            if ($db->showOne("select id from payment where status='paid' and payment.id='$id'")) {
+                $invid = generate_invoice_id($db);
+                update_inv_if_not($id = $id, $invid, $db);
+            }
+            // genaret invoice number end
             $total_amt = $pmt['amount'];
             $total_db = $pmt['direct_bonus'];
             $ordernum = $pmt['unique_id'];
             $level = new Member_ctrl;
             $db = (new Dbobjects);
             $ref = $db->showOne("SELECT * FROM pk_user WHERE pk_user.id = (SELECT ref FROM pk_user WHERE pk_user.id = '{$pmt['user_id']}')");
-            $trnArr = null;
-            $trnArr['transactedTo'] = $ref['id'];
-            $trnArr['transactedBy'] = $pmt['user_id'];
-            // $trnArr['purchase_amt'] = round($total_amt, 2);
-            $refuser = $ref;
-            $refuser = $refuser ? obj($refuser) : null;
-            $cmsn = 0;
-            $buyer['id'] = $pmt['user_id'];
-            $buyer['ref'] = $ref['id'];
-            // $membercnt = $level->count_direct_partners($db, $myid = 1);
-            if ($refuser) {
-                $this->send_direct_bonus($db, $buyer, $ordernum, $total_amt, $total_db, $redeempt = $pmt['discount_by_bpt'], $level);
-
-                // $partial_amt = round(($total_amt - $pmt['point_used']), 2);
-                // $direct_bonus = round((($partial_amt / $total_amt) * $total_db), 2);
-                // if ($direct_bonus > 0) {
-                //     $trnArr['purchase_amt'] = round($partial_amt, 2);
-                //     $cmsn = $direct_bonus;
-                //     // $cmsn = round($total_db, 2);
-                //     $trnArr['amount'] =  $cmsn;
-                //     $trnArr['trnNum'] = $ordernum;
-                //     $trnArr['status'] = 1; // 1: Active, 2: cancelled  
-                //     $trnArr['trnGroup'] = 2; // 1:pv commissions, 2: direct bonus
-                //     $trnArr['trnType'] = 1; // 1: Credit, 2: debit
-                //     $level->save_trn_data($db, $trnArr);
-
-                // }
+            if ($ref) {
+                $trnArr = null;
+                $trnArr['transactedTo'] = $ref['id'];
+                $trnArr['transactedBy'] = $pmt['user_id'];
+                // $trnArr['purchase_amt'] = round($total_amt, 2);
+                $refuser = $ref;
+                $refuser = $refuser ? obj($refuser) : null;
+                $buyer['id'] = $pmt['user_id'];
+                $buyer['ref'] = $ref['id'];
+                // $membercnt = $level->count_direct_partners($db, $myid = 1);
+                if ($refuser) {
+                    $this->send_direct_bonus($db, $buyer, $ordernum, $total_amt, $total_db, $redeempt = $pmt['discount_by_bpt'], $level);
+                }
             }
-            // $level->update_level_by_direct_partners_count($db, $myid = $ref['ref']);
-            // $level->update_level_by_purchase($db, $myid = $ref['ref']);
             return true;
         }
         return false;

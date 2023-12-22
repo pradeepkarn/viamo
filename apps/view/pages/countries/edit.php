@@ -161,6 +161,18 @@ import("apps/view/inc/navbar.php");
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="form-group row mb-4">
+                                        <label for="">Logistic Email</label>
+                                        <div class="row my-3">
+                                            <div class="col-lg-12">
+                                                <div id="container" class="my-3">
+                                                    <div class="textarea-container">
+                                                        <input class="form-control" name="logistic_email" value="<?php echo $pv->logistic_email; ?>">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
 
 
                                     <!-- <button type="button" class="btn btn-primary" id="add-textarea">Add More Textarea</button> -->

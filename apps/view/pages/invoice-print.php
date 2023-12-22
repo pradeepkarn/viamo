@@ -77,7 +77,7 @@ try {
 
                             <div class="col-4"> <strong>Invoiced To:</strong>
                                 <address>
-                                    <?php echo $shpadrs->company; ?> <br>
+                                    <?php echo $shpadrs->company!=''?"{$shpadrs->company}<br>":null; ?> 
                                     <?php echo $shpadrs->name; ?>  <br>
                                     <?php echo $shpadrs->street." ".$shpadrs->street_num; ?> <br>
                                     <?php echo $shpadrs->zipcode; ?> <?php echo $shpadrs->city; ?> <br>

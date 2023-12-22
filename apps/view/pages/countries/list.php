@@ -20,9 +20,10 @@ $cl = $plobj->index();
                                     <tr>
                                         <th scope="col">Code</th>
                                         <th scope="col">Name</th>
+                                        <th scope="col">Logistic Email</th>
                                         <th scope="col">Bank Details</th>
                                         <th scope="col">Office</th>
-                                        <!-- <th scope="col">Delivery Info</th> -->
+                                       
                                         <th scope="col">Min Tax</th>
                                         <th scope="col">Max Tax</th>
                                         <th scope="col">Edit</th>
@@ -50,9 +51,9 @@ $cl = $plobj->index();
                                         <tr>
                                             <td><?php echo $pv->code; ?></td>
                                             <td><?php echo $pv->name; ?></td>
+                                            <td><?php echo $pv->logistic_email; ?></td>
                                             <td><?php echo count($banks)?$banks[0]:null; ?></td>
                                             <td><?php echo count($offices)?$offices[0]:null; ?></td>
-                                            <!-- <td><?php //echo $pv->delv_info; ?></td> -->
                                             <td><?php echo $pv->min_tax; ?></td>
                                             <td><?php echo $pv->max_tax; ?></td>
                                             <td>

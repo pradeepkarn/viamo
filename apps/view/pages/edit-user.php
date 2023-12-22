@@ -78,12 +78,12 @@ $rv_sum = $udata->rv_gt;
             <div class="container-fluid px-4">
                 <!-- <h1 class="mt-4">Dashboard</h1> -->
                 <ol class="breadcrumb mt-3 mb-4">
-                    <li class="breadcrumb-item active mycl">My Profile</li>
+                    <li class="breadcrumb-item active mycl">Profile</li>
                 </ol>
 
                 <div class="container">
                     <div class="row mb-4">
-                        <div class="col-lg-4">
+                        <div class="col-md-5">
                             <div class="spl-box">
                                 <div class="new-box">
                                     <img src="/<?php echo home; ?>/media/img/user-blank.png" class="img-circle" width="150px" alt="" srcset="">
@@ -114,60 +114,94 @@ $rv_sum = $udata->rv_gt;
                             <div class="row mb-4">
 
                                 <div class="col-md-12">
-                                    <div class="shadow-sm card h-100 px-3 py-2">
-                                        <!-- <h5>Lifetime Commission -->
-                                        <?php //echo $cmsn_gt; 
-                                        ?>
+                                    <style>
+                                        /* Apply styles to the editable rows */
+                                        .table tbody tr {
+                                            background-color: #B3B3B3;
+                                        }
 
-                                        </h5>
-                                        <!-- <table  class="table table-bordered">
+                                        .table tbody tr:hover {
+                                            background-color: #FFFCCC;
+                                            cursor: pointer;
+                                            /* Hover background color */
+                                        }
+                                    </style>
+                                    <h4>Delivery addresses:</h4>
+                                    <div id="res"></div>
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered border-primary">
                                             <thead>
                                                 <tr>
-                                                    <th>Trans. ID</th>
-                                                    <th>Commission</th>
-                                                    <th>Date</th>
-                                                    <th>Delete</th>
+                                                    <th>Street</th>
+                                                    <th>Street Num</th>
+                                                    <th>City</th>
+                                                    <th>Zip</th>
+                                                    
+
                                                 </tr>
                                             </thead>
-                                        
                                             <tbody>
                                                 <?php
                                                 $db = new Dbobjects;
-                                                $sql = "select * from extra_credits where added_to = {$user['id']}";
-                                                $extracc = $db->show($sql);
-                                                $total_extracc = 0;
+                                                $delvadrs = $db->show("select * from address where user_id = '{$user['id']}'");
+                                                // myprint($delvadrs);
+                                                foreach ($delvadrs as $key => $da) :
+                                                    $da = obj($da);
                                                 ?>
-                                                <?php foreach ($extracc as $extcc) {
-                                                    $extcc = obj($extcc);
-                                                    $total_extracc += $extcc->amount;
-                                                ?>
-                                                    <tr>
-                                                        <td><?php echo $extcc->id; ?></td>
-                                                        <td><?php echo $extcc->amount; ?></td>
-                                                        <td><?php echo $extcc->created_at; ?></td>
-                                                        <td>
-                                                            <form action="" method="post">
-                                                                <input type="hidden" name="delete_amt_id" value="<?php echo $extcc->id; ?>">
-                                                                <input type="hidden" name="action" value="cmsndlt">
-                                                                <button class="btn btn-sm btn-danger">Delete</button>
-                                                            </form>
-                                                        </td>
+                                                    <tr data-address-id="<?= $da->id; ?>">
+                                                        <td class="editable" data-field="street" contenteditable="true"><?= $da->street; ?></td>
+                                                        <td class="editable" data-field="street_num" contenteditable="true"><?= $da->street_num; ?></td>
+                                                        <td class="editable" data-field="city" contenteditable="true"><?= $da->city; ?></td>
+                                                        <td class="editable" data-field="zipcode" contenteditable="true"><?= $da->zipcode; ?></td>
+                                                        
                                                     </tr>
-                                                <?php } ?>
-
+                                                <?php endforeach; ?>
                                             </tbody>
-                                        </table> -->
-                                        <!-- <h5>Retirement Foundation</h5>
-                                        Total Share Count <?php
-                                                            // $share = my_all_share_count($user['id']);
-                                                            // echo $share;
-                                                            ?> -->
+                                        </table>
                                     </div>
+
+                                    <script>
+                                        $(document).ready(function() {
+                                            // Handle click-to-edit
+                                            $('.editable').on('click', function() {
+                                                $(this).attr('contenteditable', true).focus();
+                                            });
+                                            // Handle saving changes via AJAX
+                                            $('.editable').on('blur', addressUpdate);
+                                        });
+
+                                        function addressUpdate() {
+                                            const addressId = $(this).closest('tr').data('address-id');
+                                            const field = $(this).data('field');
+                                            const value = $(this).text();
+
+                                            // AJAX request to update the value in the database
+                                            $.ajax({
+                                                url: '/<?php echo home; ?>/update-address', // Change this to your server-side script
+                                                method: 'POST',
+                                                data: {
+                                                    addressId: addressId,
+                                                    field: field,
+                                                    value: value
+                                                },
+                                                success: function(response) {
+                                                    $("#res").html(response);
+                                                }
+                                            });
+
+                                            $(this).attr('contenteditable', false);
+                                        }
+                                    </script>
+
+                                    </script>
                                 </div>
 
                             </div>
+
+
                         </div>
-                        <div class="col-lg-8">
+                        <div class="col-md-7">
+                            <a href="/<?php echo home; ?>/all-users" class="btn btn-dark">Back</a>
                             <div id="res"></div>
 
                             <div class="row">
@@ -238,6 +272,29 @@ $rv_sum = $udata->rv_gt;
                                             });
                                         </script>
                                     </div>
+
+                                    <div class="col-md-12">
+                                        <label for="">Address</label>
+                                        <input type="text" name="address" value="<?php echo $user['address']; ?>" class="form-control">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="">City</label>
+                                        <input type="text" name="city" value="<?php echo $user['city']; ?>" class="form-control">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="">Zip code</label>
+                                        <input type="text" name="zipcode" value="<?php echo $user['zipcode']; ?>" class="form-control">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="">ISD</label>
+                                        <input type="text" name="isd_code" value="<?php echo $user['isd_code']; ?>" class="form-control">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="">Mobile</label>
+                                        <input type="text" name="mobile" value="<?php echo $user['mobile']; ?>" class="form-control">
+                                    </div>
+
+
                                     <div class="col-md-6 my-2">
                                         <label for="inputPassword4" class="form-label">Password</label>
                                         <input type="password" autocomplete="off" name="password" value="<?php echo $user['password']; ?>" class="form-control" id="inputPassword4">

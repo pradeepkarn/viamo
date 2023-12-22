@@ -168,82 +168,82 @@ switch ($path) {
     // if ($url[0] == 'pv-calculate') {
 
     // }
-    if ($url[0] == "pool-calculate") {
-      // return;
-      set_time_limit(600);
-      // if(!is_superuser()){
-      //   die();
-      // }
-      $db = new Dbobjects;
-      $db->tableName = 'pk_user';
-      $users = $db->all(limit: 100000);
-      return;
-      $dms = new Domswiss_tree_ctrl;
-      // Assuming $members is the original array you provided
-      $members = [
-        "affiliate partner" => 0,
-        "bronze manager" => 0,
-        "silver manager" => 0,
-        "gold manager" => 0,
-        "platinum manager" => 0,
-        "director" => 0,
-        "team director" => 0,
-        "marketing director" => 0,
-        "diamond" => 0,
-        "blue diamond" => 0,
-        "purple diamond" => 0,
-        "green diamond" => 0,
-        "ambassador" => 0,
-        "royal" => 0,
-        "royal i" => 0,
-        "royal ii" => 0
-      ];
+    // if ($url[0] == "pool-calculate") {
+    //   // return;
+    //   set_time_limit(600);
+    //   // if(!is_superuser()){
+    //   //   die();
+    //   // }
+    //   $db = new Dbobjects;
+    //   $db->tableName = 'pk_user';
+    //   $users = $db->all(limit: 100000);
+    //   return;
+    //   $dms = new Domswiss_tree_ctrl;
+    //   // Assuming $members is the original array you provided
+    //   $members = [
+    //     "affiliate partner" => 0,
+    //     "bronze manager" => 0,
+    //     "silver manager" => 0,
+    //     "gold manager" => 0,
+    //     "platinum manager" => 0,
+    //     "director" => 0,
+    //     "team director" => 0,
+    //     "marketing director" => 0,
+    //     "diamond" => 0,
+    //     "blue diamond" => 0,
+    //     "purple diamond" => 0,
+    //     "green diamond" => 0,
+    //     "ambassador" => 0,
+    //     "royal" => 0,
+    //     "royal i" => 0,
+    //     "royal ii" => 0
+    //   ];
 
-      // Your foreach loop
-      foreach ($users as $u) {
-        $member = $dms->handle_rv($user_id = $u['id']);
-        // Increment the count for the corresponding member
-        $members[$member]++;
-      }
+    //   // Your foreach loop
+    //   foreach ($users as $u) {
+    //     $member = $dms->handle_rv($user_id = $u['id']);
+    //     // Increment the count for the corresponding member
+    //     $members[$member]++;
+    //   }
 
-      $date = date('Y-m-d');
-      $jsonData = json_encode($members, JSON_PRETTY_PRINT);
-      $file = RPATH . "/jsondata/pool/members.json";
-      file_put_contents($file, $jsonData);
-      return;
-    }
-    if ($url[0] == "share-calculate-863hjkdf68yeiuiuvv87e4687") {
-      set_time_limit(600);
-      // if(!is_superuser()){
-      //   die();
-      // }
-      $db = new Dbobjects;
-      $db->tableName = 'pk_user';
-      $users = $db->all(limit: 100000);
-      $db->tableName = 'credits';
-      $monthend = date('Y-m-t');
-      // $monthend = '2023-07-31';
-      if ($monthend == date('Y-m-d')) {
-        foreach ($users as $u) {
-          $arr = null;
-          $shr_amt = my_all_share($u['id']);
-          $shr_cnt = my_all_share_count($u['id']);
-          $arr['user_id'] = $u['id'];
-          $arr['status'] = 'share';
-          $arr['month_end'] = $monthend;
-          $oldshre = $db->filter($arr);
-          $arr['share_count'] = $shr_cnt;
-          $arr['amt'] = $shr_amt;
-          $db->insertData = $arr;
-          if (count($oldshre) == 0) {
-            $db->create();
-          } else {
-            $db->update();
-          }
-        }
-      }
-      return;
-    }
+    //   $date = date('Y-m-d');
+    //   $jsonData = json_encode($members, JSON_PRETTY_PRINT);
+    //   $file = RPATH . "/jsondata/pool/members.json";
+    //   file_put_contents($file, $jsonData);
+    //   return;
+    // }
+    // if ($url[0] == "share-calculate-863hjkdf68yeiuiuvv87e4687") {
+    //   set_time_limit(600);
+    //   // if(!is_superuser()){
+    //   //   die();
+    //   // }
+    //   $db = new Dbobjects;
+    //   $db->tableName = 'pk_user';
+    //   $users = $db->all(limit: 100000);
+    //   $db->tableName = 'credits';
+    //   $monthend = date('Y-m-t');
+    //   // $monthend = '2023-07-31';
+    //   if ($monthend == date('Y-m-d')) {
+    //     foreach ($users as $u) {
+    //       $arr = null;
+    //       $shr_amt = my_all_share($u['id']);
+    //       $shr_cnt = my_all_share_count($u['id']);
+    //       $arr['user_id'] = $u['id'];
+    //       $arr['status'] = 'share';
+    //       $arr['month_end'] = $monthend;
+    //       $oldshre = $db->filter($arr);
+    //       $arr['share_count'] = $shr_cnt;
+    //       $arr['amt'] = $shr_amt;
+    //       $db->insertData = $arr;
+    //       if (count($oldshre) == 0) {
+    //         $db->create();
+    //       } else {
+    //         $db->update();
+    //       }
+    //     }
+    //   }
+    //   return;
+    // }
     if ($url[0] == "contact") {
       import("apps/view/pages/contact.php");
       return;
@@ -797,6 +797,8 @@ switch ($path) {
         header("location:/$home/login");
         return;
       }
+      // $url = BASE_URI.'/cronjobs/mail-shipping-labels';
+      // $content = file_get_contents($url);
       import("apps/view/pages/all-orders.php");
       return;
     }
@@ -836,7 +838,7 @@ switch ($path) {
         $fl = $_FILES['label'];
         $uploadDirectory = MEDIA_ROOT . "docs/labels/";
 
-        if (move_uploaded_file($fl['tmp_name'],"{$uploadDirectory}{$fl['name']}")) {
+        if (move_uploaded_file($fl['tmp_name'], "{$uploadDirectory}{$fl['name']}")) {
           echo "PDF file saved on the server.";
         } else {
           echo "Error saving the PDF file.";
@@ -1271,11 +1273,14 @@ switch ($path) {
       $dataObj->info = $_POST['info'];
       $rpl = $ord->confirm_order_status($id = $_POST['pmt_id'], $dataObj);
       if ($rpl) {
-        echo RELOAD;
-        exit;
+        echo go_to_new_tab("label-print/?orderid={$_POST['pmt_id']}");
+        echo go_to_new_tab("my-orders/?orderid={$_POST['pmt_id']}");
+        echo js("setTimeout(function(){location.reload();},3000)");
+        // echo RELOAD;
+        return;
       } else {
         echo js_alert('Order status not changed');
-        exit;
+        return;
       }
     }
     if ($url[0] == 'delete-this-order-ajax') {
@@ -1853,12 +1858,45 @@ switch ($path) {
       // end payment object
       return;
     }
+    // edit address for user
+    if ($url[0] == 'update-address') {
+      if (!is_superuser()) {
+        http_response_code(400);
+        echo "Access denied";
+        return;
+      }
+      if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $id = $_POST['addressId'];
+        $field = $_POST['field'];
+        $value = $_POST['value'];
+        if (in_array($field, ['street', 'street_num', 'city', 'zipcode'])) {
+          $db = new Dbobjects;
+          $db->tableName = 'address';
+          $db->pk($id);
+          $arr[$field] = $value;
+          $db->insertData = $arr;
+          $db->update();
+          echo "Address updated successfully, ";
+          echo str_replace("_"," ",$field)." = $value";
+        }
+        
+      } else {
+        http_response_code(400);
+        echo "Invalid request";
+      }
+      return;
+    }
+    // public
     if ($url[0] == 'public') {
       if (authenticate()) {
         header("Location:/" . home);
         return;
       }
       import("apps/view/pages/public/routes.php");
+      return;
+    }
+    if ($url[0] == 'cronjobs') {
+      import("apps/view/pages/cronjobs/routes.php");
       return;
     }
     if ($url[0] == "webhook") {
