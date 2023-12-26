@@ -461,6 +461,52 @@ class Member_ctrl
         return $cmsn ? round($cmsn, 2) : 0;
     }
 
+    function bonus_sum_last_month($db)
+    {
+        $trn_group = '2'; // direct bonus
+        $trn_type = '1'; // credit amt
+        $status = '1'; // active
+
+        // Calculate last month's start and end dates
+        $lastMonthStart = date('Y-m-01', strtotime('first day of last month'));
+        $lastMonthEnd = date('Y-m-t', strtotime('last day of last month'));
+
+        $sql = "
+        SELECT SUM(amount) AS total_db 
+        FROM transactions 
+        WHERE trn_group = '$trn_group'
+        AND trn_type = '$trn_type'
+        AND status = '$status'
+        AND created_at >= '$lastMonthStart' AND created_at <= '$lastMonthEnd'
+    ";
+
+        $cmsn = $db->showOne($sql)['total_db'];
+        return $cmsn ? round($cmsn, 2) : 0;
+    }
+
+    function bonus_sum_current_month($db)
+    {
+        $trn_group = '2'; // direct bonus
+        $trn_type = '1'; // credit amt
+        $status = '1'; // active
+
+        // Calculate current month's start and end dates
+        $currentMonthStart = date('Y-m-01');
+        $currentMonthEnd = date('Y-m-t');
+
+        $sql = "
+        SELECT SUM(amount) AS total_db 
+        FROM transactions 
+        WHERE trn_group = '$trn_group'
+        AND trn_type = '$trn_type'
+        AND status = '$status'
+        AND created_at >= '$currentMonthStart' AND created_at <= '$currentMonthEnd'
+    ";
+
+        $cmsn = $db->showOne($sql)['total_db'];
+        return $cmsn ? round($cmsn, 2) : 0;
+    }
+
     function team_pv_sum_cr($db, $myid)
     {
         $trn_group = '4'; //Team commossions

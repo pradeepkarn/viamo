@@ -1659,6 +1659,151 @@ function getPage($req, $data_limit = 5)
     'users' => $users
   );
 }
+function getUrlSafeString($inputString)
+{
+  // Replace spaces with hyphens and remove other special characters
+  $urlSafeString = preg_replace('/[^a-zA-Z0-9\-]/', '-', $inputString);
+
+  // Remove consecutive hyphens and trim leading/trailing hyphens
+  $urlSafeString = preg_replace('/-+/', '-', trim($urlSafeString, '-'));
+
+  // Convert to lowercase
+  $urlSafeString = strtolower($urlSafeString);
+
+  return $urlSafeString;
+}
+
+function get_image_list($jsn)
+{
+  if (json_decode($jsn ?? '[]')) {
+    return json_decode($jsn);
+  }
+  return [];
+}
+
+function modifyJsonArray($jsonString, $valueToDelete = null, $valueToInsert = null)
+{
+  // Decode the JSON string into a PHP array
+  $array = json_decode($jsonString);
+
+  // Check if JSON decoding was successful
+  if ($array === null && json_last_error() !== JSON_ERROR_NONE) {
+    // Return an error message or handle the error as needed
+    return false;
+  }
+
+  // Delete a value if specified
+  if ($valueToDelete !== null) {
+    $key = array_search($valueToDelete, $array);
+    if ($key !== false) {
+      array_splice($array, $key, 1);
+    }
+  }
+
+  // Insert a value if specified
+  if ($valueToInsert !== null) {
+    $array[] = $valueToInsert;
+  }
+
+  // Encode the modified array back to JSON
+  return json_encode($array);
+}
+function validateData($data, $rules)
+{
+  $errors = [];
+
+  foreach ($rules as $field => $rule) {
+    // Check if field is required
+    if (strpos($rule, 'required') !== false && (!isset($data[$field]) || empty($data[$field]))) {
+      $errors[] = str_replace("_", " ", ucfirst($field)) . ' is required';
+    }
+
+    // Check for other rules
+    $rulesArr = explode('|', $rule);
+    foreach ($rulesArr as $singleRule) {
+      // Check if rule has a parameter
+      preg_match('/^([a-z]+)(?::([0-9]+))?$/i', $singleRule, $matches);
+      $ruleName = $matches[1] ?? null;
+      $ruleParam = isset($matches[2]) ? (int) $matches[2] : null;
+
+      switch ($ruleName) {
+        case 'bool':
+          if (isset($data[$field]) && $data[$field] !== "true" && $data[$field] !== "false") {
+            $errors[] = str_replace("_", " ", ucfirst($field)) . ' must be a boolean (true or false)';
+          }
+          break;
+        case 'integer':
+          if (isset($data[$field]) && !filter_var($data[$field], FILTER_VALIDATE_INT)) {
+            $errors[] = str_replace("_", " ", ucfirst($field)) . ' must be an integer';
+          }
+          break;
+        case 'date':
+          if (isset($data[$field]) && !strtotime($data[$field])) {
+            $errors[] = str_replace("_", " ", ucfirst($field)) . ' must be a valid date format';
+          }
+          break;
+        case 'time':
+          if (isset($data[$field]) && !strtotime($data[$field])) {
+            $errors[] = str_replace("_", " ", ucfirst($field)) . ' must be a valid time format';
+          }
+          break;
+        case 'numeric':
+          if (isset($data[$field]) && !is_numeric($data[$field])) {
+            $errors[] = str_replace("_", " ", ucfirst($field)) . ' must be a numeric value';
+          }
+          break;
+        case 'string':
+          if (isset($data[$field]) && !is_string($data[$field])) {
+            $errors[] = str_replace("_", " ", ucfirst($field)) . ' must be a string';
+          }
+          break;
+        case 'email':
+          if (isset($data[$field]) && !filter_var($data[$field], FILTER_VALIDATE_EMAIL)) {
+            $errors[] = str_replace("_", " ", ucfirst($field)) . ' must be a valid email address';
+          }
+          break;
+        case 'url':
+          if (isset($data[$field]) && !filter_var($data[$field], FILTER_VALIDATE_URL)) {
+            $errors[] = str_replace("_", " ", ucfirst($field)) . ' must be a valid URL';
+          }
+          break;
+        case 'min':
+          if (isset($data[$field]) && strlen($data[$field]) < $ruleParam) {
+            $errors[] = str_replace("_", " ", ucfirst($field)) . ' must be at least ' . $ruleParam . ' characters long';
+          }
+          break;
+        case 'max':
+          if (isset($data[$field]) && strlen($data[$field]) > $ruleParam) {
+            $errors[] = str_replace("_", " ", ucfirst($field)) . ' must not exceed ' . $ruleParam . ' characters';
+          }
+          break;
+        case 'file':
+          if (!isset($_FILES[$field]) || $_FILES[$field]['error'] !== UPLOAD_ERR_OK) {
+            $errors[] = str_replace("_", " ", ucfirst($field)) . ' is required';
+          } else {
+            $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'csv', 'xlsx', 'pdf'];
+            $extension = pathinfo($_FILES[$field]['name'], PATHINFO_EXTENSION);
+            if (!in_array($extension, $allowedExtensions)) {
+              $errors[] = 'Only files with extensions ' . implode(', ', $allowedExtensions) . ' are allowed for ' . $field;
+            }
+          }
+          break;
+        default:
+          break;
+      }
+    }
+  }
+  if (!empty($errors)) {
+    // There are validation errors - display them to the user
+    foreach ($errors as $error) {
+      $_SESSION['msg'][] = $error;
+    }
+    return false;
+  } else {
+    // Data is valid - process it
+    return true;
+  }
+}
 function getOrders($req, $data_limit = 5)
 {
   $req = obj($req);

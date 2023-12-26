@@ -31,26 +31,46 @@ $tp = isset($context['data']->total_cmsn) ? $context['data']->total_cmsn : 1;
                     <li class="breadcrumb-item active">My Commissions</li>
                 </ol>
                 <div class="row justify-content-center mb-5">
-                    <div class="col-3">
+                    <div class="col-4">
                         <div class="fnbox text-center">
                             <h3>Lifetime Points</h3>
                             <h4><?php echo $all_cmsn; ?></h4>
                         </div>
                     </div>
-                    <div class="col-3">
+                    <div class="col-4">
                         <div class="fnbox text-center">
                             <h3>Free to Request</h3>
                             <h4><?php echo $net_cmsn; ?></h4>
                             <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal">Withdraw</button>
                         </div>
                     </div>
-                    <div class="col-3">
+                    <div class="col-4">
                         <div class="fnbox text-center">
                             <h3>Point redeemed</h3>
                             <h4><?php echo $bonus_paid; ?></h4>
                         </div>
                     </div>
                 </div>
+                <?php if(is_superuser()): ?>
+                <div class="row justify-content-center mb-5">
+                <?php 
+                    $team_db_lm = $level->bonus_sum_last_month($db);
+                    $team_db_cm = $level->bonus_sum_current_month($db);
+                    ?>
+                    <!-- <div class="col-md-6">
+                        <div class="fnbox text-center">
+                            <h3>Team Points Last Month</h3>
+                            <h4><?php echo $team_db_lm; ?></h4>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="fnbox text-center">
+                            <h3>Team Points Current Month</h3>
+                            <h4><?php echo $team_db_cm; ?></h4>
+                        </div>
+                    </div> -->
+                </div>
+                <?php endif; ?>
                 <div class="row">
                     <div class="col-md-4">
                         <form method="get" action="/<?php echo home; ?>/my-commissions/">

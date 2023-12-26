@@ -1774,7 +1774,7 @@ switch ($path) {
       return;
     }
     if ($url[0] == "news") {
-      import("apps/view/pages/news.php");
+      import("apps/view/pages/news/routes.php");
       return;
     }
     // VOUCHERS #################################################################

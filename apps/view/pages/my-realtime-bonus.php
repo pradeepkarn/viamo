@@ -11,6 +11,9 @@ $all_cmsn = $level->lifetime_commission($db, $myid = USER['id']);
 $bonus_paid = $level->debited_amount($db, $myid = USER['id']);
 $net_cmsn = $level->net_balance_minus_requested_balance($db, $myid = USER['id']);
 
+
+
+
 // $totalWithDrawal = $level->get_all_withdrawal_amt_sum($db,$myid=USER['id']);
 // $free_to_paid = $allcmsn-$totalWithDrawal;
 // myprint($context);
@@ -31,20 +34,20 @@ $tp = isset($context['data']->total_cmsn) ? $context['data']->total_cmsn : 1;
                     <li class="breadcrumb-item active">My Commissions</li>
                 </ol>
                 <div class="row justify-content-center mb-5">
-                    <div class="col-3">
+                    <div class="col-md-3">
                         <div class="fnbox text-center">
                             <h3>Lifetime Points</h3>
                             <h4><?php echo $all_cmsn; ?></h4>
                         </div>
                     </div>
-                    <div class="col-3">
+                    <div class="col-md-3">
                         <div class="fnbox text-center">
                             <h3>Free to Request</h3>
                             <h4><?php echo $net_cmsn; ?></h4>
                             <!-- <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal">Withdraw</button> -->
                         </div>
                     </div>
-                    <div class="col-3">
+                    <div class="col-md-3">
                         <div class="fnbox text-center">
                             <h3>Point redeemed</h3>
                             <h4><?php echo $bonus_paid; ?></h4>
@@ -111,14 +114,14 @@ $tp = isset($context['data']->total_cmsn) ? $context['data']->total_cmsn : 1;
                                         <th>Sponser</th>
                                         <th>Buyer</th>
                                         <!-- <th>Member Level</th> -->
-                                        
+
                                         <!-- <th>Ring</th> -->
 
                                         <!-- <th>PV</th> -->
                                         <th>Point</th>
-                                        
 
-                                      
+
+
                                         <th>Date</th>
                                     </tr>
                                 </thead>
@@ -147,7 +150,7 @@ $tp = isset($context['data']->total_cmsn) ? $context['data']->total_cmsn : 1;
                                         // $csvdata['direct bonus paid'] =  $value['direct_bonus'];
                                         // $csvdata['rv paid'] =  $value['rank_advance'];
                                         $csvdata['date'] =  $value['created_at'];
-                                       
+
                                     ?>
                                         <tr>
                                             <th><?php echo $value['id']; ?></th>
@@ -156,17 +159,19 @@ $tp = isset($context['data']->total_cmsn) ? $context['data']->total_cmsn : 1;
                                                         ?></th> -->
 
                                             <th><?php echo $sponser; ?></th>
-                                            <!-- <th><?php //echo getTextFromCode($value['amount'],MEMBER_LEVEL); ?></th> -->
-                                            <th><?php echo $orderbyusername ; ?></th>
+                                            <!-- <th><?php //echo getTextFromCode($value['amount'],MEMBER_LEVEL); 
+                                                        ?></th> -->
+                                            <th><?php echo $orderbyusername; ?></th>
 
 
-                                            <!-- <th><?php //echo $value['purchase_amt']; ?></th> -->
+                                            <!-- <th><?php //echo $value['purchase_amt']; 
+                                                        ?></th> -->
                                             <th><?php echo $value['amount']; ?></th>
-                                            
+
 
 
                                             <th><?php echo $value['created_at']; ?></th>
-                                           
+
 
                                         </tr>
                                     <?php
