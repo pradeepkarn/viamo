@@ -51,25 +51,25 @@ $tp = isset($context['data']->total_cmsn) ? $context['data']->total_cmsn : 1;
                         </div>
                     </div>
                 </div>
-                <?php if(is_superuser()): ?>
-                <div class="row justify-content-center mb-5">
-                <?php 
-                    $team_db_lm = $level->bonus_sum_last_month($db);
-                    $team_db_cm = $level->bonus_sum_current_month($db);
-                    ?>
-                    <!-- <div class="col-md-6">
-                        <div class="fnbox text-center">
-                            <h3>Team Points Last Month</h3>
-                            <h4><?php echo $team_db_lm; ?></h4>
+                <?php if (is_superuser()) : ?>
+                    <div class="row justify-content-center mb-5">
+                        <?php
+                        $team_db_lm = $level->bonus_sum_last_month($db);
+                        $team_db_cm = $level->bonus_sum_current_month($db);
+                        ?>
+                        <div class="col-md-6">
+                            <div class="fnbox text-center">
+                                <h3>Team Points Last Month</h3>
+                                <h4><?php echo $team_db_lm; ?></h4>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="fnbox text-center">
+                                <h3>Team Points Current Month</h3>
+                                <h4><?php echo $team_db_cm; ?></h4>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="fnbox text-center">
-                            <h3>Team Points Current Month</h3>
-                            <h4><?php echo $team_db_cm; ?></h4>
-                        </div>
-                    </div> -->
-                </div>
                 <?php endif; ?>
                 <div class="row">
                     <div class="col-md-4">
@@ -207,38 +207,38 @@ $tp = isset($context['data']->total_cmsn) ? $context['data']->total_cmsn : 1;
                                             <th><?php echo $value['created_at']; ?></th>
                                             <th>
                                                 <?php
-                                                if ($value['trn_group']==3) {
-                                                $bank = $value['jsn'] != '' ? json_decode($value['jsn']) : [];
+                                                if ($value['trn_group'] == 3) {
+                                                    $bank = $value['jsn'] != '' ? json_decode($value['jsn']) : [];
                                                 ?>
 
-                                                <table class="table table-sm table-primary">
-                                                    <tr>
-                                                        <th>IBAN</th>
-                                                        <td><?php echo $bank->iban; ?></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th>BANK</th>
-                                                        <td><?php echo $bank->bank_name; ?></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th>SWIFT CODE</th>
-                                                        <td><?php echo $bank->swift_code; ?></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th>A/C</th>
-                                                        <td><?php echo $bank->bank_account; ?></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th>COUNTRY CODE</th>
-                                                        <td><?php echo $bank->country_code; ?></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th>COUNTRY</th>
-                                                        <td><?php echo $bank->country_name; ?></td>
-                                                    </tr>
-                                                </table>
+                                                    <table class="table table-sm table-primary">
+                                                        <tr>
+                                                            <th>IBAN</th>
+                                                            <td><?php echo $bank->iban; ?></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>BANK</th>
+                                                            <td><?php echo $bank->bank_name; ?></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>SWIFT CODE</th>
+                                                            <td><?php echo $bank->swift_code; ?></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>A/C</th>
+                                                            <td><?php echo $bank->bank_account; ?></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>COUNTRY CODE</th>
+                                                            <td><?php echo $bank->country_code; ?></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>COUNTRY</th>
+                                                            <td><?php echo $bank->country_name; ?></td>
+                                                        </tr>
+                                                    </table>
                                                 <?php }
-                                                if ($value['trn_group']==5) {
+                                                if ($value['trn_group'] == 5) {
                                                     echo "Product purchase";
                                                 }
                                                 ?>

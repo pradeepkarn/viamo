@@ -25,9 +25,13 @@
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                             Vouchers
                         </a>
+                        <a class="nav-link desktop-hide" href="/<?php echo home; ?>/news/articles">
+                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                            Read news
+                        </a>
                         <a class="nav-link desktop-hide" href="/<?php echo home; ?>/news">
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                            News
+                            Edit News
                         </a>
                         <a class="nav-link desktop-hide" href="/<?php echo home; ?>/profile">
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>

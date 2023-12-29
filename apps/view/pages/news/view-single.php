@@ -10,7 +10,7 @@ import("apps/view/inc/navbar.php");
                 <ol class="breadcrumb mt-3 mb-4">
                     <li class="breadcrumb-item active">All news articles</li>
                 </ol>
-                <?php import("apps/view/pages/news/components/list-module.php"); ?>
+                <?php import("apps/view/pages/news/components/news-single-section.php"); ?>
             </div>
 
         </main>

@@ -67,3 +67,11 @@ if ("{$url[0]}/{$url[1]}" == "{$namespace}/create") {
     import("apps/view/pages/news/create.php");
     return;
 }
+if ("{$url[0]}/{$url[1]}" == "{$namespace}/articles") {
+    if (isset($_GET['story'])) {
+        import("apps/view/pages/news/view-single.php");
+        return;
+    }
+    import("apps/view/pages/news/view-list.php");
+    return;
+}
