@@ -848,6 +848,22 @@ switch ($path) {
       }
       return;
     }
+    if ($url[0] == "upload-invoice-pdf") {
+      if (!is_superuser()) {
+        return;
+      }
+      if ($_SERVER["REQUEST_METHOD"] === "POST") {
+        $fl = $_FILES['invoice'];
+        $uploadDirectory = MEDIA_ROOT . "docs/invoices/";
+        if (move_uploaded_file($fl['tmp_name'], "{$uploadDirectory}{$fl['name']}")) {
+          echo "PDF file saved on the server.";
+        } else {
+          echo "Error saving the PDF file.";
+        }
+        return;
+      }
+      return;
+    }
     if ($url[0] == "req-redeem") {
       $wthdrwctrl = new Withdrawal_ctrl;
       $wthdrwctrl->redeem_request();

@@ -18,21 +18,23 @@
                         <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                         My Direct Bonus Points
                     </a>
+                    <a class="nav-link desktop-hide" href="/<?php echo home; ?>/news/articles">
+                        <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        Read news
+                    </a>
                     <?php
                     if (is_superuser()) {
                     ?>
-                        <a class="nav-link" href="/<?php echo home; ?>/vouchers">
-                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                            Vouchers
-                        </a>
-                        <a class="nav-link desktop-hide" href="/<?php echo home; ?>/news/articles">
-                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                            Read news
-                        </a>
                         <a class="nav-link desktop-hide" href="/<?php echo home; ?>/news">
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                             Edit News
                         </a>
+                        <a class="nav-link" href="/<?php echo home; ?>/vouchers">
+                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                            Vouchers
+                        </a>
+
+
                         <a class="nav-link desktop-hide" href="/<?php echo home; ?>/profile">
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                             Profile
@@ -222,7 +224,8 @@
                             <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                             Finance
                         </a>
-                        <!-- <a class="nav-link" href="/<?php // echo home; ?>/tickets">
+                        <!-- <a class="nav-link" href="/<?php // echo home; 
+                                                        ?>/tickets">
                             <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                             Support Tickets
                         </a> -->

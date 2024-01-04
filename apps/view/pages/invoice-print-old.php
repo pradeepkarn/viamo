@@ -2,9 +2,6 @@
 import("apps/view/inc/header.php");
 ?>
 <?php
-
-
-
 $context = obj($context);
 // myprint($context);
 $user_id = $context->payment['user_id'];
@@ -35,11 +32,10 @@ try {
     document.getElementsByTagName('title')[0].innerText = "INVOICE-<?php echo $invoice != "" ? $invoice : $invid; ?>";
 </script>
 <style>
-    .p-2 {
+    .p-2{
         font-size: 10px;
     }
-
-    .electronic-info {
+    .electronic-info{
         font-size: 9px;
     }
 </style>
@@ -78,9 +74,9 @@ try {
 
                             <div class="col-4"> <strong>Invoiced To:</strong>
                                 <address>
-                                    <?php echo $shpadrs->company; ?> <br>
-                                    <?php echo $shpadrs->name; ?> <br>
-                                    <?php echo $shpadrs->street . " " . $shpadrs->street_num; ?> <br>
+                                    <?php echo $shpadrs->company!=''?"{$shpadrs->company}<br>":null; ?> 
+                                    <?php echo $shpadrs->name; ?>  <br>
+                                    <?php echo $shpadrs->street." ".$shpadrs->street_num; ?> <br>
                                     <?php echo $shpadrs->zipcode; ?> <?php echo $shpadrs->city; ?> <br>
                                     <?php echo $shpadrs->country; ?> <br>
                                 </address>
@@ -122,14 +118,10 @@ try {
                                             $cntry = new Model('countries');
                                             $delivery_cntry_code = $shpadrs->country_code;
                                             $cntr = $cntry->filter_index(['code' => $delivery_cntry_code]);
-                                            $other_tax = 0;
-                                            if (isset($cntr[0])) {
-                                                $other_tax = $cntr[0]['max_tax'];
-                                            }
                                             $min_tax = 0;
                                             $max_tax = 0;
                                             $vdamt = $context->payment['voucher_amt'];
-                                            $discount = round($context->payment['discount_by_bpt'], 2);
+                                            $discount = round($context->payment['discount_by_bpt'],2);
                                             foreach ($context->cart as $itm) {
                                                 $cv = obj($itm);
 
@@ -153,25 +145,25 @@ try {
                                                     // $amt = round(((($pr->net_price * ($tax / 100)) + $pr->net_price) * $pr->qty), 2) * $pkg->qty;
                                                     $amt = round(($pr->mrp * $pr->qty), 2) * $pkg->qty;
                                                     // $amt_wot = round(($pr->net_price * $pr->qty), 2) * $pkg->qty;
-                                                    $price_wot =  round((($pr->mrp / (100 + $tax)) * 100), 2);
-                                                    $amt_wot =  round(($price_wot * $pr->qty * $pkg->qty), 2);
+                                                    $price_wot =  round((($pr->mrp / (100 + $tax)) * 100),2);
+                                                    $amt_wot =  round(($price_wot * $pr->qty* $pkg->qty),2);
                                                     $total_amt += $amt;
                                                     $total_amt_wot += $amt_wot;
 
                                                     if ($suppliment) {
-                                                        $ntprce = ($pr->mrp / (100 + $tax)) * 100;
+                                                        $ntprce = ($pr->mrp / (100 + $tax))*100;
                                                         $max_tax += round(((($ntprce * ($tax / 100))) * $pr->qty), 2) * $pkg->qty;
                                                         // $max_tax += round(((($pr->net_price * ($tax / 100))) * $pr->qty), 2) * $pkg->qty;
                                                     } else {
-                                                        $ntprcemin = ($pr->mrp / (100 + $tax)) * 100;
+                                                        $ntprcemin = ($pr->mrp / (100 + $tax))*100;
                                                         // $min_tax += round(((($pr->net_price * ($tax / 100))) * $pr->qty), 2) * $pkg->qty;
                                                         $min_tax += round(((($ntprcemin * ($tax / 100))) * $pr->qty), 2) * $pkg->qty;
                                                     }
                                                     if ($suppliment) {
-                                                        $ntprce = ($pr->mrp / (100 + $tax)) * 100;
+                                                        $ntprce = ($pr->mrp / (100 + $tax))*100;
                                                         $tax_value = round(((($ntprce * ($tax / 100))) * $pr->qty), 2) * $pkg->qty;
                                                     } else {
-                                                        $ntprce = ($pr->mrp / (100 + $tax)) * 100;
+                                                        $ntprce = ($pr->mrp / (100 + $tax))*100;
                                                         $tax_value = round(((($ntprce * ($tax / 100))) * $pr->qty), 2) * $pkg->qty;
                                                     }
                                                     // $qtys[] = $pr->qty;
@@ -190,19 +182,19 @@ try {
                                                 } ?>
 
                                             <?php
-                                            }
+                                            } 
                                             $net_amt = 0;
-                                            $total_amt_wot = round($total_amt_wot, 2);
-                                            $total_amt = round($total_amt, 2);
-                                            $net_amt = round($total_amt - $discount, 2);
+                                            $total_amt_wot = round($total_amt_wot,2);
+                                            $total_amt = round($total_amt,2);
+                                            $net_amt = round($total_amt-$discount,2);
                                             ?>
 
                                         </tbody>
-
-                                        <tr>
-                                            <td colspan="7" class="text-end border-bottom-0"><strong>Total WOT(+):</strong></td>
-                                            <td colspan="1" class="text-end border-bottom-0"><?php echo $total_amt_wot; ?></td>
-                                        </tr>
+                                    
+                                            <tr>
+                                                <td colspan="7" class="text-end border-bottom-0"><strong>Total WOT(+):</strong></td>
+                                                <td colspan="1" class="text-end border-bottom-0"><?php echo $total_amt_wot; ?></td>
+                                            </tr>
 
 
 
@@ -214,7 +206,7 @@ try {
                                             ?>
 
                                             <tr>
-                                                <th colspan="6" rowspan="10"></th>
+                                                <th colspan="6" rowspan="7"></th>
                                                 <th class="text-end">
                                                     <?php if ($max_tax > 0) { ?>
                                                         Tax (<?php echo $incntr->max_tax; ?>)%(+) =
@@ -243,38 +235,26 @@ try {
 
                                             <tr>
                                                 <th class="text-end">Voucher(-) =</th>
-                                                <th class="text-end"><?php echo $vchrWOT = priceWOT($priceWithTax = $vdamt, $taxRate = $other_tax); ?></th>
-                                            </tr>
-                                            <tr>
-                                                <th class="text-end">Tax(<?php echo $other_tax; ?>)%(-) =</th>
-                                                <th class="text-end"><?php echo $vdamt - $vchrWOT; ?></th>
+                                                <th class="text-end"><?php echo $vdamt; ?></th>
                                             </tr>
                                             <tr>
                                                 <th class="text-end">Discount(-) =</th>
-                                                <th class="text-end"><?php echo $discountWOT = priceWOT($priceWithTax = $discount, $taxRate = $other_tax); ?></th>
-                                            </tr>
-                                            <tr>
-                                                <th class="text-end">Tax(<?php echo $other_tax; ?>)%(-) =</th>
-                                                <th class="text-end"><?php echo $discount - $discountWOT; ?></th>
+                                                <th class="text-end"><?php echo $discount; ?></th>
                                             </tr>
                                             <tr>
 
                                                 <th class="text-end">Net(+) =</th>
-                                                <th class="text-end"><?php echo $net = ($total_amt - $vdamt) - $discount; ?></th>
+                                                <th class="text-end"><?php echo $net = ($total_amt-$vdamt)-$discount; ?></th>
                                             </tr>
                                             <tr>
 
                                                 <th class="text-end">Shipping cost(+) =</th>
-                                                <th class="text-end"><?php echo $shippingWOT = priceWOT($priceWithTax = $context->payment['shipping_cost'], $taxRate = $other_tax); ?></th>
-                                            </tr>
-                                            <tr>
-                                                <th class="text-end">Tax(<?php echo $other_tax; ?>)%(+) =</th>
-                                                <th class="text-end"><?php echo $context->payment['shipping_cost'] - $shippingWOT; ?></th>
+                                                <th class="text-end"><?php echo $context->payment['shipping_cost']; ?></th>
                                             </tr>
                                             <tr>
 
                                                 <th class="text-end">Cash/Card(-) =</th>
-                                                <th class="text-end">&#8364; <?php echo $context->payment['shipping_cost'] + $net; ?></th>
+                                                <th class="text-end">&#8364; <?php echo $context->payment['shipping_cost']+$net; ?></th>
                                             </tr>
                                         </tfoot>
 

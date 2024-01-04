@@ -11,7 +11,7 @@ import("apps/view/inc/navbar.php");
             <div class="container-fluid px-4">
                 <!-- <h1 class="mt-4">Dashboard</h1> -->
                 <ol class="breadcrumb mt-3 mb-4">
-                    <li class="breadcrumb-item active">MyOrders</li>
+                    <li class="breadcrumb-item active">All orders</li>
                 </ol>
 
                 <div class="container">
@@ -139,7 +139,15 @@ import("apps/view/inc/navbar.php");
                                                 <th>
                                                     <?php
                                                     if ($value['status'] == 'paid') { ?>
-                                                        <a class="btn btn-warning" target="_blank" href="http:/<?php echo home; ?>/my-orders/?orderid=<?php echo $value['id']; ?>">Invoice</a>
+                                                        <div>Print Invoice</div>
+                                                        <div class="d-flex gap-2">
+                                                            <?php
+                                                            $invoice_exist = file_exists(RPATH . "/media/docs/invoices/invoice-{$value['invoice']}.pdf");
+                                                            if ($invoice_exist) : ?>
+                                                                <a class="btn btn-warning my-1" target="_blank" href="http:/<?php echo MEDIA_URL; ?>/docs/invoices/invoice-<?php echo $value['invoice']; ?>.pdf">PDF</a>
+                                                            <?php endif; ?>
+                                                            <a class="btn btn-primary my-1" target="_blank" href="http:/<?php echo home; ?>/my-orders/?orderid=<?php echo $value['id']; ?>">Web</a>
+                                                        </div>
                                                     <?php  } else { ?>
                                                         <?php
                                                         if (is_superuser()) {
@@ -195,7 +203,7 @@ import("apps/view/inc/navbar.php");
                                                     <?php
                                                     $label_exist = file_exists(RPATH . "/media/docs/labels/label-{$value['invoice']}.pdf");
                                                     if ($label_exist) : ?>
-                                                        <a class="my-1" target="_blank" href="/<?php echo home; ?>/cronjobs/mail-single-shipping-label/?orderid=<?php echo $value['id']; ?>">Force send mail</a>
+                                                        <a class="my-1" target="_blank" href="/<?php echo home; ?>/cronjobs/mail-single-shipping-label/?orderid=<?php echo $value['id']; ?>">Force send mail</a> <br>
                                                         <a class="btn btn-warning my-1" target="_blank" href="http:/<?php echo MEDIA_URL; ?>/docs/labels/label-<?php echo $value['invoice']; ?>.pdf">PDF</a>
                                                     <?php endif; ?>
                                                     <?php if ($value['status'] == 'paid' && $value['invoice'] != '') : ?>

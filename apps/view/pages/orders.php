@@ -16,143 +16,161 @@ import("apps/view/inc/navbar.php");
                     <div class="row mb-4">
                         <div class="col-lg-12">
                             <div id="res"></div>
-                            <table id="datatablesSimple">
-                                <thead>
-                                    <tr>
-                                        <th>Order ID</th>
-                                        <th>PV</th>
-                                        <!-- <th>Direct Bonus</th> -->
-                                        <th>Email</th>
-                                        <th>status</th>
-                                        <th>Total</th>
-                                        <th>Payment method</th>
-                                        <th>Info</th>
-                                        <th>Invoice No.</th>
-                                        <th>Date</th>
-                                        <th>Invoice Print</th>
-                                        <th>Shipping Label</th>
-                                    </tr>
-                                </thead>
 
-                                <tbody>
-                                    <?php
-                                    if (authenticate() == true) {
-                                        $userObj = new Model('payment');
+                            <div class="table-responsive">
 
-                                        $arr = null;
-
-                                        $arr['user_id'] = $_SESSION['user_id'];
-                                        $order = $userObj->filter_index($assoc_arr = $arr, $ord = 'DESC', $limit = 9999999, $change_order_by_col = "id");
-                                    }
-
-
-                                    foreach ($order as $value) {
-                                        // (new Cart_ctrl)->update_invoice($payment_id=$value['id']);
-                                        $email = getData('pk_user', $value['user_id'])['email'];
-                                    ?>
+                                <table class="table table-bordered border-primary">
+                                    <thead>
                                         <tr>
-                                            <th><?php echo $value['id']; ?></th>
-                                            <th><?php echo $value['pv']; ?></th>
-                                            <!-- <th><?php // echo $value['direct_bonus']; 
-                                                        ?></th> -->
-                                            <th><?php echo $email; ?></th>
-                                            <th><?php echo $value['status']; ?></th>
-                                            <th>
-                                                <table class="cost-details table table-bordered">
+                                            <th>Order ID</th>
+                                            <th>PV</th>
+                                            <!-- <th>Direct Bonus</th> -->
+                                            <th>Email</th>
+                                            <th>status</th>
+                                            <th>Total</th>
+                                            <th>Payment method</th>
+                                            <th>Info</th>
+                                            <th>Invoice No.</th>
+                                            <th>Date</th>
+                                            <th>Invoice Print</th>
+                                            <th>Shipping Label</th>
+                                        </tr>
+                                    </thead>
 
-                                                    <tr class="text-end">
-                                                        <td>Amount(+) </td>
-                                                        <td><?php echo ($value['amount']); ?></td>
-                                                    </tr>
-                                                    <tr class="text-end">
-                                                        <td>V. Disc.(-) </td>
-                                                        <td> <?php echo $value['voucher_amt']; ?></td>
-                                                    </tr>
-                                                    <tr class="text-end">
-                                                        <td>Discount(-) </td>
-                                                        <td> <?php echo $value['discount_by_bpt']; ?></td>
-                                                    </tr>
-                                                    <tr class="text-end">
-                                                        <td>Net(+) </td>
-                                                        <td><?php echo $net = (($value['amount'] - $value['voucher_amt']) - $value['discount_by_bpt']); ?></td>
-                                                    </tr>
-                                                    <tr class="text-end">
-                                                        <td>Shipping(+) </td>
-                                                        <td><?php echo $value['shipping_cost']; ?></td>
-                                                    </tr>
-                                                    <tr class="text-end">
-                                                        <td>Card(-) </td>
-                                                        <td><?php echo round(($net + $value['shipping_cost']), 2); ?></td>
-                                                    </tr>
-                                                </table>
+                                    <tbody>
+                                        <?php
+                                        if (authenticate() == true) {
+                                            $userObj = new Model('payment');
 
-                                            </th>
-                                            <th><?php echo $value['payment_method']; ?></th>
-                                            <th><?php echo $value['info']; ?></th>
-                                            <th><?php echo $value['invoice'] ? $value['invoice'] : 'Not created'; ?></th>
-                                            <th><?php echo $value['created_at']; ?></th>
-                                            <th>
-                                                <?php
-                                                if ($value['status'] == 'paid') { ?>
-                                                    <a class="btn btn-warning" target="_blank" href="http:/<?php echo home; ?>/my-orders/?orderid=<?php echo $value['id']; ?>">Invoice</a>
-                                                <?php  } else { ?>
+                                            $arr = null;
+
+                                            $arr['user_id'] = $_SESSION['user_id'];
+                                            $order = $userObj->filter_index($assoc_arr = $arr, $ord = 'DESC', $limit = 9999999, $change_order_by_col = "id");
+                                        }
+
+
+                                        foreach ($order as $value) {
+                                            // (new Cart_ctrl)->update_invoice($payment_id=$value['id']);
+                                            $email = getData('pk_user', $value['user_id'])['email'];
+                                        ?>
+                                            <tr>
+                                                <th><?php echo $value['id']; ?></th>
+                                                <th><?php echo $value['pv']; ?></th>
+                                                <!-- <th><?php // echo $value['direct_bonus']; 
+                                                            ?></th> -->
+                                                <th><?php echo $email; ?></th>
+                                                <th><?php echo $value['status']; ?></th>
+                                                <th>
+                                                    <table class="cost-details table table-bordered">
+
+                                                        <tr class="text-end">
+                                                            <td>Amount(+) </td>
+                                                            <td><?php echo ($value['amount']); ?></td>
+                                                        </tr>
+                                                        <tr class="text-end">
+                                                            <td>V. Disc.(-) </td>
+                                                            <td> <?php echo $value['voucher_amt']; ?></td>
+                                                        </tr>
+                                                        <tr class="text-end">
+                                                            <td>Discount(-) </td>
+                                                            <td> <?php echo $value['discount_by_bpt']; ?></td>
+                                                        </tr>
+                                                        <tr class="text-end">
+                                                            <td>Net(+) </td>
+                                                            <td><?php echo $net = (($value['amount'] - $value['voucher_amt']) - $value['discount_by_bpt']); ?></td>
+                                                        </tr>
+                                                        <tr class="text-end">
+                                                            <td>Shipping(+) </td>
+                                                            <td><?php echo $value['shipping_cost']; ?></td>
+                                                        </tr>
+                                                        <tr class="text-end">
+                                                            <td>Card(-) </td>
+                                                            <td><?php echo round(($net + $value['shipping_cost']), 2); ?></td>
+                                                        </tr>
+                                                    </table>
+
+                                                </th>
+                                                <th><?php echo $value['payment_method']; ?></th>
+                                                <th><?php echo $value['info']; ?></th>
+                                                <th><?php echo $value['invoice'] ? $value['invoice'] : 'Not created'; ?></th>
+                                                <th><?php echo $value['created_at']; ?></th>
+                                                <th>
                                                     <?php
-                                                    if (is_superuser()) {
-                                                    ?>
-                                                        <button data-bs-target="#orderstatusmodal<?php echo $value['id']; ?>" data-bs-toggle="modal" class="btn btn-secondary">Pending</button>
-                                                        <!-- Modal -->
-                                                        <div class="modal" id="orderstatusmodal<?php echo $value['id']; ?>">
-                                                            <div class="modal-dialog">
-                                                                <div class="modal-content">
+                                                    if ($value['status'] == 'paid') { ?>
 
-                                                                    <!-- Modal header -->
-                                                                    <div class="modal-header">
-                                                                        <h5 class="modal-title">Mark This order as paid</h5>
-                                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+
+
+
+                                                        <div>Print Invoice</div>
+                                                        <div class="d-flex gap-2">
+                                                            <?php
+                                                            $invoice_exist = file_exists(RPATH . "/media/docs/invoices/invoice-{$value['invoice']}.pdf");
+                                                            if ($invoice_exist) : ?>
+                                                                <a class="btn btn-warning my-1" target="_blank" href="http:/<?php echo MEDIA_URL; ?>/docs/invoices/invoice-<?php echo $value['invoice']; ?>.pdf">PDF</a>
+                                                            <?php endif; ?>
+                                                            <a class="btn btn-primary my-1" target="_blank" href="http:/<?php echo home; ?>/my-orders/?orderid=<?php echo $value['id']; ?>">Web</a>
+                                                        </div>
+                                                    <?php  } else { ?>
+                                                        <?php
+                                                        if (is_superuser()) {
+                                                        ?>
+                                                            <button data-bs-target="#orderstatusmodal<?php echo $value['id']; ?>" data-bs-toggle="modal" class="btn btn-secondary">Pending</button>
+                                                            <!-- Modal -->
+                                                            <div class="modal" id="orderstatusmodal<?php echo $value['id']; ?>">
+                                                                <div class="modal-dialog">
+                                                                    <div class="modal-content">
+
+                                                                        <!-- Modal header -->
+                                                                        <div class="modal-header">
+                                                                            <h5 class="modal-title">Mark This order as paid</h5>
+                                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                        </div>
+
+                                                                        <!-- Modal body -->
+                                                                        <div class="modal-body">
+                                                                            <textarea name="info" class="pmt<?php echo $value['id']; ?> form-control my-3" placeholder="Payment info"></textarea>
+                                                                            <input type="hidden" class="pmt<?php echo $value['id']; ?>" name="pmt_id" value="<?php echo $value['id']; ?>">
+                                                                            <button id="mark-this-paid<?php echo $value['id']; ?>" class="btn btn-success">Mark as paid</button>
+                                                                            <?php
+                                                                            pkAjax("#mark-this-paid{$value['id']}", "/mark-this-order-status-ajax", ".pmt{$value['id']}", "#res");
+                                                                            ?>
+                                                                        </div>
+
+                                                                        <!-- Modal footer -->
+                                                                        <div class="modal-footer">
+                                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                                        </div>
+
                                                                     </div>
-
-                                                                    <!-- Modal body -->
-                                                                    <div class="modal-body">
-                                                                        <textarea name="info" class="pmt<?php echo $value['id']; ?> form-control my-3" placeholder="Payment info"></textarea>
-                                                                        <input type="hidden" class="pmt<?php echo $value['id']; ?>" name="pmt_id" value="<?php echo $value['id']; ?>">
-                                                                        <button id="mark-this-paid<?php echo $value['id']; ?>" class="btn btn-success">Mark as paid</button>
-                                                                        <?php
-                                                                        pkAjax("#mark-this-paid{$value['id']}", "/mark-this-order-status-ajax", ".pmt{$value['id']}", "#res");
-                                                                        ?>
-                                                                    </div>
-
-                                                                    <!-- Modal footer -->
-                                                                    <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                                    </div>
-
                                                                 </div>
                                                             </div>
-                                                        </div>
 
-                                                <?php  } else {
-                                                        echo "Pending";
+                                                    <?php  } else {
+                                                            echo "Pending";
+                                                        }
                                                     }
-                                                }
-                                                ?>
-                                            </th>
-                                            <th>
-                                                <?php
-                                                $label_exist = file_exists(RPATH . "/media/docs/labels/label-{$value['invoice']}.pdf");
-                                                if ($label_exist) : ?>
-                                                    <a class="btn btn-warning my-1" target="_blank" href="http:/<?php echo MEDIA_URL; ?>/docs/labels/label-<?php echo $value['invoice']; ?>.pdf">PDF</a>
-                                                <?php endif; ?>
-                                                <?php if ($value['status'] == 'paid' && $value['invoice'] != '') : ?>
-                                                    <a class="btn btn-primary my-1" target="_blank" href="http:/<?php echo home; ?>/label-print/?orderid=<?php echo $value['id']; ?>">Web</a>
-                                                <?php endif; ?>
+                                                    ?>
+                                                </th>
+                                                <th>
+                                                    <?php
+                                                    $label_exist = file_exists(RPATH . "/media/docs/labels/label-{$value['invoice']}.pdf");
+                                                    if ($label_exist) : ?>
+                                                        <div>Print Label</div>
+                                                        <a class="btn btn-warning my-1" target="_blank" href="http:/<?php echo MEDIA_URL; ?>/docs/labels/label-<?php echo $value['invoice']; ?>.pdf">PDF</a>
+                                                    <?php endif; ?>
+                                                    <?php if ($value['status'] == 'paid' && $value['invoice'] != '') : ?>
+                                                        <a class="btn btn-primary my-1" target="_blank" href="http:/<?php echo home; ?>/label-print/?orderid=<?php echo $value['id']; ?>">Web</a>
+                                                    <?php endif; ?>
 
-                                            </th>
-                                        </tr>
-                                    <?php
-                                    }
-                                    ?>
-                                </tbody>
-                            </table>
+                                                </th>
+                                            </tr>
+                                        <?php
+                                        }
+                                        ?>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
