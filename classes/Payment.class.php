@@ -41,10 +41,8 @@ class Payment
                 * The payment is paid and isn't refunded or charged back.
                 * At this point you'd probably want to start the process of delivering the product to the customer.
                 */
-                $reply = $this->update_payment_data($this->db, $status = "paid", $pmt = $payment);
-                if ($reply) {
-                    echo go_to("/cronjobs/generate-invoices-pdf");
-                }
+                $this->update_payment_data($this->db, $status = "paid", $pmt = $payment);
+               
             } elseif ($payment->isOpen()) {
                 /*
          * The payment is open.
