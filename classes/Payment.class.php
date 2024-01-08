@@ -7,8 +7,8 @@ class Payment
     function __construct()
     {
         $this->mollie = new \Mollie\Api\MollieApiClient();
-        
-        $this->mollie->setApiKey(MOLLIE_LIVE_KEY);
+
+        $this->mollie->setApiKey(MOLLIE_TEST_KEY);
     }
     function create(object $obj)
     {
@@ -41,7 +41,10 @@ class Payment
                 * The payment is paid and isn't refunded or charged back.
                 * At this point you'd probably want to start the process of delivering the product to the customer.
                 */
-                $this->update_payment_data($this->db, $status = "paid", $pmt = $payment);
+                $reply = $this->update_payment_data($this->db, $status = "paid", $pmt = $payment);
+                if ($reply) {
+                    echo go_to("/cronjobs/generate-invoices-pdf");
+                }
             } elseif ($payment->isOpen()) {
                 /*
          * The payment is open.
@@ -102,10 +105,10 @@ class Payment
         $db->tableName = "payment";
         $pmt = $db->get(['unique_id' => $uid]);
         if ($pmt) {
-            $net_amount =  $pmt['amount']-$pmt['voucher_amt']-$pmt['discount_by_bpt']+$pmt['shipping_cost'];
+            $net_amount =  $pmt['amount'] - $pmt['voucher_amt'] - $pmt['discount_by_bpt'] + $pmt['shipping_cost'];
             return (object) array(
-                'obj'=>$pmt,
-                'amt'=>$net_amount
+                'obj' => $pmt,
+                'amt' => $net_amount
             );
         }
         return 0;
@@ -119,13 +122,17 @@ class Payment
         $db->insertData['payment_method'] = 'mollie';
         $db->insertData['status'] = $status;
         $db->insertData['updated_at'] = date('Y-m-d H:i:s');
-        if (strtolower($status)=='paid') {
+        if (strtolower($status) == 'paid') {
+            // generate invoice
+            $invid = generate_invoice_id($db);
+            update_inv_if_not($id = $pmt->id, $invid, $db);
+            // generate invoice end
             $ord_ctrl = new Order_ctrl;
             $level = new Member_ctrl;
             $ref = $db->showOne("SELECT * FROM pk_user WHERE pk_user.id = (SELECT ref FROM pk_user WHERE pk_user.id = '{$pmt['user_id']}')");
             $buyer['id'] = $pmt['user_id'];
             $buyer['ref'] = $ref['id'];
-            $ord_ctrl->send_direct_bonus($db, $buyer, $ordernum=$pmt['unique_id'], $total_amt=$pmt['amount'], $total_db=$pmt['direct_bonus'], $redeempt=$pmt['discount_by_bpt'], $level);
+            $ord_ctrl->send_direct_bonus($db, $buyer, $ordernum = $pmt['unique_id'], $total_amt = $pmt['amount'], $total_db = $pmt['direct_bonus'], $redeempt = $pmt['discount_by_bpt'], $level);
         }
         return $db->update();
     }

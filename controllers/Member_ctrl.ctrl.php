@@ -118,8 +118,6 @@ class Member_ctrl
                 // check 3 vip members level=1 below level to 2
                 // $sql = "SELECT count(id) as vip_count FROM pk_user WHERE pk_user.ref='$myid' and member_level = '{$current_level}';";
 
-
-
                 $sql = "SELECT 
                 payment.user_id AS buyer_id, pk_user.member_level
                 FROM payment 
@@ -307,7 +305,7 @@ class Member_ctrl
             }
             $db->conn->commit();
         } catch (PDOException $th) {
-            echo $th;
+            // echo $th;
             $db->conn->rollback();
         }
     }

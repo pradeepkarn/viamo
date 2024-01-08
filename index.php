@@ -18,9 +18,9 @@ if (!isset($_SESSION['guest_id'])) {
 }
 function get_my_primary_address($userid)
 {
-  if (!isset($_SESSION['user_id'])) {
-    return false;
-  }
+  // if (!isset($_SESSION['user_id'])) {
+  //   return false;
+  // }
   $addrs = new Model('address');
   $myaddress_list = $addrs->filter_index(['user_id' => $userid, 'address_type' => 'primary']);
   if (count($myaddress_list) > 0) {
@@ -31,9 +31,9 @@ function get_my_primary_address($userid)
 }
 function get_invoice_address($country_code = 'CH')
 {
-  if (!isset($_SESSION['user_id'])) {
-    return false;
-  }
+  // if (!isset($_SESSION['user_id'])) {
+  //   return false;
+  // }
   $data = new stdClass;
   $data->bank = null;
   $data->office = null;
@@ -831,9 +831,9 @@ switch ($path) {
       return;
     }
     if ($url[0] == "upload-pdf") {
-      if (!is_superuser()) {
-        return;
-      }
+      // if (!is_superuser()) {
+      //   return;
+      // }
       if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $fl = $_FILES['label'];
         $uploadDirectory = MEDIA_ROOT . "docs/labels/";
@@ -849,9 +849,9 @@ switch ($path) {
       return;
     }
     if ($url[0] == "upload-invoice-pdf") {
-      if (!is_superuser()) {
-        return;
-      }
+      // if (!is_superuser()) {
+      //   return;
+      // }
       if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $fl = $_FILES['invoice'];
         $uploadDirectory = MEDIA_ROOT . "docs/invoices/";

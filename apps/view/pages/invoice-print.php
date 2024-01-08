@@ -6,6 +6,7 @@ $context = obj($context);
 // myprint($context);
 $user_id = $context->payment['user_id'];
 $invoice = $context->payment['invoice'];
+$status = $context->payment['status'];
 $pmtid = $context->payment['id'];
 $shadrs = obj(get_shipping_address($user_id));
 $user = obj(getData('pk_user', $user_id));
@@ -17,14 +18,19 @@ $delv_info = $invData->delv_info;
 $trns = new Dbobjects;
 $con = $trns->dbpdo();
 $con->beginTransaction();
-
-try {
-    $invid = generate_invoice_id($trns);
-    update_inv_if_not($id = $pmtid, $invid, $trns);
-    $con->commit();
-} catch (PDOException $th) {
-    $con->rollback();
+$invid = 0;
+if ($status == 'paid') {
+    try {
+        $invid = generate_invoice_id($trns);
+        update_inv_if_not($id = $pmtid, $invid, $trns);
+        $con->commit();
+    } catch (PDOException $th) {
+        $con->rollback();
+    }
+}else{
+    die("Unpaid Invoice can not be generated!");
 }
+
 
 ?>
 <!doctype html>
@@ -75,9 +81,11 @@ try {
             border-collapse: collapse;
             margin-top: 10px;
         }
-        tr{
+
+        tr {
             font-size: 10px;
         }
+
         .table th,
         .table td {
             border: 1px solid #000;
@@ -152,7 +160,7 @@ $delv_info = $invData->delv_info;
                 <div class="address-block">
                     <b> DETAILS:</b>
                     <p>
-                        INV-<?php echo $invid; ?> <br>
+                        INV-<?php echo $invoice != "" ? $invoice : $invid; ?> <br>
                         DATE-<?php echo date('Y-m-d H:i:s'); ?> <br>
                         ORD-<?php echo $pmtid; ?>
                     </p>
@@ -363,6 +371,7 @@ $delv_info = $invData->delv_info;
         </div>
 
     </div>
+    <?php if($status=="paid"): ?>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             var el = document.getElementById('content');
@@ -445,6 +454,7 @@ $delv_info = $invData->delv_info;
             })
         }
     </script>
+     <?php endif; ?>
 </body>
 
 </html>

@@ -12,3 +12,7 @@ if ("{$url[0]}/{$url[1]}" == "{$namespace}/mail-single-shipping-label") {
   }
   return;
 }
+if ("{$url[0]}/{$url[1]}" == "{$namespace}/generate-invoices-pdf") {
+  import("apps/view/pages/cronjobs/generate-invoices-pdf.php");
+  return;
+}
